@@ -2,6 +2,7 @@ package ru.sber.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,14 @@ public class Order {
 
     @Column(nullable = false)
     private int clientId;
+
+    @Column(nullable = false)
+    @Size(max = 20)
+    private String clientName;
+
+    @Column(nullable = false)
+    @Size(max = 10)
+    private int clientPhoneNumber;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)

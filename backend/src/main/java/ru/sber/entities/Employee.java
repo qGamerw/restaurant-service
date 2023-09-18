@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Сотрудник
  */
@@ -44,17 +41,8 @@ public class Employee {
     @JoinColumn(name = "branchs_office_id", nullable = false)
     private BranchOffice branchOffice;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "employee_positions",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "position_id"))
-    private Set<Position> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "employee_position", nullable = false)
+    private Position position;
 
-    public Employee(String name, String email, String password, BranchOffice branchOffice, Set<Position> roles) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.branchOffice = branchOffice;
-        this.roles = roles;
-    }
 }
