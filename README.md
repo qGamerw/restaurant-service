@@ -30,6 +30,8 @@
 ### Backend
 
 * Spring Boot;
+* Spring Security;
+* Hibernate;
 * ...
 
 ### Frontend
