@@ -30,12 +30,12 @@ public class EmployeeController {
         Optional<EmployeeLimit> employee = employeeService.getEmployeeById();
 
         return employee.map(
-                value -> ResponseEntity
-                        .ok()
-                        .body(value))
-                .orElseGet(() -> ResponseEntity
-                        .notFound()
-                        .build());
+                        value -> ResponseEntity
+                                .ok()
+                                .body(value))
+                        .orElseGet(() -> ResponseEntity
+                                .notFound()
+                                .build());
     }
 
     @DeleteMapping("/delete/{id}")
@@ -45,12 +45,10 @@ public class EmployeeController {
         var isDeleted = employeeService.deleteById(id);
 
         if (isDeleted) {
-            return ResponseEntity
-                    .noContent()
+            return ResponseEntity.noContent()
                     .build();
         } else {
-            return ResponseEntity
-                    .notFound()
+            return ResponseEntity.notFound()
                     .build();
         }
     }

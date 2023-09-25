@@ -25,14 +25,14 @@ public class BranchOfficeController {
 
     // Под вопросом, где лучше сделать (автоматически)
     @PutMapping("/close")
-    public ResponseEntity<Void> closeBranchOffice() {
+    public ResponseEntity<?> closeBranchOffice() {
         log.info("Закрывает филиал");
 
         boolean isStatus = branchOfficeService.closeBranchOffice();
 
         if (isStatus) {
             return ResponseEntity
-                    .noContent()
+                    .ok()
                     .build();
         } else {
             return ResponseEntity
@@ -49,7 +49,7 @@ public class BranchOfficeController {
 
         if (isStatus) {
             return ResponseEntity
-                    .noContent()
+                    .ok()
                     .build();
         } else {
             return ResponseEntity

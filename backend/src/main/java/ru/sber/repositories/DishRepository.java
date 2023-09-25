@@ -9,4 +9,5 @@ import ru.sber.entities.Dish;
  */
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Long> {
+    boolean existsByName(String name);
 }

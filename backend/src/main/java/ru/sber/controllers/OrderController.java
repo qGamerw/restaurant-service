@@ -37,8 +37,9 @@ public class OrderController {
     public ResponseEntity<Long> updateOrder(@RequestBody Order order) {
         log.info("Обновляет заказ по id {}", order.getId());
 
-        return ResponseEntity
-                .created(URI.create("orders/" + orderService.updateOrder(order)))
+        orderService.updateOrder(order);
+
+        return ResponseEntity.ok()
                 .build();
     }
 
@@ -48,8 +49,7 @@ public class OrderController {
 
         List<Order> orders = orderService.getListOrder();
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(orders);
     }
 
@@ -63,8 +63,8 @@ public class OrderController {
                         value -> ResponseEntity
                                 .ok()
                                 .body(value))
-                .orElseGet(() -> ResponseEntity
-                        .notFound()
-                        .build());
+                        .orElseGet(() -> ResponseEntity
+                                .notFound()
+                                .build());
     }
 }

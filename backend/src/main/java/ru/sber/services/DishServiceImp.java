@@ -35,20 +35,30 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
+    @Transactional
     public boolean addDish(Dish dish) {
         log.info("Добавляет блюдо с id {}", dish.getId());
 
-        dishRepository.save(dish);
-        dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
-        return true;
+        if (!dishRepository.existsByName(dish.getName())){
+            dishRepository.save(dish);
+            dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     @Transactional
     public boolean deleteDish(long id) {
-        log.info("Удаляет блюдо с id {}", id);
+        log.info("Удаляет из филиала блюдо с id {} {}", id, getBranchOffice().getId());
 
-        dishRepository.deleteById(id);
+        if (dishesBranchOfficeRepository.existsByDish_IdAndAndBranchOffice_Id(id, getBranchOffice().getId())) {
+            dishesBranchOfficeRepository.deleteByDish_Id(id);
+
+            return true;
+        }
+
         return false;
     }
 
@@ -56,7 +66,7 @@ public class DishServiceImp implements DishService {
     public boolean updateDish(Dish dish) {
         log.info("Обновляет блюдо с id {}", dish.getId());
 
-        if (dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), dish.getId())) {
+        if (dishesBranchOfficeRepository.existsByDish_IdAndAndBranchOffice_Id(dish.getId(), getBranchOffice().getId())) {
             dishRepository.save(dish);
             return true;
         }
@@ -68,7 +78,7 @@ public class DishServiceImp implements DishService {
     public Optional<Dish> getDishById(long id) {
         log.info("Получает блюдо с id {}", id);
 
-        if (dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), id)) {
+        if (dishesBranchOfficeRepository.existsByDish_IdAndAndBranchOffice_Id(id, getBranchOffice().getId())) {
             return dishRepository.findById(id);
         }
 

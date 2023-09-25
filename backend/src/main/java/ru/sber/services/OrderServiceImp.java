@@ -3,6 +3,7 @@ package ru.sber.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sber.entities.Order;
 import ru.sber.entities.enums.EStatusOrders;
 import ru.sber.exceptions.NoFoundEmployeeException;
@@ -22,9 +23,9 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    @Transactional
     public boolean addOrder(Order order) {
         orderRepository.save(order);
-
 
         return true;
     }
@@ -33,12 +34,13 @@ public class OrderServiceImp implements OrderService {
     public boolean updateOrder(Order order) {
         log.info("Обновляет заказ с id {}", order.getId());
 
-        if (order.getEmployee().getBranchOffice().getId() != getBranchOfficeId()){
-            return false;
+        if (order.getEmployee().getBranchOffice().getId() == getBranchOfficeId()) {
+
+            orderRepository.save(order);
+            return true;
         }
 
-        orderRepository.save(order);
-        return true;
+        return false;
     }
 
     @Override

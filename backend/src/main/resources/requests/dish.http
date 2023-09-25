@@ -2,11 +2,11 @@
 # Добавляет блюдо
 
 POST localhost:8080/dishes
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI1NjEyLCJleHAiOjE2OTU3MTIwMTJ9.PtZcRmBQq8h0hCjOc-FNyUF7zLossI_owIIegnB4j1s
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0OTIxLCJleHAiOjE2OTU3NTEzMjF9.F4bBXIRsCYvpg12F0nT9f_7x4GTVG8CacbNC3iVn6xM
 Content-Type: application/json
 
 {
-  "name": "ПП2",
+  "name": "ПП7",
   "urlImage": "ваf",
   "category": {
     "id": 3
@@ -19,10 +19,16 @@ Content-Type: application/json
 # Получает блюда в филиале
 
 GET localhost:8080/dishes/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI4ODM5LCJleHAiOjE2OTU3MTUyMzl9.lVorDBodYq6bgjJzWVR6QlormNHlzjJahmNzQfWAZBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0OTIxLCJleHAiOjE2OTU3NTEzMjF9.F4bBXIRsCYvpg12F0nT9f_7x4GTVG8CacbNC3iVn6xM
 
 ###
 # Получает блюдо по id
 
-GET localhost:8080/dishes/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI1NjEyLCJleHAiOjE2OTU3MTIwMTJ9.PtZcRmBQq8h0hCjOc-FNyUF7zLossI_owIIegnB4j1s
+GET localhost:8080/dishes/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0OTIxLCJleHAiOjE2OTU3NTEzMjF9.F4bBXIRsCYvpg12F0nT9f_7x4GTVG8CacbNC3iVn6xM
+
+###
+# Удаляет блюдо в филиале
+
+DELETE localhost:8080/dishes/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0OTIxLCJleHAiOjE2OTU3NTEzMjF9.F4bBXIRsCYvpg12F0nT9f_7x4GTVG8CacbNC3iVn6xM

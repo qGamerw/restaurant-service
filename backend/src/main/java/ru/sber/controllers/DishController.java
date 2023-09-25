@@ -4,9 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.Dish;
-import ru.sber.entities.Order;
 import ru.sber.services.DishService;
-import ru.sber.services.OrderService;
 
 import java.net.URI;
 import java.util.List;
@@ -39,8 +37,10 @@ public class DishController {
     public ResponseEntity<Long> updateDish(@RequestBody Dish dish) {
         log.info("Обновляет блюдо");
 
+        dishService.updateDish(dish);
+
         return ResponseEntity
-                .created(URI.create("dishes/" + dishService.updateDish(dish)))
+                .ok()
                 .build();
     }
 
@@ -62,17 +62,15 @@ public class DishController {
         Optional<Dish> dish = dishService.getDishById(id);
 
         return dish.map(
-                        value -> ResponseEntity
-                                .ok()
+                        value -> ResponseEntity.ok()
                                 .body(value))
-                .orElseGet(() -> ResponseEntity
-                        .notFound()
-                        .build());
+                        .orElseGet(() -> ResponseEntity.notFound()
+                                .build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Dish> deleteDishById(@PathVariable long id) {
-        log.info("Удаляет блюдо по id");
+        log.info("Удаляет из филиала блюдо по id");
 
         boolean isDeleted = dishService.deleteDish(id);
 

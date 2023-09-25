@@ -55,6 +55,7 @@ public class EmployeeServiceImp implements EmployeeService {
 
         if (id == getEmployeeId() ||
                 employeeRepository.existsByIdAndPosition_Position(getEmployeeId(), EPosition.POSITION_ADIN)) {
+
             employeeRepository.deleteById(id);
             return true;
         }
