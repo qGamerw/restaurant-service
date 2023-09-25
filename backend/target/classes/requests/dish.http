@@ -1,0 +1,28 @@
+###
+# Добавляет блюдо
+
+POST localhost:8080/dishes
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI1NjEyLCJleHAiOjE2OTU3MTIwMTJ9.PtZcRmBQq8h0hCjOc-FNyUF7zLossI_owIIegnB4j1s
+Content-Type: application/json
+
+{
+  "name": "ПП2",
+  "urlImage": "ваf",
+  "category": {
+    "id": 3
+  },
+  "price": 100,
+  "weight": 100
+}
+
+###
+# Получает блюда в филиале
+
+GET localhost:8080/dishes/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI1ODc3LCJleHAiOjE2OTU3MTIyNzd9.8eR33QU1kwNXOp58wAQsS1rlR9aU-DQz6bbuEkZ3zgI
+
+###
+# Получает блюдо по id
+
+GET localhost:8080/dishes/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI1NjEyLCJleHAiOjE2OTU3MTIwMTJ9.PtZcRmBQq8h0hCjOc-FNyUF7zLossI_owIIegnB4j1s
