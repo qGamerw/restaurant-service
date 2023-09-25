@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Блюда в каждом филиале
+ * Блюдо для {@link BranchOffice филиала}
  */
 
 @Entity
@@ -34,11 +34,16 @@ public class DishesBranchOffice {
     @JoinTable(name = "orders_dishes_branchs_office",
             joinColumns = @JoinColumn(name = "dishes_branchs_office_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private Set<Dish> dishes = new HashSet<>();
+    private Set<Dish> order = new HashSet<>();
 
-    public DishesBranchOffice(Dish dish, BranchOffice branchOffice, Set<Dish> dishes) {
+    public DishesBranchOffice(Dish dish, BranchOffice branchOffice, Set<Dish> orders) {
         this.dish = dish;
         this.branchOffice = branchOffice;
-        this.dishes = dishes;
+        this.order = orders;
+    }
+
+    public DishesBranchOffice(Dish dish, BranchOffice branchOffice) {
+        this.dish = dish;
+        this.branchOffice = branchOffice;
     }
 }

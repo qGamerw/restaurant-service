@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "employees",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "name"),
+                @UniqueConstraint(columnNames = "employeeName"),
                 @UniqueConstraint(columnNames = "email")
         })
 public class Employee {
@@ -26,7 +26,7 @@ public class Employee {
 
     @Column(nullable = false)
     @Size(max = 20)
-    private String name;
+    private String employeeName;
 
     @Column(nullable = false)
     @Size(max = 50)
@@ -45,4 +45,9 @@ public class Employee {
     @JoinColumn(name = "employee_position", nullable = false)
     private Position position;
 
+    public Employee(String employeeName, String email, String password) {
+        this.employeeName = employeeName;
+        this.email = email;
+        this.password = password;
+    }
 }

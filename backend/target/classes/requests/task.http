@@ -1,0 +1,80 @@
+# создание задачи
+POST http://localhost:8080/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxZmRzdm83IiwiaWF0IjoxNjg5MTkyNzMzLCJleHAiOjE2ODkyNzkxMzN9.A0EKAhn-0NAA4d8w5sdOUWDfOwAZYEyzycsybw3Y3S4
+Content-Type: application/json
+
+{
+  "title": "j534534",
+  "description": "565jj6",
+  "deadline": "2020-12-20 12:12:01",
+  "category": {
+    "id": 11
+  },
+  "status": {
+    "id": 1
+  },
+  "priority": {
+    "id": 1
+  },
+  "regularity": {
+    "id": 1
+  }
+}
+
+###
+# Изменить задачи
+PUT http://localhost:8080/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZGZzZnNkZmtvcG91aSIsImlhdCI6MTY4OTA1Nzk2NywiZXhwIjoxNjg5MTQ0MzY3fQ.O5HEWvrj5wmLbE9E2aiDnqGgxce_p1zFe86bjTv2MtM
+Content-Type: application/json
+
+{
+  "id": 21,
+  "title": "title_tasks22",
+  "description": "title_description22",
+  "deadline": "2022-12-20 12:12:01",
+  "category": {
+    "id": 24
+  },
+  "status": {
+    "id": 1
+  },
+  "priority": {
+    "id": 1
+  },
+  "regularity": {
+    "id": 1
+  }
+}
+###
+# получить задачи по id категории
+GET http://localhost:8080/tasks/25
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZGZzZnNkZmtvcG91aSIsImlhdCI6MTY4OTA1OTQxMiwiZXhwIjoxNjg5MTQ1ODEyfQ.jedqk9nkTH27NZVX5FAT0sYtebwaOS9ZQpKcbE46dU0
+Accept: application/json
+
+###
+# получить задачи по пользователю
+GET http://localhost:8080/tasks/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZGZzZnNkZmtvcG91aSIsImlhdCI6MTY4OTA1Nzk2NywiZXhwIjoxNjg5MTQ0MzY3fQ.O5HEWvrj5wmLbE9E2aiDnqGgxce_p1zFe86bjTv2MtM
+Accept: application/json
+
+###
+# фильтрация задач по стутусу, не работает
+GET http://localhost:8080/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2ODg5MDM0MzgsImV4cCI6MTY4ODk4OTgzOH0.VmqaTVFEoxZt_x9-OmXZuhdKhmDca7O43_zR--BuQRA
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+# получить задачи по архиву
+GET http://localhost:8080/tasks/archive
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxZmRzdm83IiwiaWF0IjoxNjg5MTkyNzMzLCJleHAiOjE2ODkyNzkxMzN9.A0EKAhn-0NAA4d8w5sdOUWDfOwAZYEyzycsybw3Y3S4
+Accept: application/json
+
+###
+# удалять задачу по пользователю
+DELETE localhost:8080/tasks/22
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2ODg5MDM0MzgsImV4cCI6MTY4ODk4OTgzOH0.VmqaTVFEoxZt_x9-OmXZuhdKhmDca7O43_zR--BuQRA
+Accept: application/json

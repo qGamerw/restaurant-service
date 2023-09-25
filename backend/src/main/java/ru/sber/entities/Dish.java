@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 /**
- * Блюда
+ * Блюдо
  */
 
 @Entity

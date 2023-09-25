@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Филиал ресторана, где работает сотрудник
+ * Филиал ресторана
  */
 @Entity
 @AllArgsConstructor
@@ -33,5 +33,9 @@ public class BranchOffice {
     public BranchOffice(String address, String status) {
         this.address = address;
         this.status = status;
+    }
+
+    public BranchOffice(Long id) {
+        this.id = id;
     }
 }

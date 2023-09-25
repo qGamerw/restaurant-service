@@ -1,0 +1,30 @@
+###
+# Обновляет заказ по id
+
+PUT localhost:8080/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI2NTkzLCJleHAiOjE2OTU3MTI5OTN9.vd606OVNr3QdlT-VANvF3IDRlJf7L5ofU01RpkF_6YE
+Content-Type: application/json
+
+{
+  "clientId": 1,
+  "clientName": "fgh",
+  "clientPhoneNumber": 4563,
+  "employee": {
+    "id": 7
+  },
+  "address": "dfg",
+  "statusOrders": "IN_PROCESS",
+  "deadline": "2020-12-20 12:12:01"
+}
+
+###
+# Получает заказы из очереди на рассмотрение
+
+GET localhost:8080/orders/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI2NTkzLCJleHAiOjE2OTU3MTI5OTN9.vd606OVNr3QdlT-VANvF3IDRlJf7L5ofU01RpkF_6YE
+
+###
+# Получает заказ по id
+
+GET localhost:8080/orders/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI2NTkzLCJleHAiOjE2OTU3MTI5OTN9.vd606OVNr3QdlT-VANvF3IDRlJf7L5ofU01RpkF_6YE

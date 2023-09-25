@@ -3,9 +3,10 @@ package ru.sber.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.sber.entities.enums.ECategory;
 
 /**
- * Категория блюда
+ * Категория {@link Dish блюда}
  */
 @Entity
 @Data

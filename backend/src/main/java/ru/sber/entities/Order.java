@@ -6,25 +6,26 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.sber.entities.enums.EStatusOrders;
 
 import java.time.LocalDateTime;
 
 /**
- * Заказы
+ * Заказ
  */
 
 @Entity
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Table(name = "Orders")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private int clientId;
+    private long clientId;
 
     @Column(nullable = false)
     @Size(max = 20)
@@ -40,6 +41,9 @@ public class Order {
 
     @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private EStatusOrders statusOrders;
 
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

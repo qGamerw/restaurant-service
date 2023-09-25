@@ -1,0 +1,6 @@
+###
+# получение списка всех категорий
+
+GET localhost:8080/category/all
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI1NjEyLCJleHAiOjE2OTU3MTIwMTJ9.PtZcRmBQq8h0hCjOc-FNyUF7zLossI_owIIegnB4j1s
