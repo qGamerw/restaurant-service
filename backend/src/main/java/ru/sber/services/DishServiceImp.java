@@ -35,12 +35,33 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
+    public List<Dish> getListAllDish() {
+        return dishRepository.findAll();
+    }
+
+    @Override
     @Transactional
     public boolean addDish(Dish dish) {
         log.info("Добавляет блюдо с id {}", dish.getId());
 
         if (!dishRepository.existsByName(dish.getName())){
             dishRepository.save(dish);
+            dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
+        } else {
+            addDishByName(dish.getName());
+        }
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean addDishByName(String name) {
+        log.info("Добавляет блюдо с менем {}", name);
+
+        if (dishRepository.existsByName(name)){
+            Dish dish = dishRepository.findByName(name);
+
             dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
             return true;
         }

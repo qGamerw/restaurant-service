@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface DishService {
 
     /**
-     * Получает все блюда
+     * Получает все блюда в филиале
      *
      * @return List<Dish>
      */
@@ -24,6 +24,21 @@ public interface DishService {
      * @return boolean
      */
     boolean addDish(Dish dish);
+
+    /**
+     * Добавляет блюдо по имени
+     *
+     * @param name имя блюдо
+     * @return boolean
+     */
+    boolean addDishByName(String name);
+
+    /**
+     * Получает все блюда
+     *
+     * @return List<Dish>
+     */
+    List<Dish> getListAllDish();
 
     /**
      * Удаляет блюдо

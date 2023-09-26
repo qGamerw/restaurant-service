@@ -33,6 +33,15 @@ public class DishController {
                 .build();
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Long> addDishByName(@RequestBody Dish dish) {
+        log.info("Добавляет блюдо по имени");
+
+        return ResponseEntity
+                .created(URI.create("dishes/" + dishService.addDishByName(dish.getName())))
+                .build();
+    }
+
     @PutMapping
     public ResponseEntity<Long> updateDish(@RequestBody Dish dish) {
         log.info("Обновляет блюдо");
@@ -66,6 +75,17 @@ public class DishController {
                                 .body(value))
                         .orElseGet(() -> ResponseEntity.notFound()
                                 .build());
+    }
+
+    @GetMapping("/any")
+    public ResponseEntity<List<Dish>> getListAllDish() {
+        log.info("Получает все блюда");
+
+        List<Dish> dishes = dishService.getListAllDish();
+
+        return ResponseEntity
+                .ok()
+                .body(dishes);
     }
 
     @DeleteMapping("/{id}")
