@@ -26,7 +26,7 @@ public class DishController {
 
     @PostMapping
     public ResponseEntity<Long> addDish(@RequestBody Dish dish) {
-        log.info("Добавляет блюдо");
+        log.info("Добавляет блюдо с именем {}", dish.getName());
 
         return ResponseEntity
                 .created(URI.create("dishes/" + dishService.addDish(dish)))

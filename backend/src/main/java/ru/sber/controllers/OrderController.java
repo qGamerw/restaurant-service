@@ -26,7 +26,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Long> addOrder(@RequestBody Order order) {
-        log.info("Добавляет заказ по id {}", order.getId());
+        log.info("Добавляет заказ с id клиента {}", order.getClientId());
 
         return ResponseEntity
                 .created(URI.create("orders/" + orderService.addOrder(order)))
