@@ -24,10 +24,10 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public boolean addOrder(Order order) {
-        orderRepository.save(order);
+    public long addOrder(Order order) {
+        log.info("Добавляет заказ с id клиента {}", order.getClientId());
 
-        return true;
+        return orderRepository.save(order).getId();
     }
 
     @Override

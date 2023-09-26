@@ -15,7 +15,7 @@ public interface OrderService {
      * @param order заказ
      * @return boolean
      */
-    boolean addOrder(Order order);
+    long addOrder(Order order);
 
     /**
      * Обновляет заказ

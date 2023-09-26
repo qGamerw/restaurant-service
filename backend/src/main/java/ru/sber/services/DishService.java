@@ -23,7 +23,7 @@ public interface DishService {
      * @param dish блюдо
      * @return boolean
      */
-    boolean addDish(Dish dish);
+    long addDish(Dish dish);
 
     /**
      * Добавляет блюдо по имени

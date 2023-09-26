@@ -37,10 +37,17 @@ public class OrderController {
     public ResponseEntity<Long> updateOrder(@RequestBody Order order) {
         log.info("Обновляет заказ по id {}", order.getId());
 
-        orderService.updateOrder(order);
+        var isUpdate = orderService.updateOrder(order);
 
-        return ResponseEntity.ok()
-                .build();
+        if (isUpdate){
+            return ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .build();
+        }
     }
 
     @GetMapping("/all")

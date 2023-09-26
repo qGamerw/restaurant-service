@@ -41,17 +41,17 @@ public class DishServiceImp implements DishService {
 
     @Override
     @Transactional
-    public boolean addDish(Dish dish) {
+    public long addDish(Dish dish) {
         log.info("Добавляет блюдо с id {}", dish.getId());
 
         if (!dishRepository.existsByName(dish.getName())){
-            dishRepository.save(dish);
+            var id = dishRepository.save(dish).getId();
             dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
-        } else {
-            addDishByName(dish.getName());
-        }
 
-        return true;
+            return id;
+        } else {
+            return dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice())).getDish().getId();
+        }
     }
 
     @Override

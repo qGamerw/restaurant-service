@@ -2,7 +2,7 @@
 # Обновляет заказ по id
 
 PUT localhost:8080/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI2NTkzLCJleHAiOjE2OTU3MTI5OTN9.vd606OVNr3QdlT-VANvF3IDRlJf7L5ofU01RpkF_6YE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
   "clientName": "fgh",
   "clientPhoneNumber": 4563,
   "employee": {
-    "id": 7
+    "id": 1
   },
   "address": "dfg",
   "statusOrders": "IN_PROCESS",
@@ -21,10 +21,10 @@ Content-Type: application/json
 # Получает заказы из очереди на рассмотрение
 
 GET localhost:8080/orders/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI2NTkzLCJleHAiOjE2OTU3MTI5OTN9.vd606OVNr3QdlT-VANvF3IDRlJf7L5ofU01RpkF_6YE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
 
 ###
 # Получает заказ по id
 
 GET localhost:8080/orders/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjI2NTkzLCJleHAiOjE2OTU3MTI5OTN9.vd606OVNr3QdlT-VANvF3IDRlJf7L5ofU01RpkF_6YE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo

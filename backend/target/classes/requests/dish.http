@@ -2,33 +2,50 @@
 # Добавляет блюдо
 
 POST localhost:8080/dishes
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjYyMjAxLCJleHAiOjE2OTU3NDg2MDF9.izAkN95R2oVciZHk2yvmGdGYwup3Kbl0UluovIl5RNg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
 Content-Type: application/json
 
 {
-  "name": "ПП6",
+  "name": "ПП1",
   "urlImage": "ваf",
   "category": {
-    "id": 3
+    "id": 1
   },
   "price": 100,
   "weight": 100
 }
 
 ###
+# Добавляет блюдо по имени
+
+POST localhost:8080/dishes/add
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+Content-Type: application/json
+
+{
+  "name": "ПП1"
+}
+
+###
 # Получает блюда в филиале
 
 GET localhost:8080/dishes/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0Nzc3LCJleHAiOjE2OTU3NTExNzd9.qikGySwRrrurpZRnkharOCftx8HedS7t7-_o9VvucJ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+
+###
+# Получает блюда
+
+GET localhost:8080/dishes/any
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
 
 ###
 # Получает блюдо по id
 
-GET localhost:8080/dishes/5
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0Nzc3LCJleHAiOjE2OTU3NTExNzd9.qikGySwRrrurpZRnkharOCftx8HedS7t7-_o9VvucJ0
+GET localhost:8080/dishes/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
 
 ###
 # Удаляет блюдо в филиале
 
-DELETE localhost:8080/dishes/5
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NjY0Nzc3LCJleHAiOjE2OTU3NTExNzd9.qikGySwRrrurpZRnkharOCftx8HedS7t7-_o9VvucJ0
+DELETE localhost:8080/dishes/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo

@@ -37,20 +37,34 @@ public class DishController {
     public ResponseEntity<Long> addDishByName(@RequestBody Dish dish) {
         log.info("Добавляет блюдо по имени");
 
-        return ResponseEntity
-                .created(URI.create("dishes/" + dishService.addDishByName(dish.getName())))
-                .build();
+        var isAdd = dishService.addDishByName(dish.getName());
+
+        if (isAdd){
+            return ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .build();
+        }
     }
 
     @PutMapping
     public ResponseEntity<Long> updateDish(@RequestBody Dish dish) {
         log.info("Обновляет блюдо");
 
-        dishService.updateDish(dish);
+        var isUpdate = dishService.updateDish(dish);
 
-        return ResponseEntity
-                .ok()
-                .build();
+        if (isUpdate){
+            return ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .build();
+        }
     }
 
     @GetMapping("/all")
