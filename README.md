@@ -32,6 +32,7 @@
 * Spring Boot;
 * Spring Security;
 * Hibernate;
+* Apache Kafka;
 * ...
 
 ### Frontend
