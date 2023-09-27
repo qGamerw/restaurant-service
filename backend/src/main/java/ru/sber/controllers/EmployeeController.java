@@ -15,7 +15,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("employee")
+@RequestMapping("employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -23,7 +23,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/info")
+    @GetMapping
     public ResponseEntity<EmployeeLimit> getUserById() {
         log.info("Выводит данные о сотруднике");
 
@@ -38,7 +38,7 @@ public class EmployeeController {
                                 .build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployeeById(@PathVariable long id) {
         log.info("Удаление аккаунта сотрудника по id {}", id);
 

@@ -1,23 +1,22 @@
 ###
-# Закрывает филиал
+# Закрывает/Открывает филиал
 
-PUT localhost:8080/branch-office/close
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+PUT localhost:8080/branch-offices
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+Content-Type: application/json
 
-###
-# Открывает филиал
-
-PUT localhost:8080/branch-office/open
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+{
+  "id": "2"
+}
 
 ###
 # Выводит данные о филиале
 
-GET localhost:8080/branch-office/info
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+GET localhost:8080/branch-offices
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4MjA4NzksImV4cCI6MTY5NTkwNzI3OX0.ZeRwjSZokR9dsXVL2-ps26ZczqvGz6wTQrlqa9Of9ds
 
 ###
 # Выводит данные о всех филиалах
 
-GET localhost:8080/branch-office/all-info
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+GET localhost:8080/branch-offices/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4MjA4NzksImV4cCI6MTY5NTkwNzI3OX0.ZeRwjSZokR9dsXVL2-ps26ZczqvGz6wTQrlqa9Of9ds

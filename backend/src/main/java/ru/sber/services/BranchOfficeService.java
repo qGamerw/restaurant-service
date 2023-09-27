@@ -13,14 +13,7 @@ public interface BranchOfficeService {
      *
      * @return boolean
      */
-    boolean closeBranchOffice();
-
-    /**
-     * Открывает филиал
-     *
-     * @return boolean
-     */
-    boolean openBranchOffice();
+    boolean openCloseBranchOffice(long branchId);
 
     /**
      * Получает информацию о филиале

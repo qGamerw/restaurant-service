@@ -5,10 +5,10 @@ POST localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-  "employeeName": "username22",
-  "email": "email2@email.email12",
-  "password": "username22",
-  "branchOffice": "1"
+  "employeeName": "username3",
+  "email": "email2@email.email13",
+  "password": "username3",
+  "branchOffice": "2"
 }
 
 ###
@@ -18,18 +18,18 @@ POST localhost:8080/api/auth/signin
 Content-Type: application/json
 
 {
-  "employeeName": "username22",
-  "password": "username22"
+  "employeeName": "username3",
+  "password": "username3"
 }
 
 ###
 # Выводит данные о сотруднике
 
-GET localhost:8080/employee/info
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1MzkwNjE3LCJleHAiOjE2OTU0NzcwMTd9.7xgDlsjpM-E0dCMCtVZgXfE1SdUSn6cetcGJ2jaLVJ0
+GET localhost:8080/employees
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
 
 ###
 # Удаление аккаунта сотрудника по id
 
-DELETE localhost:8080/employee/delete/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1Mzg5MjY2LCJleHAiOjE2OTU0NzU2NjZ9.gCRZ0txbKVuuWPYZkxlqNXoXW31RT0B_2EsGu1dfyOg
+DELETE localhost:8080/employees/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU3MzE2NDksImV4cCI6MTY5NTgxODA0OX0.ccQFkL6sYITrJe91NMF5Hbm0hjOTBCEhP5hJF-bLTfY

@@ -26,8 +26,12 @@ public class Dish {
     private Long id;
 
     @Column(nullable = false)
-    @Size(max = 20)
+    @Size(max = 30)
     private String name;
+
+    @Column(nullable = false)
+    @Size(max = 200)
+    private String description;
 
     @Column(nullable = false)
     private String urlImage;

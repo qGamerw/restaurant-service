@@ -1,6 +1,6 @@
 ###
 # Получает все категории
 
-GET localhost:8080/category/all
+GET localhost:8080/categories
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTIyIiwiaWF0IjoxNjk1NzA1MzYyLCJleHAiOjE2OTU3OTE3NjJ9.IIHVs6JMtG_kWe6RPvx1AesBklcA1mTQK0NA2lNW0vo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4MjA4NzksImV4cCI6MTY5NTkwNzI3OX0.ZeRwjSZokR9dsXVL2-ps26ZczqvGz6wTQrlqa9Of9ds

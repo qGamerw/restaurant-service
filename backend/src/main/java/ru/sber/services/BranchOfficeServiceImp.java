@@ -20,32 +20,25 @@ public class BranchOfficeServiceImp implements BranchOfficeService {
     }
 
     @Override
-    public boolean closeBranchOffice() {
-        log.info("Закрывает филиал");
+    public boolean openCloseBranchOffice(long branchId) {
+        log.info("Закрывает/Открывает филиал");
 
-        BranchOffice branchOffice = getBranchOffice();
+        BranchOffice branchOffice = getBranchOffice().gerBranchOffice();
 
-        branchOffice.setStatus("CLOSE");
-        branchOfficeRepository.save(branchOffice);
-        return true;
-    }
+        if (branchOffice.getId() == branchId){
+            branchOffice.setStatus(branchOffice.getStatus().equals("OPEN")? "CLOSE" : "OPEN");
+            branchOfficeRepository.save(branchOffice);
+            return true;
+        }
 
-    @Override
-    public boolean openBranchOffice() {
-        log.info("Открывает филиал");
-
-        BranchOffice branchOffice = getBranchOffice();
-
-        branchOffice.setStatus("OPEN");
-        branchOfficeRepository.save(branchOffice);
-        return true;
+        return false;
     }
 
     @Override
     public BranchOffice getBranchOfficeByEmployee() {
         log.info("Получает информацию о филиале по сотруднику");
 
-        return getBranchOffice();
+        return getBranchOffice().gerBranchOffice();
     }
 
     @Override
@@ -55,13 +48,13 @@ public class BranchOfficeServiceImp implements BranchOfficeService {
         return branchOfficeRepository.findAll();
     }
 
-    private BranchOffice getBranchOffice() {
+    private EmployeeDetailsImpl getBranchOffice() {
         log.info("Получает id сотрудника текущей сессии");
 
         var employee = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (employee instanceof EmployeeDetailsImpl) {
-            return ((EmployeeDetailsImpl) employee).getBranchOffice();
+            return ((EmployeeDetailsImpl) employee);
         } else {
             throw new NoFoundEmployeeException("Сотрудник не найден");
         }

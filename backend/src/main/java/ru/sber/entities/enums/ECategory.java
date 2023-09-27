@@ -5,9 +5,9 @@ package ru.sber.entities.enums;
  */
 
 public enum ECategory {
-    SummerMenu,
-    SoupsAndBorscht,
-    ChildrenMenu,
-    ColdFishAppetizers,
-    ColdAppetizers
+    SALAD,
+    ROLLS,
+    SECOND_COURSES,
+    PIZZA,
+    DRINKS
 }

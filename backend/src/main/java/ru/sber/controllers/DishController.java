@@ -41,7 +41,7 @@ public class DishController {
 
         if (isAdd){
             return ResponseEntity
-                    .ok()
+                    .accepted()
                     .build();
         } else {
             return ResponseEntity
@@ -58,7 +58,7 @@ public class DishController {
 
         if (isUpdate){
             return ResponseEntity
-                    .ok()
+                    .accepted()
                     .build();
         } else {
             return ResponseEntity

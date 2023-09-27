@@ -1,6 +1,7 @@
 package ru.sber.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.BranchOffice;
@@ -15,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("branch-office")
+@RequestMapping("branch-offices")
 public class BranchOfficeController {
     private final BranchOfficeService branchOfficeService;
 
@@ -23,42 +24,22 @@ public class BranchOfficeController {
         this.branchOfficeService = branchOfficeService;
     }
 
-    // Под вопросом, где лучше сделать (автоматически)
-    @PutMapping("/close")
-    public ResponseEntity<?> closeBranchOffice() {
-        log.info("Закрывает филиал");
+    @PutMapping
+    public ResponseEntity<?> openCloseBranchOffice(@RequestBody BranchOffice branchOffice) {
+        log.info("Закрывает и открывает филиал");
 
-        boolean isStatus = branchOfficeService.closeBranchOffice();
+        boolean isStatus = branchOfficeService.openCloseBranchOffice(branchOffice.getId());
 
         if (isStatus) {
-            return ResponseEntity
-                    .ok()
+            return ResponseEntity.ok()
                     .build();
         } else {
-            return ResponseEntity
-                    .notFound()
-                    .build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Access denied");
         }
     }
 
-    @PutMapping("/open")
-    public ResponseEntity<Void> openBranchOffice() {
-        log.info("Открывает филиал");
-
-        boolean isStatus = branchOfficeService.openBranchOffice();
-
-        if (isStatus) {
-            return ResponseEntity
-                    .ok()
-                    .build();
-        } else {
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        }
-    }
-
-    @GetMapping("/info")
+    @GetMapping
     public ResponseEntity<BranchOffice> getBranchOfficeByEmployee() {
         log.info("Выводит данные о филиале");
 
@@ -68,7 +49,7 @@ public class BranchOfficeController {
                 .body(branchOffice);
     }
 
-    @GetMapping("/all-info")
+    @GetMapping("/all")
     public ResponseEntity<List<BranchOffice>> getListBranchOffice() {
         log.info("Выводит данные о всех филиалах");
 

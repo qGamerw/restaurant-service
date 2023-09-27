@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("category")
+@RequestMapping("categories")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -25,7 +25,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Category>> getListCategory() {
         log.info("Получает все категории");
 
