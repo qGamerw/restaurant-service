@@ -31,8 +31,7 @@ public class CategoryController {
 
         List<Category> category = categoryService.getListCategory();
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(category);
     }
 

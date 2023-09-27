@@ -44,8 +44,7 @@ public class BranchOfficeController {
         log.info("Выводит данные о филиале");
 
         BranchOffice branchOffice = branchOfficeService.getBranchOfficeByEmployee();
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(branchOffice);
     }
 
@@ -54,8 +53,7 @@ public class BranchOfficeController {
         log.info("Выводит данные о всех филиалах");
 
         List<BranchOffice> branchOffice = branchOfficeService.getListBranchOffice();
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(branchOffice);
     }
 }

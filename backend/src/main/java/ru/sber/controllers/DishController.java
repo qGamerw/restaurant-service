@@ -28,8 +28,7 @@ public class DishController {
     public ResponseEntity<Long> addDish(@RequestBody Dish dish) {
         log.info("Добавляет блюдо с именем {}", dish.getName());
 
-        return ResponseEntity
-                .created(URI.create("dishes/" + dishService.addDish(dish)))
+        return ResponseEntity.created(URI.create("dishes/" + dishService.addDish(dish)))
                 .build();
     }
 
@@ -40,12 +39,10 @@ public class DishController {
         var isAdd = dishService.addDishByName(dish.getName());
 
         if (isAdd){
-            return ResponseEntity
-                    .accepted()
+            return ResponseEntity.accepted()
                     .build();
         } else {
-            return ResponseEntity
-                    .badRequest()
+            return ResponseEntity.badRequest()
                     .build();
         }
     }
@@ -57,12 +54,10 @@ public class DishController {
         var isUpdate = dishService.updateDish(dish);
 
         if (isUpdate){
-            return ResponseEntity
-                    .accepted()
+            return ResponseEntity.accepted()
                     .build();
         } else {
-            return ResponseEntity
-                    .badRequest()
+            return ResponseEntity.badRequest()
                     .build();
         }
     }
@@ -73,8 +68,7 @@ public class DishController {
 
         List<Dish> dishes = dishService.getListDish();
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(dishes);
     }
 
@@ -97,8 +91,7 @@ public class DishController {
 
         List<Dish> dishes = dishService.getListAllDish();
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(dishes);
     }
 
@@ -109,12 +102,10 @@ public class DishController {
         boolean isDeleted = dishService.deleteDish(id);
 
         if (isDeleted) {
-            return ResponseEntity
-                    .noContent()
+            return ResponseEntity.noContent()
                     .build();
         } else {
-            return ResponseEntity
-                    .notFound()
+            return ResponseEntity.notFound()
                     .build();
         }
     }

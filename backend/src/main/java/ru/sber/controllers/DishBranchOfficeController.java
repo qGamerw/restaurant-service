@@ -32,8 +32,7 @@ public class DishBranchOfficeController {
 
         List<DishesBranchOffice> category = dishBranchOfficeService.getListDishBranchOffice();
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(category);
     }
 
@@ -43,8 +42,7 @@ public class DishBranchOfficeController {
 
         List<DishesBranchOffice> category = dishBranchOfficeService.getListDishBranchOfficeAll();
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .body(category);
     }
 }

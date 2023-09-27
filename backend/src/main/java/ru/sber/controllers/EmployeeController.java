@@ -30,11 +30,9 @@ public class EmployeeController {
         Optional<EmployeeLimit> employee = employeeService.getEmployeeById();
 
         return employee.map(
-                        value -> ResponseEntity
-                                .ok()
+                        value -> ResponseEntity.ok()
                                 .body(value))
-                        .orElseGet(() -> ResponseEntity
-                                .notFound()
+                        .orElseGet(() -> ResponseEntity.notFound()
                                 .build());
     }
 
