@@ -5,10 +5,10 @@ POST localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-  "employeeName": "username3",
-  "email": "email2@email.email13",
-  "password": "username3",
-  "branchOffice": "2"
+  "employeeName": "username",
+  "email": "email2@email.email1",
+  "password": "username",
+  "branchOffice": "1"
 }
 
 ###
@@ -18,15 +18,15 @@ POST localhost:8080/api/auth/signin
 Content-Type: application/json
 
 {
-  "employeeName": "username3",
-  "password": "username3"
+  "employeeName": "username",
+  "password": "username"
 }
 
 ###
 # Выводит данные о сотруднике
 
 GET localhost:8080/employees
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
 
 ###
 # Удаление аккаунта сотрудника по id

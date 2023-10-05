@@ -7,19 +7,18 @@ import ru.sber.entities.Dish;
 import ru.sber.entities.DishesBranchOffice;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Репозиторий для связи {@link ru.sber.entities.Dish блюд } и  {@link BranchOffice филиалов}
  */
 @Repository
 public interface DishesBranchOfficeRepository extends JpaRepository<DishesBranchOffice, Long> {
-    boolean existsByDish_IdAndAndBranchOffice_Id(long dish, long office);
-
-    boolean existsByDish(Dish dish);
-
-    boolean existsByBranchOffice(BranchOffice dish);
+    boolean existsByBranchOffice_IdAndDish_Id(Long branchId, Long dishId);
 
     List<DishesBranchOffice> findByBranchOffice_Id(long id);
+
+    List<DishesBranchOffice> findByBranchOffice_NameCity(String name);
 
     void deleteByDish_Id(long id);
 }

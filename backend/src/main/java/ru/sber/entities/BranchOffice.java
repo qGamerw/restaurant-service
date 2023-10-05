@@ -30,6 +30,10 @@ public class BranchOffice {
     @Size(max = 50)
     private String status;
 
+    @Column(nullable = false)
+    @Size(max = 50)
+    private String nameCity;
+
     public BranchOffice(String address, String status) {
         this.address = address;
         this.status = status;

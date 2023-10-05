@@ -9,8 +9,8 @@ insert into restaurant_service.categories (category)values ('DRINKS');
 insert into restaurant_service.positions (position) values ('POSITION_SELLER');
 insert into restaurant_service.positions (position) values ('POSITION_ADIN');
 
-insert into restaurant_service.branchs_office (address, status) values ('Address office', 'ON');
-insert into restaurant_service.branchs_office (address, status) values ('Address office2', 'ON');
+insert into restaurant_service.branchs_office (address, name_city, status) values ('Address office', 'VOLOGDA', 'ON');
+insert into restaurant_service.branchs_office (address, name_city, status) values ('Address office2', 'CHEREPOVETS', 'ON');
 
 insert into restaurant_service.dishes(name, description, price, url_image, weight, category_id) VALUES ('СВЕЖИЙ ЗЕЛЕНЫЙ САЛАТ', 'Легкий, освежающий зеленый салат с овощами и ароматным дрессингом - здоровый обед.', '80', 'url_image', '500', '1');
 insert into restaurant_service.dishes(name, description, price, url_image, weight, category_id) VALUES ('ГРЕЧЕСКИЙ САЛАТ', 'Греческий салат с помидорами, огурцом, фетой и ароматными травами - идеальный летний ужин.', '90', 'url_image', '500', '1');

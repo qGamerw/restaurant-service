@@ -1,5 +1,6 @@
 package ru.sber.services;
 
+import org.springframework.data.domain.Page;
 import ru.sber.entities.Dish;
 
 import java.util.List;
@@ -34,11 +35,12 @@ public interface DishService {
     boolean addDishByName(String name);
 
     /**
-     * Получает все блюда
+     * Получает все блюда в городе
      *
+     * @param name имя города
      * @return List<Dish>
      */
-    List<Dish> getListAllDish();
+    List<Dish> getListByNameCity(String name);
 
     /**
      * Удаляет блюдо
@@ -63,4 +65,6 @@ public interface DishService {
      * @return Optional<Dish>
      */
     Optional<Dish> getDishById(long id);
+
+    Page<Dish> getDishesByPage(int page, int size);
 }

@@ -1,6 +1,9 @@
 package ru.sber.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,31 +30,16 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
-    public List<Dish> getListDish() {
-        return dishesBranchOfficeRepository.findByBranchOffice_Id(getBranchOffice().getId())
-                .stream()
-                .map(DishesBranchOffice::getDish)
-                .toList();
-    }
-
-    @Override
-    public List<Dish> getListAllDish() {
-        return dishRepository.findAll();
-    }
-
-    @Override
     @Transactional
     public long addDish(Dish dish) {
-        log.info("Добавляет блюдо с id {}", dish.getId());
+        log.info("Добавляет блюдо с именем {}", dish.getName());
 
-        if (!dishRepository.existsByName(dish.getName())){
-            var id = dishRepository.save(dish).getId();
-            dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
+        var isExistsDish = dishRepository.existsByName(dish.getName());
 
-            return id;
-        } else {
-            return dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice())).getDish().getId();
+        if (!isExistsDish){
+            dishRepository.save(dish);
         }
+        return dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice())).getDish().getId();
     }
 
     @Override
@@ -59,10 +47,26 @@ public class DishServiceImp implements DishService {
     public boolean addDishByName(String name) {
         log.info("Добавляет блюдо с менем {}", name);
 
-        if (dishRepository.existsByName(name)){
-            Dish dish = dishRepository.findByName(name);
+        var isExistsDish = dishRepository.existsByName(name);
+        Dish dish = dishRepository.findByName(name);
+
+        if (isExistsDish && !dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), dish.getId())){
 
             dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateDish(Dish dish) {
+        log.info("Обновляет блюдо с именем {}", dish.getName());
+
+        var isExists = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), dish.getId());
+
+        if (isExists) {
+            dishRepository.save(dish);
             return true;
         }
 
@@ -74,9 +78,10 @@ public class DishServiceImp implements DishService {
     public boolean deleteDish(long id) {
         log.info("Удаляет из филиала блюдо с id {} {}", id, getBranchOffice().getId());
 
-        if (dishesBranchOfficeRepository.existsByDish_IdAndAndBranchOffice_Id(id, getBranchOffice().getId())) {
-            dishesBranchOfficeRepository.deleteByDish_Id(id);
+        var isExistsDish = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), id);
 
+        if (isExistsDish) {
+            dishesBranchOfficeRepository.deleteByDish_Id(id);
             return true;
         }
 
@@ -84,26 +89,38 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
-    public boolean updateDish(Dish dish) {
-        log.info("Обновляет блюдо с id {}", dish.getId());
+    public List<Dish> getListDish() {
+        return dishesBranchOfficeRepository.findByBranchOffice_Id(getBranchOffice().getId())
+                .stream()
+                .map(DishesBranchOffice::getDish)
+                .toList();
+    }
 
-        if (dishesBranchOfficeRepository.existsByDish_IdAndAndBranchOffice_Id(dish.getId(), getBranchOffice().getId())) {
-            dishRepository.save(dish);
-            return true;
-        }
-
-        return false;
+    @Override
+    public List<Dish> getListByNameCity(String name) {
+        return dishesBranchOfficeRepository.findByBranchOffice_NameCity(name).stream()
+                .map(DishesBranchOffice::getDish)
+                .toList();
     }
 
     @Override
     public Optional<Dish> getDishById(long id) {
         log.info("Получает блюдо с id {}", id);
 
-        if (dishesBranchOfficeRepository.existsByDish_IdAndAndBranchOffice_Id(id, getBranchOffice().getId())) {
+        var isExists = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), id);
+
+        if (isExists) {
             return dishRepository.findById(id);
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public Page<Dish> getDishesByPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return dishRepository.findAll(pageable);
     }
 
     private BranchOffice getBranchOffice() {

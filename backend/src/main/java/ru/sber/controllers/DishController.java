@@ -1,6 +1,7 @@
 package ru.sber.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.Dish;
@@ -24,7 +25,7 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Long> addDish(@RequestBody Dish dish) {
         log.info("Добавляет блюдо с именем {}", dish.getName());
 
@@ -47,7 +48,7 @@ public class DishController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/")
     public ResponseEntity<Long> updateDish(@RequestBody Dish dish) {
         log.info("Обновляет блюдо");
 
@@ -86,10 +87,20 @@ public class DishController {
     }
 
     @GetMapping("/any")
-    public ResponseEntity<List<Dish>> getListAllDish() {
+    public ResponseEntity<Page<Dish>> getListAllDish(@RequestParam int page, @RequestParam int size) {
         log.info("Получает все блюда");
 
-        List<Dish> dishes = dishService.getListAllDish();
+        Page<Dish> dishes = dishService.getDishesByPage(page, size);
+
+        return ResponseEntity.ok()
+                .body(dishes);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Dish>> getListAllDish(@RequestParam String city) {
+        log.info("Получает все блюда в городе");
+
+        List<Dish> dishes = dishService.getListByNameCity(city);
 
         return ResponseEntity.ok()
                 .body(dishes);

@@ -1,12 +1,12 @@
 ###
 # Добавляет блюдо в филиал
 
-POST localhost:8080/dishes
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+POST localhost:8080/dishes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5NjUyNzMwOCwiZXhwIjoxNjk2NjEzNzA4fQ.Xm0d1C7uuPRd1D4Tb9sdzS5jXeaZ6RpvMbsuQBkD26E
 Content-Type: application/json
 
 {
-  "name": "ППwgge1",
+  "name": "ППwgge16",
   "urlImage": "ваf",
   "description": "dsfsdfsdfsdf",
   "category": {
@@ -20,7 +20,7 @@ Content-Type: application/json
 # Добавляет блюдо по имени в филиал, если оно уже существует
 
 POST localhost:8080/dishes/add
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5NjUyNzMwOCwiZXhwIjoxNjk2NjEzNzA4fQ.Xm0d1C7uuPRd1D4Tb9sdzS5jXeaZ6RpvMbsuQBkD26E
 Content-Type: application/json
 
 {
@@ -30,39 +30,46 @@ Content-Type: application/json
 ###
 # Обновляет блюдо
 
-PUT localhost:8080/dishes
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+PUT localhost:8080/dishes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
 Content-Type: application/json
 
 {
-  "name": "ПП1",
+  "id": 39,
+  "name": "ППwgge1",
   "urlImage": "ваf",
+  "description": "dsfsdfsdfsdf",
   "category": {
     "id": 1
   },
-  "price": 100,
-  "weight": 100
+  "price": 1020,
+  "weight": 1020
 }
 
 ###
-# Получает блюда в филиале
+# Получает блюда в филиале для сотрудника
 
 GET localhost:8080/dishes/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
 
 ###
-# Получает все блюда
+# Получает все блюда (по 10 на страницу) для остальных
 
-GET localhost:8080/dishes/any
+GET localhost:8080/dishes/any?page=0&size=10
+
+
+###
+# Получает все блюда по городу
+GET localhost:8080/dishes?city=VOLOGDA
 
 ###
 # Получает блюдо по id
 
-GET localhost:8080/dishes/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+GET localhost:8080/dishes/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5NjUyNzMwOCwiZXhwIjoxNjk2NjEzNzA4fQ.Xm0d1C7uuPRd1D4Tb9sdzS5jXeaZ6RpvMbsuQBkD26E
 
 ###
 # Удаляет из филиала блюдо по id
 
-DELETE localhost:8080/dishes/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
+DELETE localhost:8080/dishes/40
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
