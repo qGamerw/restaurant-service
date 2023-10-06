@@ -11,7 +11,7 @@ import ru.sber.services.BranchOfficeService;
 import java.util.List;
 
 /**
- * Контроллер для взаимодействия {@link Employee сотрудником}
+ * Контроллер для взаимодействия {@link BranchOffice филиалами}
  */
 @Slf4j
 @RestController
