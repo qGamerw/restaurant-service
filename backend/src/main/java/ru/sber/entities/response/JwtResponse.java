@@ -1,23 +1,28 @@
 package ru.sber.entities.response;
 
 import lombok.Data;
+import ru.sber.entities.BranchOffice;
+import ru.sber.entities.Position;
 
-import java.util.List;
-
+/**
+ * Класс для вывода информации при входе {@link ru.sber.entities.Employee сотрудника}
+ */
 @Data
 public class JwtResponse {
     private String accessToken;
     private String type = "Bearer";
     private Long id;
-    private String username;
+    private String employeeName;
     private String email;
-    private List<String> roles;
+    private BranchOffice branchOffice;
+    private Position position;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String employeeName, String email, BranchOffice branchOffice, Position position) {
         this.accessToken = accessToken;
         this.id = id;
-        this.username = username;
+        this.employeeName = employeeName;
         this.email = email;
-        this.roles = roles;
+        this.branchOffice = branchOffice;
+        this.position = position;
     }
 }

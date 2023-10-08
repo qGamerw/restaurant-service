@@ -5,11 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * Блюда в каждом филиале
+ * Блюдо для {@link BranchOffice филиала}
  */
 
 @Entity
@@ -30,15 +27,8 @@ public class DishesBranchOffice {
     @JoinColumn(name = "branch_office_id", nullable = false)
     private BranchOffice branchOffice;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "orders_dishes_branchs_office",
-            joinColumns = @JoinColumn(name = "dishes_branchs_office_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private Set<Dish> dishes = new HashSet<>();
-
-    public DishesBranchOffice(Dish dish, BranchOffice branchOffice, Set<Dish> dishes) {
+    public DishesBranchOffice(Dish dish, BranchOffice branchOffice) {
         this.dish = dish;
         this.branchOffice = branchOffice;
-        this.dishes = dishes;
     }
 }

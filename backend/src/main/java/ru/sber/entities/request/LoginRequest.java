@@ -4,12 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * Класс для входа пользователей
+ * Получение REST данных для входа {@link ru.sber.entities.Employee сотрудника}
  */
 @Data
 public class LoginRequest {
     @NotBlank
-    private String username;
+    private String employeeName;
 
     @NotBlank
     private String password;
