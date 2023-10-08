@@ -1,15 +1,8 @@
-import {Button, message, Result} from "antd";
-import {Link} from "react-router-dom";
 import React from "react";
+import { Button, Result } from "antd";
+import { Link } from "react-router-dom";
 
-export const NotFoundPage = () => {
-    const handleButtonClick = () => {
-        setTimeout(() => {
-            message.success('Привет!', 3);
-        }, 100);
-    };
-    handleButtonClick();
-
+export const NotFoundPage: React.FC = () => {
     return (
         <Result
             status="404"
