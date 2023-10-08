@@ -6,12 +6,12 @@ import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 
 interface Login {
-    username: string;
+    employeeName: string;
     password: string;
 }
 
 type FieldType = {
-    username?: string;
+    employeeName?: string;
     password?: string;
 };
 
@@ -42,12 +42,12 @@ const FormLogin: React.FC = () => {
         autoComplete="off"
     >
         <Form.Item<FieldType>
-            label="Email"
-            name="username"
+            label="Username"
+            name="employeeName"
             rules={[{ required: true, message: 'Please input your username!' }]}
         >
-            <Input prefix={<MailOutlined className="site-form-item-icon"/>}
-                   placeholder="Email"
+            <Input prefix={<UserOutlined className="site-form-item-icon"/>}
+                   placeholder="Username"
             />
         </Form.Item>
 

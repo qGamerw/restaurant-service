@@ -3,13 +3,14 @@ import { loginUser, logoutUser } from "../slices/userSlice";
 import { Dispatch } from "redux";
 
 interface Registration {
-    username: string;
+    employeeName: string;
     email: string;
     password: string;
+    branchOffice: string;
 }
 
 interface Login {
-    username: string;
+    employeeName: string;
     password: string;
 }
 
@@ -20,20 +21,21 @@ interface User {
 const API_URL = "http://localhost:8080/api/auth/"
 
 const register = (registration: Registration) => {
-    const { username, email, password } = registration;
+    const { employeeName, email, password , branchOffice} = registration;
     return axios.post(API_URL + "signup", {
-        username,
+        employeeName: employeeName,
         email,
         password,
+        branchOffice
     });
 };
 
 const login = async (login: Login, dispatch: Dispatch): Promise<User> => {
-    const {username, password} = login;
+    const {employeeName, password} = login;
 
     let response = await axios
         .post<User>(API_URL + "signin", {
-            username,
+            employeeName: employeeName,
             password,
         });
     console.log(response);

@@ -6,15 +6,17 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 interface Registration {
-    username: string;
+    employeeName: string;
     email: string;
     password: string;
+    branchOffice: string;
 }
 
 type FieldType = {
-    username?: string;
+    employeeName?: string;
     email?: string;
     password?: string;
+    branchOffice?: string;
 };
 
 const FormRegistration: React.FC = () => {
@@ -52,7 +54,7 @@ const FormRegistration: React.FC = () => {
         >
             <Form.Item<FieldType>
                 label="Username"
-                name="username"
+                name="employeeName"
                 rules={[{required: true, message: 'Please input your username!'}]}
             >
                 <Input
@@ -68,6 +70,16 @@ const FormRegistration: React.FC = () => {
             >
                 <Input prefix={<MailOutlined className="site-form-item-icon"/>}
                        placeholder="Email"
+                />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+                label="Branch office"
+                name="branchOffice"
+                rules={[{required: true, message: 'Please input your id branch Office!'}]}
+            >
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>}
+                       placeholder="Id branch office"
                 />
             </Form.Item>
 
