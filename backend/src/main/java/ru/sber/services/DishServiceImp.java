@@ -36,7 +36,7 @@ public class DishServiceImp implements DishService {
 
         var isExistsDish = dishRepository.existsByName(dish.getName());
 
-        if (!isExistsDish){
+        if (!isExistsDish) {
             dishRepository.save(dish);
         }
         return dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice())).getDish().getId();
@@ -50,7 +50,7 @@ public class DishServiceImp implements DishService {
         var isExistsDish = dishRepository.existsByName(name);
         Dish dish = dishRepository.findByName(name);
 
-        if (isExistsDish && !dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), dish.getId())){
+        if (isExistsDish && !dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), dish.getId())) {
 
             dishesBranchOfficeRepository.save(new DishesBranchOffice(dish, getBranchOffice()));
             return true;
