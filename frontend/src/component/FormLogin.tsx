@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Form, Input, message} from 'antd';
-import authService from "../services/auth.service";
+import authService from "../services/authService";
 import {useDispatch} from "react-redux";
-import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 
 interface Login {
@@ -34,17 +34,17 @@ const FormLogin: React.FC = () => {
 
     return <Form
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
+        labelCol={{span: 8}}
+        wrapperCol={{span: 16}}
+        style={{maxWidth: 600}}
+        initialValues={{remember: true}}
         onFinish={onFinish}
         autoComplete="off"
     >
         <Form.Item<FieldType>
             label="Username"
             name="employeeName"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{required: true, message: 'Please input your username!'}]}
         >
             <Input prefix={<UserOutlined className="site-form-item-icon"/>}
                    placeholder="Username"
@@ -54,7 +54,7 @@ const FormLogin: React.FC = () => {
         <Form.Item<FieldType>
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{required: true, message: 'Please input your password!'}]}
         >
             <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon"/>}
@@ -62,7 +62,7 @@ const FormLogin: React.FC = () => {
             />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item wrapperCol={{offset: 8, span: 16}}>
             <Button type="primary" htmlType="submit">
                 Sign In
             </Button>

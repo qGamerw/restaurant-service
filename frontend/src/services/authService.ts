@@ -18,7 +18,7 @@ interface User {
     accessToken: string;
 }
 
-const API_URL = "http://localhost:8080/api/auth/"
+const API_URL = "/api/auth/"
 
 const register = (registration: Registration) => {
     const { employeeName, email, password , branchOffice} = registration;

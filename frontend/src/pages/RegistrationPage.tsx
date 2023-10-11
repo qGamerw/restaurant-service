@@ -4,7 +4,7 @@ import FormRegistration from "../component/FormRegistration";
 import FormLogin from "../component/FormLogin";
 import Item = List.Item;
 
-const Registration: React.FC = () => {
+const RegistrationPage: React.FC = () => {
     const [activeTabKey, setActiveTabKey] = useState<string>('tab1');
 
     const handleTabChange = (key: string) => {
@@ -90,4 +90,4 @@ const Registration: React.FC = () => {
     );
 };
 
-export default Registration;
+export default RegistrationPage;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Form, Input, message} from 'antd';
-import authService from "../services/auth.service";
+import authService from "../services/authService";
 import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -26,16 +26,6 @@ const FormRegistration: React.FC = () => {
 
         authService.register(values).then((massage) => {
             console.log('Success:', massage);
-
-            authService.login(values, dispatch).then((user) => {
-                console.log('Success:', user);
-
-                navigate("/");
-            }, (error) => {
-                const _content = (error.response && error.response.data)
-                console.log(_content);
-                message.error("Неправильный логин или пароль");
-            })
         }, (error) => {
             const _content = (error.response && error.response.data)
             console.log(_content);
