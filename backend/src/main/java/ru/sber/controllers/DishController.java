@@ -108,10 +108,10 @@ public class DishController {
     }
 
     @GetMapping("/basket")
-    public ResponseEntity<List<Dish>> getListDishesById(@RequestBody ListDishes listDishesId) {
-        log.info("Получает все блюда по id");
+    public ResponseEntity<List<Dish>> getListDishesById(@RequestParam String list) {
+        log.info("Получает все блюда по id {}", list);
 
-        List<Dish> dishes = dishService.getListById(listDishesId);
+        List<Dish> dishes = dishService.getListById(list);
 
         return ResponseEntity.ok()
                 .body(dishes);

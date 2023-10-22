@@ -11,12 +11,11 @@ import ru.sber.entities.BranchOffice;
 import ru.sber.entities.Dish;
 import ru.sber.entities.DishesBranchOffice;
 import ru.sber.exceptions.NoFoundEmployeeException;
-import ru.sber.model.ListDishes;
 import ru.sber.repositories.DishRepository;
 import ru.sber.repositories.DishesBranchOfficeRepository;
 import ru.sber.security.services.EmployeeDetailsImpl;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,10 +106,14 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
-    public List<Dish> getListById(ListDishes listDishes) {
+    public List<Dish> getListById(String listDishes) {
         log.info("Получает блюдо с ListId {}", listDishes);
 
-        return dishRepository.findAllById(listDishes.getListDishesId()).stream()
+        List<Long> dishIds = Arrays.stream(listDishes.split(","))
+                .map(Long::parseLong)
+                .toList();
+
+        return dishRepository.findAllById(dishIds).stream()
                 .toList();
     }
 

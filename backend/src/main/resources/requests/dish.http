@@ -64,12 +64,7 @@ GET localhost:8080/dishes?city=VOLOGDA
 
 ###
 # Получает все блюда по id
-GET localhost:8080/dishes/basket
-Content-Type: application/json
-
-{
-  "listDishesId": [1,2,3]
-}
+GET localhost:8080/dishes/basket?list=1,2,3
 ###
 # Получает блюдо по id
 
