@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class ListDishes {
-    private List<DishId> listDishesId;
+    private List<Long> listDishesId;
 }

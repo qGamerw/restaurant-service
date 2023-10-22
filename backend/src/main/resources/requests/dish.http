@@ -68,11 +68,7 @@ GET localhost:8080/dishes/basket
 Content-Type: application/json
 
 {
-  "listDishesId": [
-    {"id": 1},
-    {"id": 2},
-    {"id": 3}
-  ]
+  "listDishesId": [1,2,3]
 }
 ###
 # Получает блюдо по id

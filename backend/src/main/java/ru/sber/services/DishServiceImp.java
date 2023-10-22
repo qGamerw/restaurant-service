@@ -11,12 +11,12 @@ import ru.sber.entities.BranchOffice;
 import ru.sber.entities.Dish;
 import ru.sber.entities.DishesBranchOffice;
 import ru.sber.exceptions.NoFoundEmployeeException;
-import ru.sber.model.DishId;
 import ru.sber.model.ListDishes;
 import ru.sber.repositories.DishRepository;
 import ru.sber.repositories.DishesBranchOfficeRepository;
 import ru.sber.security.services.EmployeeDetailsImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +37,6 @@ public class DishServiceImp implements DishService {
         log.info("Добавляет блюдо с именем {}", dish.getName());
 
         var isExistsDish = dishRepository.existsByName(dish.getName());
-
         if (!isExistsDish) {
             dishRepository.save(dish);
         }
@@ -66,7 +65,6 @@ public class DishServiceImp implements DishService {
         log.info("Обновляет блюдо с именем {}", dish.getName());
 
         var isExists = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), dish.getId());
-
         if (isExists) {
             dishRepository.save(dish);
             return true;
@@ -81,7 +79,6 @@ public class DishServiceImp implements DishService {
         log.info("Удаляет из филиала блюдо с id {} {}", id, getBranchOffice().getId());
 
         var isExistsDish = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(getBranchOffice().getId(), id);
-
         if (isExistsDish) {
             dishesBranchOfficeRepository.deleteByDish_Id(id);
             return true;
@@ -92,6 +89,8 @@ public class DishServiceImp implements DishService {
 
     @Override
     public List<Dish> getListDish() {
+        log.info("Получает все блюда в филиале");
+
         return dishesBranchOfficeRepository.findByBranchOffice_Id(getBranchOffice().getId())
                 .stream()
                 .map(DishesBranchOffice::getDish)
@@ -100,6 +99,8 @@ public class DishServiceImp implements DishService {
 
     @Override
     public List<Dish> getListByNameCity(String name) {
+        log.info("Получает блюдо с в городе {}", name);
+
         return dishesBranchOfficeRepository.findByBranchOffice_NameCity(name).stream()
                 .map(DishesBranchOffice::getDish)
                 .toList();
@@ -107,9 +108,9 @@ public class DishServiceImp implements DishService {
 
     @Override
     public List<Dish> getListById(ListDishes listDishes) {
-        List<Long> dishIds = listDishes.getListDishesId().stream().map(DishId::getId).toList();
+        log.info("Получает блюдо с ListId {}", listDishes);
 
-        return dishRepository.findAllById(dishIds).stream()
+        return dishRepository.findAllById(listDishes.getListDishesId()).stream()
                 .toList();
     }
 
@@ -128,8 +129,9 @@ public class DishServiceImp implements DishService {
 
     @Override
     public Page<Dish> getDishesByPage(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        log.info("Получает блюдо по страницам");
 
+        Pageable pageable = PageRequest.of(page, size);
         return dishRepository.findAll(pageable);
     }
 
@@ -137,7 +139,6 @@ public class DishServiceImp implements DishService {
         log.info("Получает id филиала");
 
         var employee = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (employee instanceof EmployeeDetailsImpl) {
             return ((EmployeeDetailsImpl) employee).getBranchOffice();
         } else {

@@ -75,5 +75,12 @@ public interface DishService {
      */
     Optional<Dish> getDishById(long id);
 
+    /**
+     * Получает блюдо по страницам
+     *
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return Optional<Dish>
+     */
     Page<Dish> getDishesByPage(int page, int size);
 }

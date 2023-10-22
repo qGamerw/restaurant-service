@@ -109,8 +109,7 @@ public class DishController {
 
     @GetMapping("/basket")
     public ResponseEntity<List<Dish>> getListDishesById(@RequestBody ListDishes listDishesId) {
-        log.info("Получает все блюда в городе");
-        log.info("{}", listDishesId);
+        log.info("Получает все блюда по id");
 
         List<Dish> dishes = dishService.getListById(listDishesId);
 
