@@ -11,6 +11,8 @@ import ru.sber.entities.BranchOffice;
 import ru.sber.entities.Dish;
 import ru.sber.entities.DishesBranchOffice;
 import ru.sber.exceptions.NoFoundEmployeeException;
+import ru.sber.model.DishId;
+import ru.sber.model.ListDishes;
 import ru.sber.repositories.DishRepository;
 import ru.sber.repositories.DishesBranchOfficeRepository;
 import ru.sber.security.services.EmployeeDetailsImpl;
@@ -100,6 +102,14 @@ public class DishServiceImp implements DishService {
     public List<Dish> getListByNameCity(String name) {
         return dishesBranchOfficeRepository.findByBranchOffice_NameCity(name).stream()
                 .map(DishesBranchOffice::getDish)
+                .toList();
+    }
+
+    @Override
+    public List<Dish> getListById(ListDishes listDishes) {
+        List<Long> dishIds = listDishes.getListDishesId().stream().map(DishId::getId).toList();
+
+        return dishRepository.findAllById(dishIds).stream()
                 .toList();
     }
 

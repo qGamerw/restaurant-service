@@ -36,7 +36,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         if (request.getRequestURI().equals("/api/auth/signup") ||
                 request.getRequestURI().equals("/api/auth/signin") ||
                 request.getRequestURI().equals("/dishes/any") ||
-                request.getRequestURI().equals("/dishes")
+                request.getRequestURI().equals("/dishes") ||
+                request.getRequestURI().equals("/dishes/basket")
 
         ) {
             filterChain.doFilter(request, response);

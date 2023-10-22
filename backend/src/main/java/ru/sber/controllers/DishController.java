@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.Dish;
+import ru.sber.model.ListDishes;
 import ru.sber.services.DishService;
 
 import java.net.URI;
@@ -39,7 +40,7 @@ public class DishController {
 
         var isAdd = dishService.addDishByName(dish.getName());
 
-        if (isAdd){
+        if (isAdd) {
             return ResponseEntity.accepted()
                     .build();
         } else {
@@ -54,7 +55,7 @@ public class DishController {
 
         var isUpdate = dishService.updateDish(dish);
 
-        if (isUpdate){
+        if (isUpdate) {
             return ResponseEntity.accepted()
                     .build();
         } else {
@@ -82,8 +83,8 @@ public class DishController {
         return dish.map(
                         value -> ResponseEntity.ok()
                                 .body(value))
-                        .orElseGet(() -> ResponseEntity.notFound()
-                                .build());
+                .orElseGet(() -> ResponseEntity.notFound()
+                        .build());
     }
 
     @GetMapping("/any")
@@ -101,6 +102,17 @@ public class DishController {
         log.info("Получает все блюда в городе");
 
         List<Dish> dishes = dishService.getListByNameCity(city);
+
+        return ResponseEntity.ok()
+                .body(dishes);
+    }
+
+    @GetMapping("/basket")
+    public ResponseEntity<List<Dish>> getListDishesById(@RequestBody ListDishes listDishesId) {
+        log.info("Получает все блюда в городе");
+        log.info("{}", listDishesId);
+
+        List<Dish> dishes = dishService.getListById(listDishesId);
 
         return ResponseEntity.ok()
                 .body(dishes);
