@@ -2,7 +2,9 @@ package ru.sber.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.model.Order;
 import ru.sber.services.OrderService;
 
 import java.util.List;

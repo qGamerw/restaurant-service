@@ -9,12 +9,11 @@ interface User {
 
 const API_URL_ORDER = "orders"
 
-const updateOrderStatusById = async (id: number, status: string, dispatch: Dispatch) => {
+const updateOrderStatusById = async (id: number, status: string, branchId: number, branchAddress: string, dispatch: Dispatch) => {
     const headers = authHeader();
-
     try {
         const response = await axios.put(API_URL_ORDER + `/${id}`,
-            {status: status},
+            {status: status, branchId: branchId, branchAddress: branchAddress},
             {headers});
 
         const updateOrder = response.data;
@@ -51,11 +50,11 @@ const getListOrders = async (dispatch: Dispatch) => {
     try {
         const response = await axios.get(API_URL_ORDER, { headers });
 
-        const awaitingDeliveryOrders = response.data;
+        const orders = response.data;
 
-        dispatch(setAllOrders(awaitingDeliveryOrders));
+        dispatch(setAllOrders(orders));
 
-        return awaitingDeliveryOrders;
+        return orders;
     } catch (error) {
         console.error("Ошибка получения заказов:", error);
         throw error;

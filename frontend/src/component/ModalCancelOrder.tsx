@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Input, message, Modal } from 'antd';
-import orderService from "../services/orderService";
-import { useDispatch } from "react-redux";
+import orderService from '../services/orderService';
+import { useDispatch } from 'react-redux';
 
 interface Props {
-    id: number
+    id: number;
 }
 
 const App: React.FC<Props> = ({ id }) => {
@@ -61,7 +61,7 @@ const App: React.FC<Props> = ({ id }) => {
     useEffect(() => {
         orderService.getListOrders(dispatch);
         setIsUpdate(false);
-    }, [isUpdate]);
+    }, [isUpdate, dispatch]);
 
     return (
         <>
@@ -69,12 +69,12 @@ const App: React.FC<Props> = ({ id }) => {
                 Cancel
             </Button>
             <Modal
-                open={open}
+                visible={open}
                 title="Cancel order"
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
-                    <Button key="back" onClick={handleCancel} >
+                    <Button key="back" onClick={handleCancel}>
                         Return
                     </Button>,
                     <Button key="submit" type="primary" loading={loading} onClick={handleOk}>

@@ -1,10 +1,15 @@
 import {configureStore} from "@reduxjs/toolkit";
-import userReducer from "./slices/userSlice";
 import orderReducer from "./slices/orderSlice";
+import dishReducer from "./slices/dishSlice";
+import categoryReducer from "./slices/categorySlice";
 
-export default configureStore({
+const store =  configureStore({
     reducer: {
-        users: userReducer,
-        order: orderReducer,
+        orders: orderReducer,
+        dishes: dishReducer,
+        category: categoryReducer,
     },
 });
+
+export type RootState = ReturnType<typeof store.getState>
+export default store;

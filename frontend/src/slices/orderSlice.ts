@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Order {
-    id: number | null;
+    id: number;
     clientName: string | null;
     description: string | null;
     clientPhone: number | null;

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Отвечает за взаимодействие с order-service
  */
-@FeignClient(name = "orderService", url = "localhost:8081/")
+@FeignClient(name = "orderService", url = "localhost:8083/")
 public interface OrderFeign {
     @PutMapping("orders/{id}")
     ResponseEntity<?> updateOrderStatusById(@PathVariable Long id, @RequestBody Object status);
