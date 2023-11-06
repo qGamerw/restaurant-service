@@ -2,6 +2,7 @@ package ru.sber.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,8 @@ public class Order {
     private String address;
     private String branchAddress;
     private Long branchId;
-    private List<?> dishesOrders;
+    private Long employeeRestaurantId;
 
+    @JsonProperty(required = false)
+    private List<?> dishesOrders;
 }
