@@ -11,6 +11,7 @@ import authService from './services/authService';
 import DishesPage from './pages/DishesPage';
 import { RootState } from './store';
 import orderService from './services/orderService';
+import AccountPage from "./pages/AccountPage";
 
 const { Header, Content, Footer } = Layout;
 
@@ -22,6 +23,8 @@ const App: React.FC = () => {
     const [selectedKeys, setSelectedKeys] = useState<string>('2');
     const allOrders = useSelector((store: RootState) => store.orders.allOrders).filter(item => item.status === 'REVIEW');
     const isLoginIn = localStorage.getItem('user') !== null;
+    const userDataString = localStorage.getItem('user');
+    const userData = userDataString ? JSON.parse(userDataString) : null;
     const isAdmin = true; // localStorage.getItem('user') !== null && localStorage.user.position.position === 'ADMIN';
 
     useEffect(() => {
@@ -79,7 +82,7 @@ const App: React.FC = () => {
     };
 
     return (
-        <Layout className="layout">
+        <Layout className="layout" style={{ minWidth: 850 }} >
             <Header style={{ display: 'flex', alignItems: 'center' }}>
                 <div className="demo-logo" />
                 <Typography.Title level={5} style={{ color: 'white', margin: 0, marginLeft: -30, marginRight: 10 }}>
@@ -91,7 +94,7 @@ const App: React.FC = () => {
                 {isLoginIn && (
                     <div style={{ marginLeft: 'auto' }}>
                         <Badge count={allOrders.length} size="small">
-                            <Avatar style={{ backgroundColor: '#1677ff' }}>U</Avatar>
+                            <Avatar style={{ backgroundColor: '#1677ff' }}>{userData ? userData.employeeName[0] : null} </Avatar>
                         </Badge>
                         <Button
                             type="primary"
@@ -113,6 +116,7 @@ const App: React.FC = () => {
                         <Route index element={<RegistrationPage />} />
                         <Route path="/orders" element={<OrderPage />} />
                         <Route path="/dishes" element={<DishesPage />} />
+                        <Route path="/user" element={<AccountPage />} />
 
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
