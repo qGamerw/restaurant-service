@@ -26,6 +26,15 @@ public interface OrderService {
 
     /**
      * Получает информацию о заказах
+     *
+     * @return List<?>
      */
     List<?> getListOrders();
+
+    /**
+     * Получает информацию о заказах после уведомления
+     *
+     * @return List<?>
+     */
+    List<?> getListOrdersByNotify();
 }

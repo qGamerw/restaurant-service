@@ -6,34 +6,60 @@ import ModalCancelOrder from "../component/ModalCancelOrder";
 import {RootState} from "../store";
 
 const {Panel} = Collapse;
+
+interface DishesOrder {
+    id: number;
+    dish_id: number;
+    dish_name: number;
+    quantity: number;
+    order_id: number;
+}
+
+interface BranchOffice {
+    id: number,
+    address: string,
+    status: string,
+    nameCity: string
+}
+
+interface User {
+    accessToken: string,
+    branchOffice: BranchOffice,
+    email: string
+    employeeName: string,
+    id: number,
+    position: any,
+    type: string
+}
+
 const OrderPage: React.FC = () => {
     const dispatch = useDispatch();
     const allOrders = useSelector((store: RootState) => store.orders.allOrders);
-    const user = useSelector((store: RootState) => localStorage.user);
+    const userStr = localStorage.getItem('user');
     const [isUpdate, setIsUpdate] = useState(false);
     const currentDate = new Date();
-
-    // useEffect(() => {
-    //     orderService.getListOrders(dispatch);
-    // }, []);
-
     const onAccept = (id: number) => {
 
-        orderService.updateOrderStatusById(id, 'COOKING', user.branchOffice.id, user.branchOffice.address, dispatch).then(() => {
-            console.log('Success: update');
-            setIsUpdate(true);
+        let branchOffice = null;
+        if (userStr) {
+            branchOffice = (JSON.parse(userStr)).branchOffice;
+            orderService.updateOrderStatusById(id, 'COOKING', branchOffice.id, branchOffice.address, dispatch).then(() => {
 
-        }, (error) => {
-            const _content = (error.response && error.response.data)
-            console.log(_content);
-            message.error("id не найден");
-        })
+                console.log('Success: Accept');
+                setIsUpdate(true);
+
+            }, (error) => {
+                const _content = (error.response && error.response.data)
+                console.log(_content);
+                message.error("id не найден");
+            })
+        }
     };
 
     const onEndCooking = (id: number, branchId: number, branchAddress: string) => {
 
         orderService.updateOrderStatusById(id, 'COOKED', branchId, branchAddress, dispatch).then(() => {
-            console.log('Success: update');
+            console.log('Success: EndCooking');
             setIsUpdate(true);
 
         }, (error) => {
@@ -48,7 +74,6 @@ const OrderPage: React.FC = () => {
         setIsUpdate(false);
     }, [isUpdate]);
 
-
     function mapOrderToItems(order: any) {
         return {
             key: order.id,
@@ -56,7 +81,9 @@ const OrderPage: React.FC = () => {
                 <>
                     <p><b>Address: </b>{order.address}</p>
                     <p><b>Order time: </b>{new Date(Date.parse(order.orderTime)).toLocaleString('RU')}</p>
-                    <p><b>Waiting order: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} min</p>
+                    <p><b>Waiting
+                        order: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} min
+                    </p>
                 </>
             ),
             items: (
@@ -65,9 +92,9 @@ const OrderPage: React.FC = () => {
                     <p><b>Client phone:</b> {order.clientPhone}</p>
                     <p><b>Description:</b> {order.description}</p>
                     <Collapse accordion>
-                        <Panel key={order.dishesOrders.dishId} header={<b>Dishes</b>} showArrow={false}>
-                            {order.dishesOrders.map((order: any) => (
-                                <p><b>Name:</b> {order.dishName}, <b>Quantity:</b> {order.quantity}</p>
+                        <Panel key={order.id + 0.5} header={<b>Dishes</b>} showArrow={false}>
+                            {order.dishesOrders.map((order: DishesOrder) => (
+                                <p><b>Name:</b> {order.dish_name}, <b>Quantity:</b> {order.quantity}</p>
                             ))}
                         </Panel>
                     </Collapse>
@@ -78,12 +105,14 @@ const OrderPage: React.FC = () => {
 
     const itemsReview = allOrders.filter((item: any) => item.status === 'REVIEW').map((order: any) => (
         {
-            key: order.id,
+            key: order.id + 0.01,
             label: (
                 <>
                     <p><b>Address: </b>{order.address}</p>
                     <p><b>Order time: </b>{new Date(Date.parse(order.orderTime)).toLocaleString('RU')}</p>
-                    <p><b>Waiting order: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} min</p>
+                    <p><b>Waiting
+                        order: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} min
+                    </p>
                 </>
             ),
             items: (
@@ -92,9 +121,9 @@ const OrderPage: React.FC = () => {
                     <p><b>Client phone:</b> {order.clientPhone}</p>
                     <p><b>Description:</b> {order.description}</p>
                     <Collapse accordion>
-                        <Panel key={order.dishesOrders.dishId} header={<b>Dishes</b>} showArrow={false}>
-                            {order.dishesOrders.map((order: any) => (
-                                <p><b>Name:</b> {order.dishName}, <b>Quantity:</b> {order.quantity}</p>))}
+                        <Panel key={order.id + 0.1} header={<b>Dishes</b>} showArrow={false}>
+                            {order.dishesOrders.map((dish: DishesOrder) => (
+                                <p><b>Name:</b> {dish.dish_name}, <b>Quantity:</b> {dish.quantity}</p>))}
                         </Panel>
                     </Collapse>
                     <Button type="primary" onClick={() => onAccept(order.id)}
@@ -107,12 +136,14 @@ const OrderPage: React.FC = () => {
 
     const itemsCooking = allOrders.filter((item: any) => item.status === 'COOKING').map((order: any) => (
         {
-            key: order.id,
+            key: order.id + 0.02,
             label: (
                 <div>
                     <p><b>Address: </b>{order.address}</p>
                     <p><b>Order time: </b>{new Date(Date.parse(order.orderCookingTime)).toLocaleString('RU')}</p>
-                    <p><b>Cooking: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookingTime).getTime()) / 60000)} min</p>
+                    <p>
+                        <b>Cooking: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookingTime).getTime()) / 60000)} min
+                    </p>
                 </div>
             ),
             items: (
@@ -121,9 +152,9 @@ const OrderPage: React.FC = () => {
                     <p><b>Client phone:</b> {order.clientPhone}</p>
                     <p><b>Description:</b> {order.description}</p>
                     <Collapse accordion>
-                        <Panel key={order.dishesOrders.dishId} header={<b>Dishes</b>} showArrow={false}>
-                            {order.dishesOrders.map((order: any) => (
-                                <p><b>Name:</b> {order.dishName}, <b>Quantity:</b> {order.quantity}</p>))}
+                        <Panel key={order.id} header={<b>Dishes</b>} showArrow={false}>
+                            {order.dishesOrders.map((dish: DishesOrder) => (
+                                <p><b>Name:</b> {dish.dish_name}, <b>Quantity:</b> {dish.quantity}</p>))}
                         </Panel>
                     </Collapse>
                     <Button type="primary" onClick={() => onEndCooking(order.id, order.branchId, order.branchAddress)}
@@ -140,7 +171,9 @@ const OrderPage: React.FC = () => {
                 <div>
                     <p><b>Address: </b>{order.address}</p>
                     <p><b>Order time: </b>{new Date(Date.parse(order.orderCookedTime)).toLocaleString('RU')}</p>
-                    <p><b>Cooked: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookedTime).getTime()) / 60000)} min</p>
+                    <p>
+                        <b>Cooked: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookedTime).getTime()) / 60000)} min
+                    </p>
                 </div>
             ),
             items: (
@@ -149,9 +182,9 @@ const OrderPage: React.FC = () => {
                     <p><b>Client phone:</b> {order.clientPhone}</p>
                     <p><b>Description:</b> {order.description}</p>
                     <Collapse accordion>
-                        <Panel key={order.dishesOrders.dishId} header={<b>Dishes</b>} showArrow={false}>
-                            {order.dishesOrders.map((order: any) => (
-                                <p><b>Name:</b> {order.dishName}, <b>Quantity:</b> {order.quantity}</p>))}
+                        <Panel key={order.id} header={<b>Dishes</b>} showArrow={false}>
+                            {order.dishesOrders.map((dish: DishesOrder) => (
+                                <p><b>Name:</b> {dish.dish_name}, <b>Quantity:</b> {dish.quantity}</p>))}
                         </Panel>
                     </Collapse>
                 </div>
@@ -165,6 +198,7 @@ const OrderPage: React.FC = () => {
     const countCooking: number = itemsCooking.length;
     const countCooked: number = itemsCooked.length;
     const countAll: number = itemsAll.length;
+
     return (
         <div style={{overflow: 'auto'}}>
             <Tabs style={{marginBottom: 24, marginTop: 20,}} tabPosition={'left'}>

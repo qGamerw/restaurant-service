@@ -1,16 +1,24 @@
 package ru.sber.services;
 
-import ru.sber.entities.Dish;
-import ru.sber.entities.Notify;
 import ru.sber.entities.Position;
-import ru.sber.entities.enums.EPosition;
-
-import java.util.Optional;
 
 /**
  * Сервис для взаимодействия с {@link Position должностью}
  */
 public interface NotifyService {
+    /**
+     * Добавляет информацию для уведомления
+     *
+     * @param id id
+     * @return long
+     */
     long addNotify(Long id);
+
+    /**
+     * Получает информацию о заказах после уведомления
+     *
+     * @return String
+     */
+    String getList();
 }
 

@@ -15,9 +15,11 @@ import java.util.List;
 public class OrderServiceImp implements OrderService {
 
     private final OrderFeign orderFeign;
+    private final NotifyService notifyService;
 
-    public OrderServiceImp(OrderFeign orderFeign) {
+    public OrderServiceImp(OrderFeign orderFeign, NotifyService notifyService) {
         this.orderFeign = orderFeign;
+        this.notifyService = notifyService;
     }
 
     @Override
@@ -33,5 +35,16 @@ public class OrderServiceImp implements OrderService {
     @Override
     public List<?> getListOrders() {
         return orderFeign.getListOrders().getBody();
+    }
+
+    @Override
+    public List<?> getListOrdersByNotify() {
+        String strOrder = notifyService.getList();
+        log.info("Обновляет информацию о заказах с id {}", strOrder);
+
+        if (!strOrder.isEmpty()) {
+            return orderFeign.getListOrdersByNotify(strOrder);
+        }
+        return List.of();
     }
 }

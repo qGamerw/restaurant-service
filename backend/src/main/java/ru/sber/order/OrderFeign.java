@@ -22,4 +22,7 @@ public interface OrderFeign {
 
     @GetMapping("orders")
     ResponseEntity<List<?>> getListOrders();
+
+    @GetMapping("orders/orders/notify/{orderId}")
+    List<?> getListOrdersByNotify(@PathVariable String orderId);
 }

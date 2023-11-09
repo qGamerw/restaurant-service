@@ -45,7 +45,7 @@ public interface DishService {
     /**
      * Получает все блюда по id
      *
-     * @param listDishes list is
+     * @param listDishes list id
      * @return List<Dish>
      */
     List<Dish> getListById(String listDishes);

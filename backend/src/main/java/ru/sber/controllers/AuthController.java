@@ -89,7 +89,7 @@ public class AuthController {
 
     private ResponseEntity<?> getResponseEntity(String employeeName, String password) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(employeeName,password);
+                new UsernamePasswordAuthenticationToken(employeeName, password);
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);

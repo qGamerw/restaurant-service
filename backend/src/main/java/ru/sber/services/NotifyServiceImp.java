@@ -3,12 +3,9 @@ package ru.sber.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sber.entities.Notify;
-import ru.sber.entities.Position;
-import ru.sber.entities.enums.EPosition;
 import ru.sber.repositories.NotifyRepository;
-import ru.sber.repositories.PositionRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -24,10 +21,23 @@ public class NotifyServiceImp implements NotifyService {
         var isNotify = notifyRepository.existsByIdOrder(id);
         log.info("Добавляет в активные уведомления {}", isNotify);
 
-        if (isNotify){
+        if (isNotify) {
             return id;
         } else {
             return notifyRepository.save(new Notify(id)).getId();
         }
+    }
+
+    @Override
+    public String getList() {
+        List<Notify> listOrder = notifyRepository.findAll();
+
+        if (!listOrder.isEmpty()) {
+            return listOrder.stream()
+                    .map(item -> item.getIdOrder().toString())
+                    .reduce("", (s1, s2) -> s1.isEmpty() ? s2 : s1 + "," + s2);
+        }
+
+        return "";
     }
 }

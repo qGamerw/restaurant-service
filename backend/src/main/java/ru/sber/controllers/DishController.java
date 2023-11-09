@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.Dish;
-import ru.sber.model.ListDishes;
 import ru.sber.services.DishService;
 
 import java.net.URI;

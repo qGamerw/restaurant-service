@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
-import {setAllOrders, setCurrentOrder} from "../slices/orderSlice";
+import {setAllOrders} from "../slices/orderSlice";
 
 interface User {
     accessToken: string;
@@ -17,7 +17,6 @@ const updateOrderStatusById = async (id: number, status: string, branchId: numbe
             {headers});
 
         const updateOrder = response.data;
-        dispatch(setCurrentOrder(updateOrder));
         return updateOrder;
 
     } catch (error) {
@@ -35,7 +34,6 @@ const cancelOrderById = async (id: number, message: string, dispatch: Dispatch):
             {headers});
 
         const updateOrder = response.data;
-        dispatch(setCurrentOrder(updateOrder));
         return updateOrder;
 
     } catch (error) {
