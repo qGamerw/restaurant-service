@@ -63,6 +63,9 @@ GET localhost:8080/dishes/any?page=0&size=10
 GET localhost:8080/dishes?city=VOLOGDA
 
 ###
+# Получает все блюда по id
+GET localhost:8080/dishes/basket?list=1,2,3
+###
 # Получает блюдо по id
 
 GET localhost:8080/dishes/3

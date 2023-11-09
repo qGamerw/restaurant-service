@@ -19,4 +19,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2O
 # Выводит данные о всех филиалах
 
 GET localhost:8080/branch-offices/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4MjA4NzksImV4cCI6MTY5NTkwNzI3OX0.ZeRwjSZokR9dsXVL2-ps26ZczqvGz6wTQrlqa9Of9ds

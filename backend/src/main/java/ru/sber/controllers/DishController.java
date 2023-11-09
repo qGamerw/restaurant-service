@@ -39,7 +39,7 @@ public class DishController {
 
         var isAdd = dishService.addDishByName(dish.getName());
 
-        if (isAdd){
+        if (isAdd) {
             return ResponseEntity.accepted()
                     .build();
         } else {
@@ -54,7 +54,7 @@ public class DishController {
 
         var isUpdate = dishService.updateDish(dish);
 
-        if (isUpdate){
+        if (isUpdate) {
             return ResponseEntity.accepted()
                     .build();
         } else {
@@ -82,8 +82,8 @@ public class DishController {
         return dish.map(
                         value -> ResponseEntity.ok()
                                 .body(value))
-                        .orElseGet(() -> ResponseEntity.notFound()
-                                .build());
+                .orElseGet(() -> ResponseEntity.notFound()
+                        .build());
     }
 
     @GetMapping("/any")
@@ -101,6 +101,16 @@ public class DishController {
         log.info("Получает все блюда в городе");
 
         List<Dish> dishes = dishService.getListByNameCity(city);
+
+        return ResponseEntity.ok()
+                .body(dishes);
+    }
+
+    @GetMapping("/basket")
+    public ResponseEntity<List<Dish>> getListDishesById(@RequestParam String list) {
+        log.info("Получает все блюда по id {}", list);
+
+        List<Dish> dishes = dishService.getListById(list);
 
         return ResponseEntity.ok()
                 .body(dishes);

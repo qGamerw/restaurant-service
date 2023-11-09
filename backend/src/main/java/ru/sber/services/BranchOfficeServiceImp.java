@@ -25,8 +25,8 @@ public class BranchOfficeServiceImp implements BranchOfficeService {
 
         BranchOffice branchOffice = getBranchOffice().gerBranchOffice();
 
-        if (branchOffice.getId() == branchId){
-            branchOffice.setStatus(branchOffice.getStatus().equals("OPEN")? "CLOSE" : "OPEN");
+        if (branchOffice.getId() == branchId) {
+            branchOffice.setStatus(branchOffice.getStatus().equals("OPEN") ? "CLOSE" : "OPEN");
             branchOfficeRepository.save(branchOffice);
             return true;
         }

@@ -4,7 +4,7 @@ import FormRegistration from "../component/FormRegistration";
 import FormLogin from "../component/FormLogin";
 import Item = List.Item;
 
-const Registration: React.FC = () => {
+const RegistrationPage: React.FC = () => {
     const [activeTabKey, setActiveTabKey] = useState<string>('tab1');
 
     const handleTabChange = (key: string) => {
@@ -27,13 +27,20 @@ const Registration: React.FC = () => {
     };
 
     const cardStyle = {
-        minWidth: 650,
-        minHeight: 400
+        minWidth: 700,
+        minHeight: 450
     };
 
-    const pIntoStyle = {
+    const pLogUpStyle = {
         fontSize: '20px',
         marginTop: 100,
+        marginLeft: 100,
+        height: "max-content"
+    };
+
+    const pLogInStyle = {
+        fontSize: '20px',
+        marginTop: 130,
         height: "max-content"
     };
 
@@ -48,14 +55,14 @@ const Registration: React.FC = () => {
                     <Card hoverable style={cardStyle}>
                         <Row gutter={20}>
                             <Col span={8}>
-                                <p style={pIntoStyle}>Please, Log In or</p>
+                                <p style={pLogInStyle}>Please, Log In or</p>
                                 <Button type={'primary'} onClick={() => handleTabClick('tab2')}>
                                     Create Account
                                 </Button>
                             </Col>
                             <Col span={13}>
                                 <p style={{fontSize: '20px'}}>Sign In</p>
-                                <p>Use Your Email And Password To Sign In</p>
+                                <p>Use Your Username And Password To Sign In</p>
                                 <FormLogin/>
                             </Col>
                         </Row>
@@ -64,16 +71,16 @@ const Registration: React.FC = () => {
                 <Item key="tab2">
                     <Card hoverable style={cardStyle}>
                         <Row gutter={20}>
-                            <Col span={8}>
-                                <p style={pIntoStyle}>Create Account or</p>
-                                <Button type={'primary'} onClick={() => handleTabClick('tab1')}>
-                                    Sign In
-                                </Button>
-                            </Col>
                             <Col span={13}>
                                 <p style={{fontSize: '20px'}}>Sign Up</p>
                                 <p>Please, Provide All The Correct Info To Create An Account</p>
                                 <FormRegistration/>
+                            </Col>
+                            <Col span={8}>
+                                <p style={pLogUpStyle}>Create Account or</p>
+                                <Button style={{marginLeft: 100}} type={'primary'} onClick={() => handleTabClick('tab1')}>
+                                    Sign In
+                                </Button>
                             </Col>
                         </Row>
                     </Card>
@@ -83,4 +90,4 @@ const Registration: React.FC = () => {
     );
 };
 
-export default Registration;
+export default RegistrationPage;

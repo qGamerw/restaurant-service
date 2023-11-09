@@ -43,6 +43,14 @@ public interface DishService {
     List<Dish> getListByNameCity(String name);
 
     /**
+     * Получает все блюда по id
+     *
+     * @param listDishes list id
+     * @return List<Dish>
+     */
+    List<Dish> getListById(String listDishes);
+
+    /**
      * Удаляет блюдо
      *
      * @param id id блюда
@@ -66,5 +74,12 @@ public interface DishService {
      */
     Optional<Dish> getDishById(long id);
 
+    /**
+     * Получает блюдо по страницам
+     *
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return Optional<Dish>
+     */
     Page<Dish> getDishesByPage(int page, int size);
 }

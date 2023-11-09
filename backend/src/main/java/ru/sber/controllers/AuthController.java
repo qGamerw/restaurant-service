@@ -77,22 +77,22 @@ public class AuthController {
 
         employeeService.addEmployee(employee);
 
-        return ResponseEntity.ok(new MessageResponse("Сотрудник успешно зарегистрирован"));
+        return getResponseEntity(signUpRequest.getEmployeeName(), signUpRequest.getPassword());
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> authenticateEmployee(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateEmployee(@Valid @RequestBody LoginRequest loginRequest) {
         log.info("Вход сотрудника с логином {}", loginRequest.getEmployeeName());
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginRequest.getEmployeeName(),
-                loginRequest.getPassword());
+        return getResponseEntity(loginRequest.getEmployeeName(), loginRequest.getPassword());
+    }
+
+    private ResponseEntity<?> getResponseEntity(String employeeName, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(employeeName, password);
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) authentication.getPrincipal();
 
         Optional<? extends GrantedAuthority> optional = employeeDetails.getAuthorities()
@@ -104,11 +104,12 @@ public class AuthController {
                 .orElseGet(() -> new Position(EPosition.POSITION_SELLER));
 
         return ResponseEntity.ok(new JwtResponse(
-                jwt,
+                jwtUtils.generateJwtToken(authentication),
                 employeeDetails.getId(),
                 employeeDetails.getUsername(),
                 employeeDetails.getEmail(),
                 employeeDetails.getBranchOffice(),
                 position));
     }
+
 }

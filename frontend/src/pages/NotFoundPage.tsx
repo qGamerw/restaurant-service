@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Result } from "antd";
-import { Link } from "react-router-dom";
+import {Button, Result} from "antd";
+import {Link} from "react-router-dom";
 
 export const NotFoundPage: React.FC = () => {
     return (
@@ -18,3 +18,5 @@ export const NotFoundPage: React.FC = () => {
         />
     );
 };
+
+export default NotFoundPage;
