@@ -6,8 +6,8 @@ export default function authHeader() {
     }
 
     if (user && user.accessToken) {
-        return { Authorization: 'Bearer ' + user.accessToken };
+        return {Authorization: 'Bearer ' + user.accessToken};
     } else {
-        return { Authorization: '' };
+        return {Authorization: ''};
     }
 }

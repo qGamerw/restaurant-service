@@ -50,7 +50,7 @@ public class DishController {
 
     @PutMapping("/")
     public ResponseEntity<Long> updateDish(@RequestBody Dish dish) {
-        log.info("Обновляет блюдо");
+        log.info("Обновляет блюдо по id {}", dish.getId());
 
         var isUpdate = dishService.updateDish(dish);
 

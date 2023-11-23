@@ -33,6 +33,11 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public ResponseEntity<?> cancelOrderByListId (String listId, Object massage) {
+        return orderFeign.cancelOrderByListId(listId, massage);
+    }
+
+    @Override
     public List<?> getListOrders() {
         return orderFeign.getListOrders().getBody();
     }

@@ -19,7 +19,7 @@ public class NotifyServiceImp implements NotifyService {
     @Override
     public long addNotify(Long id) {
         var isNotify = notifyRepository.existsByIdOrder(id);
-        log.info("Добавляет в активные уведомления {}", isNotify);
+        log.info("Добавляет в активные уведомления false={}", isNotify);
 
         if (isNotify) {
             return id;
@@ -33,6 +33,7 @@ public class NotifyServiceImp implements NotifyService {
         List<Notify> listOrder = notifyRepository.findAll();
 
         if (!listOrder.isEmpty()) {
+            notifyRepository.deleteAll();
             return listOrder.stream()
                     .map(item -> item.getIdOrder().toString())
                     .reduce("", (s1, s2) -> s1.isEmpty() ? s2 : s1 + "," + s2);

@@ -1,48 +1,15 @@
 import axios from "axios";
-
-interface BranchOffice {
-    id: number,
-    address: string,
-    status: string,
-    nameCity: string
-}
-
-interface Position{
-    id: number,
-    position: string
-}
-
-interface User {
-    accessToken: string,
-    branchOffice: BranchOffice,
-    email: string
-    employeeName: string,
-    id: number,
-    position: Position,
-    type: string
-}
-
-interface Registration {
-    employeeName: string;
-    email: string;
-    password: string;
-    branchOffice: string;
-}
-
-interface Login {
-    employeeName: string;
-    password: string;
-}
+import {Login, Registration, User} from "../types/types";
 
 const API_URL = "/api/auth/"
 
-const saveLocalStore = (user: User) =>{
+function saveLocalStore(user: User) {
     if (user.accessToken) {
         localStorage.setItem('user', JSON.stringify(user));
     }
 }
-const register = async (registration: Registration): Promise<User> => {
-    const { employeeName, email, password , branchOffice} = registration;
+async function register(registration: Registration): Promise<User> {
+    const {employeeName, email, password, branchOffice} = registration;
     const response = await axios.post<User>(API_URL + "signup", {
         employeeName: employeeName,
         email,
@@ -53,9 +20,9 @@ const register = async (registration: Registration): Promise<User> => {
     console.log(response);
     saveLocalStore(response.data);
     return response.data;
-};
+}
 
-const login = async (login: Login): Promise<User> => {
+async function login(login: Login): Promise<User> {
     const {employeeName, password} = login;
 
     const response = await axios
@@ -66,12 +33,12 @@ const login = async (login: Login): Promise<User> => {
     console.log(response);
     saveLocalStore(response.data);
     return response.data;
-};
+}
 
-const logout = (): void => {
+function logout(): void{
     console.log("logout");
     localStorage.removeItem('user');
-};
+}
 
 const authService = {
     register,

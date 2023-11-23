@@ -1,5 +1,4 @@
-###
-# Добавляет блюдо в филиал
+### Добавляет блюдо в филиал
 
 POST localhost:8080/dishes/
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5NjUyNzMwOCwiZXhwIjoxNjk2NjEzNzA4fQ.Xm0d1C7uuPRd1D4Tb9sdzS5jXeaZ6RpvMbsuQBkD26E
@@ -16,8 +15,7 @@ Content-Type: application/json
   "weight": 100
 }
 
-###
-# Добавляет блюдо по имени в филиал, если оно уже существует
+### Добавляет блюдо по имени в филиал, если оно уже существует
 
 POST localhost:8080/dishes/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5NjUyNzMwOCwiZXhwIjoxNjk2NjEzNzA4fQ.Xm0d1C7uuPRd1D4Tb9sdzS5jXeaZ6RpvMbsuQBkD26E
@@ -27,8 +25,7 @@ Content-Type: application/json
   "name": "ГРЕЧЕСКИЙ САЛАТ"
 }
 
-###
-# Обновляет блюдо
+### Обновляет блюдо
 
 PUT localhost:8080/dishes/
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
@@ -46,33 +43,27 @@ Content-Type: application/json
   "weight": 1020
 }
 
-###
-# Получает блюда в филиале для сотрудника
+### Получает блюда в филиале для сотрудника
 
 GET localhost:8080/dishes/all
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
 
-###
-# Получает все блюда (по 10 на страницу) для остальных
+### Получает все блюда (по 10 на страницу) для остальных
 
 GET localhost:8080/dishes/any?page=0&size=10
 
 
-###
-# Получает все блюда по городу
+### Получает все блюда по городу
 GET localhost:8080/dishes?city=VOLOGDA
 
-###
-# Получает все блюда по id
+### Получает все блюда по id
 GET localhost:8080/dishes/basket?list=1,2,3
-###
-# Получает блюдо по id
+### Получает блюдо по id
 
 GET localhost:8080/dishes/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5NjUyNzMwOCwiZXhwIjoxNjk2NjEzNzA4fQ.Xm0d1C7uuPRd1D4Tb9sdzS5jXeaZ6RpvMbsuQBkD26E
 
-###
-# Удаляет из филиала блюдо по id
+### Удаляет из филиала блюдо по id
 
 DELETE localhost:8080/dishes/40
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY

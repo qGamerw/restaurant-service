@@ -2,25 +2,11 @@ import axios from "axios";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
 import {setAllBranchDishes, setAllDish} from "../slices/dishSlice";
+import {Dish} from "../types/types";
 
 const API_URL_DISHES = "dishes"
 
-interface Category {
-    id: number | null;
-    category: string | null;
-}
-
-interface Dish {
-    id: number | null;
-    name: string | null;
-    description: string | null;
-    urlImage: string | null;
-    category: Category;
-    price: number | null;
-    weight: number | null;
-}
-
-const getListDishByBranchId = async (dispatch: Dispatch) => {
+async function getListDishByBranch(dispatch: Dispatch) {
     const headers = authHeader();
 
     try {
@@ -33,9 +19,9 @@ const getListDishByBranchId = async (dispatch: Dispatch) => {
         console.error("Ошибка получения всех блюд у филиала:", error);
         throw error;
     }
-};
+}
 
-const getListDishAll = async (page: number, size: number, dispatch: Dispatch) => {
+async function getListDish(page: number, size: number, dispatch: Dispatch) {
     const headers = authHeader();
 
     try {
@@ -48,9 +34,9 @@ const getListDishAll = async (page: number, size: number, dispatch: Dispatch) =>
         console.error("Ошибка получения всех блюд:", error);
         throw error;
     }
-};
+}
 
-const updateDish = async (dish: Dish, dispatch: Dispatch) => {
+async function updateDish(dish: Dish, dispatch: Dispatch) {
     const headers = authHeader();
 
     try {
@@ -60,12 +46,34 @@ const updateDish = async (dish: Dish, dispatch: Dispatch) => {
         console.error("Ошибка обновления блюда:", error);
         throw error;
     }
-};
+}
+
+async function addDish(values: Dish, dispatch: Dispatch) {
+    const headers = authHeader();
+    const dish = {
+        "name": values.name,
+        "urlImage": values.urlImage,
+        "description": values.description,
+        "category": {
+            "id": values.category
+        },
+        "price": values.price,
+        "weight": values.weight
+    }
+    try {
+        return (await axios.post(`${API_URL_DISHES}/`, dish, {headers})).data;
+
+    } catch (error) {
+        console.error("Ошибка добавления блюда:", error);
+        throw error;
+    }
+}
 
 const dishService = {
-    getListDishByBranch: getListDishByBranchId,
-    getListDish: getListDishAll,
-    updateDish: updateDish,
+    getListDishByBranch,
+    getListDish,
+    updateDish,
+    addDish
 };
 
 export default dishService;

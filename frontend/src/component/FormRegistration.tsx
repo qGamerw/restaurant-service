@@ -14,7 +14,7 @@ interface Registration {
 const FormRegistration: React.FC = () => {
     const navigate = useNavigate();
 
-    const onFinish = async (values: Registration) => {
+    async function onFinish(values: Registration) {
 
         authService.register(values).then((massage) => {
             console.log('Success:', massage);
@@ -23,57 +23,57 @@ const FormRegistration: React.FC = () => {
             const _content = (error.response && error.response.data)
             console.log(_content);
         })
-    };
+    }
 
     return (
         <Form
             name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
+            labelCol={{span: 8}}
+            wrapperCol={{span: 16}}
+            style={{maxWidth: 600}}
+            initialValues={{remember: true}}
             onFinish={onFinish}
             autoComplete="off"
         >
             <Form.Item
                 label="Username"
                 name="employeeName"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{required: true, message: 'Please input your username!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
             </Form.Item>
 
             <Form.Item
                 label="Email"
                 name="email"
                 rules={[
-                    { type: 'email', message: 'Введите email!' },
-                    { required: true, message: 'Please input your email!' },
+                    {type: 'email', message: 'Введите email!'},
+                    {required: true, message: 'Please input your email!'},
                 ]}
             >
-                <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
+                <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Email"/>
             </Form.Item>
 
             <Form.Item
                 label="Branch office"
                 name="branchOffice"
-                rules={[{ required: true, message: 'Please input your id branch Office!' }]}
+                rules={[{required: true, message: 'Please input your id branch Office!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Id branch office" />
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Id branch office"/>
             </Form.Item>
 
             <Form.Item
                 label="Password"
                 name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
+                rules={[{required: true, message: 'Please input your password!'}]}
             >
                 <Input.Password
-                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    prefix={<LockOutlined className="site-form-item-icon"/>}
                     placeholder="Password"
                 />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item wrapperCol={{offset: 8, span: 16}}>
                 <Button type="primary" htmlType="submit">
                     Sign Up
                 </Button>

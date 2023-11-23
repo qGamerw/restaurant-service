@@ -1,5 +1,4 @@
-###
-# Получает все категории
+### Получает все категории
 
 GET localhost:8080/categories
 Content-Type: application/json

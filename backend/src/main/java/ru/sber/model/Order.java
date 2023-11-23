@@ -18,21 +18,17 @@ import java.util.List;
 @NoArgsConstructor
 public class Order {
     private Long id;
+    private Long clientId;
     private String clientName;
     private String description;
     private String clientPhone;
     private String status;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderCookingTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderCookedTime;
     private String address;
     private String branchAddress;
     private Long branchId;
     private Long employeeRestaurantId;
-
-    @JsonProperty(required = false)
     private List<?> dishesOrders;
 }

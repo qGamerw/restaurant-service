@@ -1,6 +1,5 @@
 import React from 'react';
-import {Avatar, MenuProps} from 'antd';
-import {Menu} from 'antd';
+import {Avatar, Menu, MenuProps} from 'antd';
 import {useDispatch} from "react-redux";
 import {AntDesignOutlined, AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 
@@ -10,9 +9,9 @@ const AccountPage = () => {
     const dispatch = useDispatch();
 
     const items: MenuItem[] = [
-        getItem('News', 'sub1', <MailOutlined />),
-        getItem('Achievement', 'sub2', <AppstoreOutlined />),
-        getItem('Settings', 'sub4', <SettingOutlined />),
+        getItem('Достижения', 'sub1', <AppstoreOutlined/>),
+        getItem('Новости', 'sub2', <MailOutlined/>),
+        getItem('Настройки', 'sub3', <SettingOutlined/>),
     ];
 
     function getItem(
@@ -38,11 +37,11 @@ const AccountPage = () => {
     return (
         < >
             <Avatar
-                size={{ xxl: 100 }}
-                icon={<AntDesignOutlined />}
+                size={100}
+                icon={<AntDesignOutlined/>}
                 style={{marginTop: 10}}
             />
-            <Menu onClick={onClick} style={{ width: 256, marginLeft: -40 }} mode="vertical" items={items} />
+            <Menu onClick={onClick} style={{width: 256, marginLeft: -40}} mode="vertical" items={items}/>
         </>
     );
 };

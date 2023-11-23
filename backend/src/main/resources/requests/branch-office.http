@@ -1,5 +1,4 @@
-###
-# Закрывает/Открывает филиал
+### Закрывает/Открывает филиал
 
 PUT localhost:8080/branch-offices
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4NDMwOTgsImV4cCI6MTY5NTkyOTQ5OH0.nhsPlsgDeoC2dhtoAjsa-t876rPo1WtDTyR6BmHB_J0
@@ -9,13 +8,11 @@ Content-Type: application/json
   "id": "2"
 }
 
-###
-# Выводит данные о филиале
+### Выводит данные о филиале
 
 GET localhost:8080/branch-offices
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU4MjA4NzksImV4cCI6MTY5NTkwNzI3OX0.ZeRwjSZokR9dsXVL2-ps26ZczqvGz6wTQrlqa9Of9ds
 
-###
-# Выводит данные о всех филиалах
+### Выводит данные о всех филиалах
 
 GET localhost:8080/branch-offices/all

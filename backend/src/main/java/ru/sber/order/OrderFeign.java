@@ -2,10 +2,7 @@ package ru.sber.order;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +16,9 @@ public interface OrderFeign {
 
     @PutMapping("orders/{id}/cancel")
     ResponseEntity<?> cancelOrderById(@PathVariable Long id, @RequestBody Object massage);
+
+    @PutMapping("orders/cancel")
+    ResponseEntity<?> cancelOrderByListId(@RequestParam String listId, @RequestBody Object message);
 
     @GetMapping("orders")
     ResponseEntity<List<?>> getListOrders();

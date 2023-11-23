@@ -7,15 +7,15 @@ import Item = List.Item;
 const RegistrationPage: React.FC = () => {
     const [activeTabKey, setActiveTabKey] = useState<string>('tab1');
 
-    const handleTabChange = (key: string) => {
+    function handleTabChange (key: string) {
         setActiveTabKey(key);
-    };
+    }
 
-    const handleTabClick = (tabKey: string) => {
+    function handleTabClick(tabKey: string) {
         if (activeTabKey !== tabKey) {
             setActiveTabKey(tabKey);
         }
-    };
+    }
 
     const tabStyle = {
         display: 'flex',
@@ -78,7 +78,8 @@ const RegistrationPage: React.FC = () => {
                             </Col>
                             <Col span={8}>
                                 <p style={pLogUpStyle}>Create Account or</p>
-                                <Button style={{marginLeft: 100}} type={'primary'} onClick={() => handleTabClick('tab1')}>
+                                <Button style={{marginLeft: 100}} type={'primary'}
+                                        onClick={() => handleTabClick('tab1')}>
                                     Sign In
                                 </Button>
                             </Col>

@@ -35,6 +35,13 @@ public class OrderController {
         return orderService.cancelOrderById(id, massage);
     }
 
+    @PutMapping("/cancel")
+    public ResponseEntity<?> cancelOrderByListId(@RequestParam String listId, @RequestBody Object message) {
+        log.info("Отменяет заказы с {}", listId);
+
+        return orderService.cancelOrderByListId(listId, message);
+    }
+
     @GetMapping
     public ResponseEntity<List<?>> getListOrders() {
         log.info("Получает заказы");

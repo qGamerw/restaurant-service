@@ -25,6 +25,13 @@ public interface OrderService {
     ResponseEntity<?> cancelOrderById(Long id, Object massage);
 
     /**
+     * Отменяет заказы
+     *
+     * @param listId listId заказов
+     */
+    ResponseEntity<?> cancelOrderByListId(String listId, Object massage);
+
+    /**
      * Получает информацию о заказах
      *
      * @return List<?>

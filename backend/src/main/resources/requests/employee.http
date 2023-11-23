@@ -1,5 +1,4 @@
-###
-# регистрация
+### регистрация
 
 POST localhost:8080/api/auth/signup
 Content-Type: application/json
@@ -11,8 +10,7 @@ Content-Type: application/json
   "branchOffice": "1"
 }
 
-###
-# вход
+### вход
 
 POST localhost:8080/api/auth/signin
 Content-Type: application/json
@@ -22,14 +20,12 @@ Content-Type: application/json
   "password": "Username"
 }
 
-###
-# Выводит данные о сотруднике
+### Выводит данные о сотруднике
 
 GET localhost:8080/employees
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTY1MjY5MzcsImV4cCI6MTY5NjYxMzMzN30.THkQ2qzd51F3FELDekgKqh0G7FPgUeoK9mv0qJDu5mY
 
-###
-# Удаление аккаунта сотрудника по id
+### Удаление аккаунта сотрудника по id
 
 DELETE localhost:8080/employees/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZTMiLCJpYXQiOjE2OTU3MzE2NDksImV4cCI6MTY5NTgxODA0OX0.ccQFkL6sYITrJe91NMF5Hbm0hjOTBCEhP5hJF-bLTfY
