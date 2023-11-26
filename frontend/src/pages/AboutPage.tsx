@@ -10,7 +10,7 @@ export const AboutPage: React.FC = () => {
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh'}}>
             <div style={{maxWidth: '1300px'}}>
                 <Title level={2}>В глубине Грузии</Title>
-                <br />
+                <br/>
                 <Row align="middle">
                     <Col span={6}>
                         <Image src={employee1} alt="employee1" style={{maxWidth: 250}}/>
@@ -30,7 +30,7 @@ export const AboutPage: React.FC = () => {
                         </Paragraph>
                     </Col>
                 </Row>
-                <br />
+                <br/>
                 <Row align="middle">
                     <Col span={14}>
                         <>
@@ -56,9 +56,9 @@ export const AboutPage: React.FC = () => {
                         <Image src={employee2} alt="employee2" style={{maxWidth: 250}}/>
                     </Col>
                 </Row>
-                <br />
+                <br/>
                 <Title level={2}>Ресторан "Солнечная Грузия"</Title>
-                <br />
+                <br/>
                 <Row align="middle">
                     <Col span={18}>
                         <Paragraph style={{fontSize: '18px'}}>
@@ -71,14 +71,15 @@ export const AboutPage: React.FC = () => {
                         </Paragraph>
                     </Col>
                 </Row>
-                <br />
+                <br/>
                 <Row align="middle">
                     <Col span={8}>
                         <Image src={employee3} alt="employee3" style={{maxWidth: 250, marginLeft: 100}}/>
                     </Col>
                     <Col span={12}>
                         <Paragraph style={{fontSize: '18px'}}>
-                            Ресторан "Солнечной Грузии" стал популярным местом среди гостей, привлекая их своей атмосферой
+                            Ресторан "Солнечной Грузии" стал популярным местом среди гостей, привлекая их своей
+                            атмосферой
                             теплоты и семейной гостеприимностью.
                             Гурманы со всего мира приходили, чтобы попробовать блюда, готовимые с любовью трех
                             талантливых

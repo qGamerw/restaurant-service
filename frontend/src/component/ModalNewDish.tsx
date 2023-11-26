@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Input, message, Modal} from 'antd';
-import orderService from '../services/orderService';
+import React from 'react';
+import {Modal} from 'antd';
 import {useDispatch} from 'react-redux';
-import {Category, Dish, Props, UpdateDish} from "../types/types";
-import dishService from "../services/dishService";
-import Paragraph from 'antd/es/skeleton/Paragraph';
+import {Category} from "../types/types";
 import FormNewDish from "./FormNewDish";
 
 interface ModalDishProperty {
@@ -18,15 +15,15 @@ const ModalNewDish: React.FC<ModalDishProperty> = ({modal2Open, category, onClos
 
 
     return (
-            <Modal
-                title="Добавить новое блюдо"
-                centered
-                open={modal2Open}
-                footer={null}
-                onCancel={onClose}
-            >
-                <FormNewDish dispatch={dispatch} category={category}/>
-            </Modal>
+        <Modal
+            title="Добавить новое блюдо"
+            centered
+            open={modal2Open}
+            footer={null}
+            onCancel={onClose}
+        >
+            <FormNewDish dispatch={dispatch} category={category}/>
+        </Modal>
     );
 };
 

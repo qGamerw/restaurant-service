@@ -11,10 +11,9 @@ import java.time.LocalDate;
 public interface AnalyticService {
     /**
      * Определяет количество заказов принятых работником ресторана
-     * @param employeeRestaurantId id работника ресторана
      * @return количество заказов
      */
-    ResponseEntity<?> findCountOrderFromEmployeeRestaurantId(long employeeRestaurantId);
+    ResponseEntity<?> findCountOrderFromEmployeeRestaurantId();
 
     /**
      * Определяет количество заказов поступивших за месяц

@@ -21,16 +21,16 @@ public class AnalyticController {
         this.analyticService = analyticService;
     }
 
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<?> getCountOrderFromEmployeeRestaurant(@PathVariable("id") long idEmployeeRestaurant) {
+    @GetMapping("/employee")
+    public ResponseEntity<?> getCountOrderFromEmployeeRestaurant() {
         log.info("Получает количество заказов сделанных работником ресторана");
 
-        return analyticService.findCountOrderFromEmployeeRestaurantId(idEmployeeRestaurant);
+        return analyticService.findCountOrderFromEmployeeRestaurantId();
     }
 
     @GetMapping("/orders/per/month")
-    public ResponseEntity<?> getOrderPerMonth(@RequestParam(required = false) Integer year,
-                                                 @RequestParam(required = false) Integer month) {
+    public ResponseEntity<?> getOrderPerMonth(@RequestParam Integer year,
+                                                 @RequestParam Integer month) {
         log.info("Получает количество заказов поступивших за месяц");
 
         return analyticService.findOrdersPerMonth(year, month);

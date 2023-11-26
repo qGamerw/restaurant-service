@@ -9,7 +9,7 @@ import {Login} from "../types/types";
 const FormLogin: React.FC = () => {
     const navigate = useNavigate();
 
-    function onFinish(values: Login){
+    function onFinish(values: Login) {
         authService.login(values).then((user) => {
             console.log('Success:', user);
             navigate("/dishes");

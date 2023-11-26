@@ -8,6 +8,7 @@ function saveLocalStore(user: User) {
         localStorage.setItem('user', JSON.stringify(user));
     }
 }
+
 async function register(registration: Registration): Promise<User> {
     const {employeeName, email, password, branchOffice} = registration;
     const response = await axios.post<User>(API_URL + "signup", {
@@ -35,7 +36,7 @@ async function login(login: Login): Promise<User> {
     return response.data;
 }
 
-function logout(): void{
+function logout(): void {
     console.log("logout");
     localStorage.removeItem('user');
 }

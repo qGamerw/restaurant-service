@@ -2,15 +2,11 @@ import axios from "axios";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
 import {setAllOrders, updateOrders} from "../slices/orderSlice";
-import {Order, User} from "../types/types";
-import {useSelector} from "react-redux";
-import {RootState} from "../store";
-import {Simulate} from "react-dom/test-utils";
-import compositionStart = Simulate.compositionStart;
+import {User} from "../types/types";
 
 const API_URL_ORDER = "orders"
 
-async function updateOrderStatusById(id: number, status: string, branchId: number, branchAddress: string, dispatch: Dispatch){
+async function updateOrderStatusById(id: number, status: string, branchId: number, branchAddress: string, dispatch: Dispatch) {
     const headers = authHeader();
     try {
         const response = await axios.put(API_URL_ORDER + `/${id}`,

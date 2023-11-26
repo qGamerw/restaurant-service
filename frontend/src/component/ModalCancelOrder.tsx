@@ -39,7 +39,7 @@ const ModalCancelOrder: React.FC<Props> = ({id}) => {
         }, 1500);
     }
 
-    function handleCancel () {
+    function handleCancel() {
         setOpen(false);
         setError('');
     }
@@ -79,7 +79,8 @@ const ModalCancelOrder: React.FC<Props> = ({id}) => {
                     </Button>,
                 ]}
             >
-                <Input value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} placeholder="Введите причину"/>
+                <Input value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress}
+                       placeholder="Введите причину"/>
                 {error && <p style={{color: 'red'}}>{error}</p>}
             </Modal>
         </>

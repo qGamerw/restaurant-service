@@ -43,7 +43,7 @@ const AccountPage = () => {
                 style={{marginTop: 10, marginLeft: -40}}
                 src={account}
             />
-            <Menu onClick={onClick} style={{width: 256, marginLeft: -40 }} mode="vertical" items={items}/>
+            <Menu onClick={onClick} style={{width: 256, marginLeft: -40}} mode="vertical" items={items}/>
         </>
     );
 };

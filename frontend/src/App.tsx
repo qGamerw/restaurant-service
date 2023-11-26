@@ -13,7 +13,6 @@ import {RootState} from './store';
 import orderService from './services/orderService';
 import AccountPage from "./pages/AccountPage";
 import {Order} from "./types/types";
-import avatar from "./icon-user.png"
 import AboutPage from "./pages/AboutPage";
 
 const {Header, Content, Footer} = Layout;
@@ -117,8 +116,16 @@ const App: React.FC = () => {
         <Layout className="layout" style={{minWidth: 1370}}>
             <Header style={{display: 'flex', alignItems: 'center'}}>
                 <div className="demo-logo"/>
-                <Typography.Title level={5} style={{color: 'white', margin: 0, marginLeft: -30, marginRight: 10, cursor: 'pointer' }}
-                  onClick={() => {navigate('/dishes')}} >
+                <Typography.Title level={5} style={{
+                    color: 'white',
+                    margin: 0,
+                    marginLeft: -30,
+                    marginRight: 10,
+                    cursor: 'pointer'
+                }}
+                                  onClick={() => {
+                                      navigate('/dishes')
+                                  }}>
                     Restaurant
                 </Typography.Title>
                 {isLoginIn && (
@@ -129,12 +136,17 @@ const App: React.FC = () => {
                     <div style={{marginLeft: 'auto'}}>
                         <Badge count={allOrders.length} size="small">
                             <Avatar
-                                onClick={() => {navigate('/user')}}
-                                style={{backgroundColor: '#1677ff', cursor: 'pointer' }}>{userData ? userData.employeeName[0] : null} </Avatar>
+                                onClick={() => {
+                                    navigate('/user')
+                                }}
+                                style={{
+                                    backgroundColor: '#1677ff',
+                                    cursor: 'pointer'
+                                }}>{userData ? userData.employeeName[0] : null} </Avatar>
                         </Badge>
                         <Button
                             type="primary"
-                            style={{marginLeft: 20 }}
+                            style={{marginLeft: 20}}
                             onClick={() => {
                                 authService.logout();
                                 message.error('Вы вышли');
@@ -159,7 +171,9 @@ const App: React.FC = () => {
                     </Routes>
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}><a onClick={() => {navigate('/about')}} >Restoration Service ©2023</a></Footer>
+            <Footer style={{textAlign: 'center'}}><a onClick={() => {
+                navigate('/about')
+            }}>Restoration Service ©2023</a></Footer>
         </Layout>
     );
 };

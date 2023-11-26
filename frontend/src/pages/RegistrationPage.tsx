@@ -7,7 +7,7 @@ import Item = List.Item;
 const RegistrationPage: React.FC = () => {
     const [activeTabKey, setActiveTabKey] = useState<string>('tab1');
 
-    function handleTabChange (key: string) {
+    function handleTabChange(key: string) {
         setActiveTabKey(key);
     }
 
