@@ -13,7 +13,7 @@ Content-Type: application/json
 ### Получает заказы со статусами на рассмотрении и в процессе
 
 GET localhost:8080/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTY5Njg3Nzc1NiwiZXhwIjoxNjk2OTY0MTU2fQ.kRo789TICtGiOphHSFMin7N2nwdrXSQscRTJ_gBQ38E
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VybmFtZSIsImlhdCI6MTcwMTAyMjgzMCwiZXhwIjoxNzAxMTA5MjMwfQ.wooMz69ww6P6e65mrYwv5VJ7_qJ66n0IJOGLogDA9Rw
 
 ### Отменяет заказ
 

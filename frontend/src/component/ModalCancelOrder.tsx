@@ -63,23 +63,23 @@ const ModalCancelOrder: React.FC<Props> = ({id}) => {
     return (
         <>
             <Button type="primary" onClick={showModal}>
-                Cancel
+                Отмена
             </Button>
             <Modal
-                visible={open}
-                title="Cancel order"
+                open={open}
+                title="Отменить заказ"
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
-                        Return
+                        Отмена
                     </Button>,
                     <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
-                        Submit
+                        Отправить
                     </Button>,
                 ]}
             >
-                <Input value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} placeholder="Enter text"/>
+                <Input value={inputValue} onChange={handleChange} onKeyDown={handleKeyPress} placeholder="Введите причину"/>
                 {error && <p style={{color: 'red'}}>{error}</p>}
             </Modal>
         </>

@@ -71,8 +71,8 @@ const OrderPage: React.FC = () => {
                 label: (
                     <>
                         <p><b>Адрес: </b>{order.address} </p>
-                        <p><b>Время от заказывания: </b>{new Date(Date.parse(order.orderTime)).toLocaleString('RU')}</p>
-                        <p><b>Ожидание заказа: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} min
+                        <p><b>Время от заказывания: </b>{new Date(Date.parse(order.orderTime)).toLocaleString('RU')} минут(ы)</p>
+                        <p><b>Ожидание заказа: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} минут(ы)
                         </p>
                         <Tag color={order.tag_color}>{order.tag_label}</Tag>
                     </>
@@ -89,7 +89,7 @@ const OrderPage: React.FC = () => {
                             </Panel>
                         </Collapse>
                         <Button type="primary" onClick={() => onAccept(order.id)}
-                                style={{marginRight: 10, marginTop: 10}}>Accept</Button>
+                                style={{marginRight: 10, marginTop: 10}}>Принять</Button>
                         <ModalCancelOrder id={order.id}/>
                     </>
                 ),
@@ -107,9 +107,9 @@ const OrderPage: React.FC = () => {
                 label: (
                     <div>
                         <p><b>Адрес: </b>{order.address}</p>
-                        <p><b>Время от заказывания: </b>{new Date(Date.parse(order.orderCookingTime)).toLocaleString('RU')}</p>
+                        <p><b>Время от заказывания: </b>{new Date(Date.parse(order.orderCookingTime)).toLocaleString('RU')} минут(ы)</p>
                         <p>
-                            <b>Время от приготовления: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookingTime).getTime()) / 60000)} min
+                            <b>Время от приготовления: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookingTime).getTime()) / 60000)} минут(ы)
                         </p>
                         <Tag color={order.tag_color}>{order.tag_label}</Tag>
                     </div>
@@ -126,7 +126,7 @@ const OrderPage: React.FC = () => {
                             </Panel>
                         </Collapse>
                         <Button type="primary" onClick={() => onCooked(order.id, order.branchId, order.branchAddress)}
-                                style={{marginTop: 10}}>Complete</Button>
+                                style={{marginTop: 10}}>Завершить</Button>
                     </div>
                 ),
             }
@@ -143,9 +143,9 @@ const OrderPage: React.FC = () => {
                 label: (
                     <div>
                         <p><b>Адрес: </b>{order.address}</p>
-                        <p><b>Время от заказывания: </b>{new Date(Date.parse(order.orderCookedTime)).toLocaleString('RU')}</p>
+                        <p><b>Время от заказывания: </b>{new Date(Date.parse(order.orderCookedTime)).toLocaleString('RU')} минут(ы)</p>
                         <p>
-                            <b>Время ожидания курьера: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookedTime).getTime()) / 60000)} min
+                            <b>Время ожидания курьера: </b>{Math.floor((currentDate.getTime() - new Date(order.orderCookedTime).getTime()) / 60000)} минут(ы)
                         </p>
                     </div>
                 ),

@@ -1,0 +1,8 @@
+### Ресторан - получение по работнику количество заказов
+GET http://localhost:8083/analytic/employee/1
+
+### Ресторан - количество заказов за __ месяцй
+GET http://localhost:8083/analytic/orders/per/month?month=10
+
+### Ресторан - количество заказов за месяц
+GET http://localhost:8083/analytic/orders/per/month

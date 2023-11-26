@@ -115,7 +115,7 @@ const DishesPage = () => {
                 Показать все блюда</Button>
             <Button type="primary" style={{marginRight: 10, marginTop: 10}} onClick={() => setModal2Open(true)}>
                 Новое блюдо</Button>
-            <Input type="text" value={searchQuery} onChange={handleSearch} placeholder="Поиск..."
+            <Input type="text" value={searchQuery} onChange={handleSearch} placeholder="Поиск по названию..."
                    style={{marginTop: 10}}/>
             <Select style={{marginTop: 10, width: 200}} onChange={handleCategoryFilter} defaultValue={"Все"}>
                 <Select.Option key={-1} value={-1}>

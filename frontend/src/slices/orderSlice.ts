@@ -18,7 +18,7 @@ const orderSlice = createSlice({
         },
         updateOrders: (state, action: PayloadAction<Order[]>) => {
             const addOrders: Order[] = state.allOrders.filter((order: Order) =>
-                !state.allOrders.some((item: Order) => item.id === order.id));
+                !action.payload.some((item: Order) => item.id === order.id));
 
             state.allOrders = [...addOrders, ...action.payload];
 

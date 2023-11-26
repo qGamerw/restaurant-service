@@ -1,6 +1,7 @@
 import React from 'react';
 import {Avatar, Menu, MenuProps} from 'antd';
 import {useDispatch} from "react-redux";
+import account from "../employee.png"
 import {AntDesignOutlined, AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -37,11 +38,12 @@ const AccountPage = () => {
     return (
         < >
             <Avatar
-                size={100}
+                size={150}
                 icon={<AntDesignOutlined/>}
-                style={{marginTop: 10}}
+                style={{marginTop: 10, marginLeft: -40}}
+                src={account}
             />
-            <Menu onClick={onClick} style={{width: 256, marginLeft: -40}} mode="vertical" items={items}/>
+            <Menu onClick={onClick} style={{width: 256, marginLeft: -40 }} mode="vertical" items={items}/>
         </>
     );
 };
