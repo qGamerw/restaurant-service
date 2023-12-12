@@ -27,6 +27,6 @@ public class Order {
     private String address;
     private String branchAddress;
     private Long branchId;
-    private Long employeeRestaurantId;
+    private String employeeRestaurantId;
     private List<?> dishesOrders;
 }
