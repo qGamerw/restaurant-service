@@ -1,16 +1,17 @@
-package ru.sber.entities.request;
+package ru.sber.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.sber.entities.BranchOffice;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class SignupRequest {
+public class UserDetails {
     private String username;
     private String email;
-    private String password;
     private String phoneNumber;
-    private String idBranchOffice;
+    private BranchOffice idBranchOffice;
+    private String status;
 }

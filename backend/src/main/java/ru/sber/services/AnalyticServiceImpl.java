@@ -2,46 +2,51 @@ package ru.sber.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-import ru.sber.entities.enums.EStatusOrders;
-import ru.sber.exceptions.NoFoundEmployeeException;
+import ru.sber.exceptions.UserNotFound;
 import ru.sber.order.OrderFeign;
-import ru.sber.security.services.EmployeeDetailsImpl;
-
-import java.time.LocalDate;
 
 @Service
 @Slf4j
 public class AnalyticServiceImpl implements AnalyticService {
 
     private final OrderFeign orderFeign;
+    private final JwtService jwtService;
 
-    public AnalyticServiceImpl(OrderFeign orderFeign) {
+    public AnalyticServiceImpl(OrderFeign orderFeign, JwtService jwtService) {
         this.orderFeign = orderFeign;
+        this.jwtService = jwtService;
     }
 
     @Override
     public ResponseEntity<?> findCountOrderFromEmployeeRestaurantId() {
-        return orderFeign.getCountOrderFromEmployeeRestaurant(getEmployeeId());
+        log.info("{}", getUserId());
+        return orderFeign.getCountOrderFromEmployeeRestaurant(getUserId());
     }
 
     @Override
     public ResponseEntity<?> findOrdersPerMonth(Integer year, Integer mouth) {
         return orderFeign.getOrderPerMonth(
-                year == 0? null: year,
-                mouth == 0? null: mouth);
+                year == 0 ? null : year,
+                mouth == 0 ? null : mouth);
     }
 
-    private long getEmployeeId() {
+    private String getUserId() {
         log.info("Получает id сотрудника текущей сессии");
 
-        var employee = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (employee instanceof EmployeeDetailsImpl) {
-            return ((EmployeeDetailsImpl) employee).getId();
+        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
+            Jwt jwt = jwtAuthenticationToken.getToken();
+            String subClaim = jwtService.getSubClaim(jwt);
+
+            return subClaim;
         } else {
-            throw new NoFoundEmployeeException("Сотрудник не найден");
+            throw new UserNotFound("Пользователь не найден");
         }
     }
 }

@@ -1,6 +1,7 @@
 package ru.sber.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.sber.order.OrderFeign;
@@ -17,6 +18,7 @@ public class OrderServiceImp implements OrderService {
     private final OrderFeign orderFeign;
     private final NotifyService notifyService;
 
+    @Autowired
     public OrderServiceImp(OrderFeign orderFeign, NotifyService notifyService) {
         this.orderFeign = orderFeign;
         this.notifyService = notifyService;
@@ -33,7 +35,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> cancelOrderByListId (String listId, Object massage) {
+    public ResponseEntity<?> cancelOrderByListId(String listId, Object massage) {
         return orderFeign.cancelOrderByListId(listId, massage);
     }
 

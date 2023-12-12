@@ -1,6 +1,7 @@
 package ru.sber.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.entities.Notify;
 import ru.sber.repositories.NotifyRepository;
@@ -12,6 +13,7 @@ import java.util.List;
 public class NotifyServiceImp implements NotifyService {
     private final NotifyRepository notifyRepository;
 
+    @Autowired
     public NotifyServiceImp(NotifyRepository notifyRepository) {
         this.notifyRepository = notifyRepository;
     }

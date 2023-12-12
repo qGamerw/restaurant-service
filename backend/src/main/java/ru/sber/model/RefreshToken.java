@@ -1,4 +1,4 @@
-package ru.sber.entities.request;
+package ru.sber.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class LoginRequest {
-    private String username;
-    private String password;
+public class RefreshToken {
+    private String refresh_token;
 }

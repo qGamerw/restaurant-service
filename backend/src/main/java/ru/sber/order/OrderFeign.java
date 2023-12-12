@@ -27,9 +27,9 @@ public interface OrderFeign {
     List<?> getListOrdersByNotify(@PathVariable String orderId);
 
     @GetMapping("analytic/employee/{id}")
-    public ResponseEntity<Integer> getCountOrderFromEmployeeRestaurant(@PathVariable("id") long idEmployeeRestaurant);
+    ResponseEntity<Integer> getCountOrderFromEmployeeRestaurant(@PathVariable("id") String idEmployeeRestaurant);
 
     @GetMapping("analytic/orders/per/month")
-    public ResponseEntity<Long> getOrderPerMonth(@RequestParam(required = false) Integer year,
-                                                 @RequestParam(required = false) Integer month);
+    ResponseEntity<Long> getOrderPerMonth(@RequestParam(required = false) Integer year,
+                                          @RequestParam(required = false) Integer month);
 }

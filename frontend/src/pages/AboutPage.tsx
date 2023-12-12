@@ -1,5 +1,5 @@
 import React from "react";
-import employee1 from "../georgian_restaurant_employee3.png"
+import user1 from "../georgian_restaurant_employee3.png"
 import employee2 from "../georgian_restaurant_employee2.png"
 import employee3 from "../georgian_restaurant_employee1.png"
 import {Col, Image, Row, Typography} from "antd";
@@ -13,7 +13,7 @@ export const AboutPage: React.FC = () => {
                 <br/>
                 <Row align="middle">
                     <Col span={6}>
-                        <Image src={employee1} alt="employee1" style={{maxWidth: 250}}/>
+                        <Image src={user1} alt="user1" style={{maxWidth: 250}}/>
                     </Col>
                     <Col span={12}>
                         <Paragraph style={{fontSize: '18px'}}>

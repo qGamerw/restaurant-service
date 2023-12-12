@@ -1,7 +1,7 @@
 package ru.sber.entities.enums;
 
 /**
- * Перечисление для статуса у {@link ru.sber.entities.Order заказа}
+ * Перечисление для статуса у заказа
  */
 public enum EStatusOrders {
     TODO,

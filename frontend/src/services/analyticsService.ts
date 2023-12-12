@@ -16,7 +16,7 @@ async function getCountOrderFromEmployeeRestaurant(): Promise<number> {
     }
 }
 
-async function getOrderPerMonth(year: number, month: number): Promise<number> {
+async function getOrderPerMonth(year: number|null, month: number|null): Promise<number> {
     const headers = authHeader();
 
     try {

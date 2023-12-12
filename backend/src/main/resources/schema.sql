@@ -6,8 +6,8 @@ insert into restaurant_service.categories (category) values ('SECOND_COURSES');
 insert into restaurant_service.categories (category) values ('PIZZA');
 insert into restaurant_service.categories (category)values ('DRINKS');
 
-insert into restaurant_service.positions (position) values ('POSITION_SELLER');
-insert into restaurant_service.positions (position) values ('POSITION_ADIN');
+insert into restaurant_service.roles (role) values ('SELLER');
+insert into restaurant_service.roles (role) values ('ADMIN');
 
 insert into restaurant_service.branchs_office (address, name_city, status) values ('Address office', 'VOLOGDA', 'ON');
 insert into restaurant_service.branchs_office (address, name_city, status) values ('Address office2', 'CHEREPOVETS', 'ON');
