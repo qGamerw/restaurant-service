@@ -50,7 +50,6 @@ public class UserServiceImp implements UserService {
     public boolean deleteById(String id) {
         log.info("Удаляет сотрудника по id");
 
-        userRepository.deleteById(id);
-        return true;
+        return userRepository.deleteById(id);
     }
 }

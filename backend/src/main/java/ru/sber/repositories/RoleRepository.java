@@ -10,5 +10,11 @@ import java.util.Optional;
  * Репозиторий с {@link Role должностями}
  */
 public interface RoleRepository extends JpaRepository<Role, Long> {
+    /**
+     * Находит роль по названию
+     *
+     * @param role название роли
+     * @return Optional<Role>
+     */
     Optional<Role> findByRole(ERole role);
 }

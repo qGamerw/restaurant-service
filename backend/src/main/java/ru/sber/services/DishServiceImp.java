@@ -137,8 +137,7 @@ public class DishServiceImp implements DishService {
     public Optional<Dish> getDishById(long id) {
         log.info("Получает блюдо с id {}", id);
 
-        var isExists = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(
-                getUserJwtTokenSecurityContext().getId(), id);
+        var isExists = dishesBranchOfficeRepository.existsByDish_Id(id);
 
         if (isExists) {
             return dishRepository.findById(id);

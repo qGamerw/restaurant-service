@@ -76,7 +76,7 @@ public class DishController {
                 .body(dishService.getListDish());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/customer/{id}")
     public ResponseEntity<Dish> getDishById(@PathVariable long id) {
         log.info("Получает блюдо по id");
 
@@ -87,7 +87,7 @@ public class DishController {
                         .build());
     }
 
-    @GetMapping("/any")
+    @GetMapping("/customer/any")
     public ResponseEntity<Page<Dish>> getListAllDish(@RequestParam int page, @RequestParam int size) {
         log.info("Получает все блюда");
 
@@ -95,7 +95,7 @@ public class DishController {
                 .body(dishService.getDishesByPage(page, size));
     }
 
-    @GetMapping
+    @GetMapping("/customer")
     public ResponseEntity<List<Dish>> getListAllDish(@RequestParam String city) {
         log.info("Получает все блюда в городе");
 
@@ -103,7 +103,7 @@ public class DishController {
                 .body(dishService.getListByNameCity(city));
     }
 
-    @GetMapping("/basket")
+    @GetMapping("/customer/basket")
     public ResponseEntity<List<Dish>> getListDishesById(@RequestParam String list) {
         log.info("Получает список блюд по id {}", list);
 

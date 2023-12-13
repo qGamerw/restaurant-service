@@ -161,6 +161,12 @@ public class AuthController {
             ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
                     keycloakTokenUrl, HttpMethod.POST, tokenEntity, String.class);
 
+//            String jsonResponse = tokenResponseEntity.getBody();
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+//
+//            String accessToken = jsonNode.get("access_token").asText();
+
             return new ResponseEntity<>(tokenResponseEntity.getBody(),
                     tokenResponseEntity.getStatusCode());
         } catch (Exception e) {
