@@ -13,4 +13,6 @@ public class SignupRequest {
     private String password;
     private String phoneNumber;
     private String idBranchOffice;
+    private String firstName;
+    private String lastName;
 }

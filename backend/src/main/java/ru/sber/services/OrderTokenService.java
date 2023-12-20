@@ -2,7 +2,7 @@ package ru.sber.services;
 
 import ru.sber.entities.OrderToken;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис для взаимодействия с {@link OrderToken токенами}
@@ -21,5 +21,5 @@ public interface OrderTokenService {
      *
      * @return List<OrderToken>
      */
-    List<OrderToken> findAll();
+    Optional<OrderToken> findById();
 }

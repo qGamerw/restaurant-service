@@ -6,11 +6,11 @@ import {User} from "../types/types";
 
 const API_URL_ORDER = "orders"
 
-async function updateOrderStatusById(id: number, status: string, branchId: number, branchAddress: string, dispatch: Dispatch) {
+async function updateOrderStatusById(id: number, status: string, dispatch: Dispatch) {
     const headers = authHeader();
     try {
         const response = await axios.put(API_URL_ORDER + `/${id}`,
-            {status: status, branchId: branchId, branchAddress: branchAddress},
+            {status: status},
             {headers});
 
         return response.data;
@@ -63,7 +63,6 @@ async function getListOrders(dispatch: Dispatch) {
         return response.data;
     } catch (error) {
         console.error("Ошибка получения заказов:", error);
-        throw error;
     }
 }
 

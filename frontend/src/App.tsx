@@ -24,15 +24,15 @@ const App: React.FC = () => {
     const location = useLocation();
     const [selectedKeys, setSelectedKeys] = useState<string>('2');
     const allOrders = useSelector((store: RootState) => store.orders.allOrders).filter(item => item.status === 'REVIEW');
-    const isLoginIn = localStorage.getItem('user') !== null;
-    const userDataString = localStorage.getItem('user');
-    const userData = userDataString ? JSON.parse(userDataString) : null;
-    const isAdmin = true; // localStorage.getItem('user') !== null && localStorage.user.position.position === 'ADMIN';
+    const isLoginIn = sessionStorage.getItem('auth-date') !== null;
+    const userDataString = sessionStorage.getItem('user');
+    const userData = userDataString ? JSON.parse(userDataString).username : 'U';
+    const isAdmin = true; // sessionStorage.getItem('auth-date') !== null && sessionStorage.user.position.position === 'ADMIN';
     const currentDate = new Date();
 
 
     function onCancel(id: string) {
-        orderService.cancelOrderByListId(id, 'Waiting time exceeded', dispatch).then(() => {
+        orderService.cancelOrderByListId(id, 'Истекло время ожидания', dispatch).then(() => {
             console.log('Success: cancel');
         });
     }
@@ -51,6 +51,12 @@ const App: React.FC = () => {
         }
     }
 
+    function logOutUser(){
+        authService.logout();
+        navigate('/');
+        message.warning('Вы вышли');
+    }
+
     useEffect(() => {
         if (isLoginIn) {
             orderService.getListOrders(dispatch)
@@ -60,6 +66,31 @@ const App: React.FC = () => {
 
         }
     }, [dispatch, isLoginIn,]);
+
+    useEffect(() => {
+        const refreshInterval = setInterval(() => {
+            refreshToken();
+        }, 4 * 60 * 1000);
+
+        return () => clearInterval(refreshInterval);
+    }, [userDataString]);
+
+    const refreshToken = () => {
+        const authDate = sessionStorage.getItem('auth-date');
+
+        let authObj = null;
+        if (authDate) {
+            authObj = JSON.parse(authDate);
+        }
+
+        if (authObj) {
+            const refresh_token = authObj.refresh_token;
+            authService.refresh(refresh_token, dispatch)
+                .catch(() => {
+                    message.error("Ошибка обновления данных пользователя");
+                });
+        }
+    };
 
     useEffect(() => {
         switch (location.pathname) {
@@ -74,9 +105,6 @@ const App: React.FC = () => {
                 break;
             case '/super-user':
                 setSelectedKeys('4');
-                break;
-            case '/':
-                authService.logout();
                 break;
             default:
                 setSelectedKeys('');
@@ -142,16 +170,12 @@ const App: React.FC = () => {
                                 style={{
                                     backgroundColor: '#1677ff',
                                     cursor: 'pointer'
-                                }}>{userData ? userData.employeeName[0] : null} </Avatar>
+                                }}>{userData ? userData.charAt(0).toUpperCase() : null} </Avatar>
                         </Badge>
                         <Button
                             type="primary"
                             style={{marginLeft: 20}}
-                            onClick={() => {
-                                authService.logout();
-                                message.error('Вы вышли');
-                                navigate('/');
-                            }}
+                            onClick={logOutUser}
                         >
                             Выход
                         </Button>

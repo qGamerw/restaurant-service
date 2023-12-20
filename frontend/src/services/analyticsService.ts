@@ -20,9 +20,13 @@ async function getOrderPerMonth(year: number|null, month: number|null): Promise<
     const headers = authHeader();
 
     try {
-        const response = await axios.get(`${API_URL_ORDER}/orders/per/month?month=${month}&year=${year}`, {headers});
-
-        return response.data;
+        if (year && month){
+            const response = await axios.get(`${API_URL_ORDER}/orders/per/month?month=${month}&year=${year}`, {headers});
+            return response.data;
+        } else {
+            const response = await axios.get(`${API_URL_ORDER}/orders/per/month?month=`, {headers});
+            return response.data;
+        }
     } catch (error) {
         console.error("Ошибка получения количества заказов за месяц: ", error);
         throw error;

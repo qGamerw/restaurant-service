@@ -1,7 +1,5 @@
 package ru.sber.services;
 
-import ru.sber.entities.Role;
-
 /**
  * Сервис для взаимодействия с {@link Role должностью}
  */

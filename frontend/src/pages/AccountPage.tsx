@@ -1,20 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Avatar, Menu, MenuProps, message} from 'antd';
+import React, {useState} from 'react';
+import {Avatar, Menu, MenuProps} from 'antd';
 import {useDispatch} from "react-redux";
 import account from "../employee.png"
 import {AntDesignOutlined, AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
-import orderService from "../services/orderService";
-import analyticService from "../services/analyticsService";
-import categoryService from "../services/categoryService";
-import dishService from "../services/dishService";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const AccountPage = () => {
     const dispatch = useDispatch();
     const [displayText, setDisplayText] = useState('');
-    let count_order = 0;
-    let count_order_per_mouth = 0;
 
     const items: MenuItem[] = [
         getItem('Достижения', 'sub1', <AppstoreOutlined/>),
@@ -42,18 +36,6 @@ const AccountPage = () => {
         console.log('click', e);
     };
 
-    useEffect(() => {
-        analyticService.getCountOrderFromEmployeeRestaurant().then((length) => {
-            count_order = length;
-        });
-    }, []);
-
-    useEffect(() => {
-        analyticService.getOrderPerMonth(null, null).then((length) => {
-            count_order_per_mouth = length;
-        });
-    }, []);
-
     return (
         <>
             <Avatar
@@ -64,10 +46,6 @@ const AccountPage = () => {
             />
 
             <Menu onClick={onClick} style={{width: 256, marginLeft: -40}} mode="vertical" items={items}/>
-            <>
-                Количество заказов всего: {count_order}<br/>
-                Количество заказов за месяц: {count_order_per_mouth}
-            </>
         </>
     );
 };

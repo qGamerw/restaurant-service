@@ -11,15 +11,14 @@ const {Panel} = Collapse;
 const OrderPage: React.FC = () => {
     const dispatch = useDispatch();
     const allOrders = useSelector((store: RootState) => store.orders.allOrders);
-    const userStr = localStorage.getItem('user');
+    const userStr = sessionStorage.getItem('auth-date');
     const [isUpdate, setIsUpdate] = useState(false);
     const currentDate = new Date();
 
     function onAccept(id: number) {
-        let branchOffice = null;
+        console.log(id);
         if (userStr) {
-            branchOffice = (JSON.parse(userStr)).branchOffice;
-            orderService.updateOrderStatusById(id, 'COOKING', branchOffice.id, branchOffice.address, dispatch).then(() => {
+            orderService.updateOrderStatusById(id, 'COOKING', dispatch).then(() => {
                 console.log('Success: Accept');
                 setIsUpdate(true);
             }, (error) => {
@@ -31,7 +30,7 @@ const OrderPage: React.FC = () => {
     }
 
     function onCooked(id: number, branchId: number, branchAddress: string) {
-        orderService.updateOrderStatusById(id, 'COOKED', branchId, branchAddress, dispatch).then(() => {
+        orderService.updateOrderStatusById(id, 'COOKED', dispatch).then(() => {
             console.log('Success: Cooked');
             setIsUpdate(true);
         }, (error) => {
@@ -46,6 +45,8 @@ const OrderPage: React.FC = () => {
             console.log("Прошла 1 минута!");
             orderService.getListOrdersByNotify(dispatch).then((length) => {
                 if (length > 0) message.warning('Обновлено заказов: ' + length);
+            }, () => {
+                message.error("Пользователь не допущен к работе!");
             });
         }, 30000);
 
@@ -55,7 +56,12 @@ const OrderPage: React.FC = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        orderService.getListOrders(dispatch);
+        orderService.getListOrders(dispatch).then((data) => {
+            console.log('Getting:', data);
+
+        }, () => {
+            message.error("Пользователь не допущен к работе!");
+        });
         setIsUpdate(false);
 
     }, [dispatch, isUpdate]);
@@ -179,8 +185,6 @@ const OrderPage: React.FC = () => {
     const countCooking: number = itemsCooking.length;
     const countCooked: number = itemsCooked.length;
     const countAll: number = itemsAll.length;
-
-    console.log(allOrders);
 
     return (
         <div style={{overflow: 'auto'}}>

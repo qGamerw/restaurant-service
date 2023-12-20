@@ -11,5 +11,6 @@ public interface JwtService {
     String getPhoneNumberClaim(Jwt jwt);
 
     String getPreferredUsernameClaim(Jwt jwt);
-
+    String getFirstNameClaim(Jwt jwt);
+    String getLastNameClaim(Jwt jwt);
 }

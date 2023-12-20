@@ -22,13 +22,11 @@ public class User {
     @JoinColumn(name = "branchs_office_id", nullable = false)
     private BranchOffice branchOffice;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
-
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private EStatusEmployee status;
+
+    private String resetPasswordToken;
 
     public User(String id) {
         this.id = id;

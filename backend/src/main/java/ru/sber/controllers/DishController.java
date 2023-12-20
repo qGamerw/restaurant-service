@@ -3,6 +3,7 @@ package ru.sber.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +53,9 @@ public class DishController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping
     @PreAuthorize("hasRole('client_admin')")
-    public ResponseEntity<Long> updateDish(@RequestBody Dish dish) {
+    public ResponseEntity<?> updateDish(@RequestBody Dish dish) {
         log.info("Обновляет блюдо по id {}", dish.getId());
 
         var isUpdate = dishService.updateDish(dish);
@@ -63,7 +64,7 @@ public class DishController {
             return ResponseEntity.accepted()
                     .build();
         } else {
-            return ResponseEntity.badRequest()
+            return ResponseEntity.notFound()
                     .build();
         }
     }

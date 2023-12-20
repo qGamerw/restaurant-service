@@ -15,6 +15,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import ru.sber.entities.OrderToken;
+import ru.sber.entities.User;
+import ru.sber.entities.enums.EStatusEmployee;
+import ru.sber.exceptions.UserNotApproved;
 import ru.sber.exceptions.UserNotFound;
 import ru.sber.model.Order;
 import ru.sber.order.OrderFeign;
@@ -22,6 +25,7 @@ import ru.sber.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализует логику работы с order-service
@@ -52,39 +56,43 @@ public class OrderServiceImp implements OrderService {
     @Override
     public ResponseEntity<?> updateOrderStatusById(Long id, Order order) {
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
-        var user = userRepository.findById(jwtService.getSubClaim(getUserJwtTokenSecurityContext()))
-                .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+        Optional<OrderToken> orderToken = orderTokenService.findById();
+        var user = getUserJwtTokenSecurityContext();
 
         order.setBranchAddress(user.getBranchOffice().getAddress());
         order.setBranchId(user.getBranchOffice().getId());
         order.setEmployeeRestaurantId(user.getId());
 
-        return orderFeign.updateOrderStatusById("Bearer "+ orderToken.get(0).getAccessToken(), id, order);
+        return orderFeign.updateOrderStatusById("Bearer "+ orderToken.get().getAccessToken(), id, order);
     }
 
     @Override
     public ResponseEntity<?> cancelOrderById(Long id, Object massage) {
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
+        Optional<OrderToken> orderToken = orderTokenService.findById();
 
-        return orderFeign.cancelOrderById("Bearer "+ orderToken.get(0).getAccessToken(), id, massage);
+        return orderFeign.cancelOrderById("Bearer "+ orderToken.get().getAccessToken(), id, massage);
     }
 
     @Override
     public ResponseEntity<?> cancelOrderByListId(String listId, Object massage) {
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
+        Optional<OrderToken> orderToken = orderTokenService.findById();
 
-        return orderFeign.cancelOrderByListId("Bearer "+ orderToken.get(0).getAccessToken(), listId, massage);
+        return orderFeign.cancelOrderByListId("Bearer "+ orderToken.get().getAccessToken(), listId, massage);
     }
 
     @Override
     public List<?> getListOrders() {
+        log.info("Получает заказы для ресторана");
+        var user = getUserJwtTokenSecurityContext();
+        if (user.getStatus().equals(EStatusEmployee.UNDER_CONSIDERATION)){
+            throw new UserNotApproved("Пользователь не допущен к работе");
+        }
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
+        Optional<OrderToken> orderToken = orderTokenService.findById();
 
-        return orderFeign.getListOrders("Bearer "+ orderToken.get(0).getAccessToken()).getBody();
+        return orderFeign.getListOrders("Bearer "+ orderToken.get().getAccessToken()).getBody();
     }
 
     @Override
@@ -93,28 +101,29 @@ public class OrderServiceImp implements OrderService {
         log.info("Обновляет информацию о заказах с id {}", strOrder);
 
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
+        Optional<OrderToken> orderToken = orderTokenService.findById();
 
         if (!strOrder.isEmpty()) {
                 return orderFeign.getListOrdersByNotify(
-                        "Bearer "+ orderToken.get(0).getAccessToken(), strOrder);
+                        "Bearer "+ orderToken.get().getAccessToken(), strOrder);
         }
         return List.of();
     }
 
-    private Jwt getUserJwtTokenSecurityContext() {
+    private User getUserJwtTokenSecurityContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
 
-            return jwtAuthenticationToken.getToken();
+            return userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
+                    .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
         } else {
             throw new UserNotFound("Пользователь не найден");
         }
     }
 
     private void checkAndUpdateOrderTokens() {
-        List<OrderToken> orderTokens = orderTokenService.findAll();
+        Optional<OrderToken> orderTokens = orderTokenService.findById();
         log.info("Проверка получения токена");
 
         if (orderTokens.isEmpty() ||

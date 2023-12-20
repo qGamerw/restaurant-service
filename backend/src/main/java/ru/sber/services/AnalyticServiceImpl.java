@@ -20,7 +20,7 @@ import ru.sber.order.OrderFeign;
 import ru.sber.repositories.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -47,9 +47,9 @@ public class AnalyticServiceImpl implements AnalyticService {
         log.info("Ищет количество заказов у сотрудника с id {}", user.getId());
 
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
+        OrderToken orderToken = orderTokenService.findById().get();
 
-        return orderFeign.getCountOrderFromEmployeeRestaurant("Bearer "+ orderToken.get(0).getAccessToken(), user.getId());
+        return orderFeign.getCountOrderFromEmployeeRestaurant("Bearer "+ orderToken.getAccessToken(), user.getId());
     }
 
     @Override
@@ -57,12 +57,12 @@ public class AnalyticServiceImpl implements AnalyticService {
         log.info("Ищет количество заказов за месяц начиная с год(а) {}, месяц(а) {}", year, mouth);
 
         checkAndUpdateOrderTokens();
-        List<OrderToken> orderToken = orderTokenService.findAll();
+        OrderToken orderToken = orderTokenService.findById().get();
 
         return orderFeign.getOrderPerMonth(
-                "Bearer "+ orderToken.get(0).getAccessToken(),
-                year == 0 ? null : year,
-                mouth == 0 ? null : mouth);
+                "Bearer "+ orderToken.getAccessToken(),
+                year,
+                mouth);
     }
 
     private Jwt getUserJwtTokenSecurityContext() {
@@ -77,10 +77,11 @@ public class AnalyticServiceImpl implements AnalyticService {
     }
 
     private void checkAndUpdateOrderTokens() {
-        List<OrderToken> orderTokens = orderTokenService.findAll();
+        Optional<OrderToken> orderTokens = orderTokenService.findById();
         log.info("Проверка получения токена");
 
-        if (orderTokens.isEmpty() || !orderTokens.stream().allMatch(token -> LocalDateTime.now().isBefore(token.getTokenExpiration()))) {
+        if (orderTokens.isEmpty() || !orderTokens.stream()
+                .allMatch(token -> LocalDateTime.now().isBefore(token.getTokenExpiration()))) {
             updateOrderTokens();
         }
     }

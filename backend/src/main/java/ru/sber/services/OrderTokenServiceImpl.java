@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.sber.entities.OrderToken;
 import ru.sber.repositories.OrderTokenRepository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,9 +29,9 @@ public class OrderTokenServiceImpl implements OrderTokenService {
     }
     
     @Override
-    public List<OrderToken> findAll() {
+    public Optional<OrderToken> findById() {
         log.info("Получение токена(ов) из базы данных");
 
-        return orderTokenRepository.findAll();
+        return orderTokenRepository.findById(1);
     }
 }

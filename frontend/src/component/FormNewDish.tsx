@@ -34,7 +34,7 @@ const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
         }, (error) => {
             const _content = (error.response && error.response.data)
             console.log(_content);
-            message.error("Неизвестная ошибка");
+            message.error("Недостаточно прав!");
         })
     }
 

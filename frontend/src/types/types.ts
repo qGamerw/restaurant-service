@@ -15,13 +15,32 @@ export interface Position {
 }
 
 export interface User {
-    accessToken: string,
-    branchOffice: BranchOffice,
-    email: string
-    employeeName: string,
-    id: number,
-    position: any,
-    type: string
+    email: string,
+    idBranchOffice: BranchOffice,
+    phoneNumber: string,
+    status: string,
+    username: string,
+}
+
+export interface UserRegistration {
+    username: string,
+    email: string,
+    phoneNumber: string,
+    password: string,
+    idBranchOffice: string,
+    firstName: string,
+    lastName: string,
+}
+
+export interface AuthData {
+    access_token: string,
+    expires_in: number,
+    not_before_policy: number
+    refresh_expires_in: number,
+    refresh_token: string,
+    scope: string,
+    session_state: string,
+    token_type: string
 }
 
 export interface Registration {

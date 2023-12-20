@@ -11,6 +11,7 @@ async function getListDishByBranch(dispatch: Dispatch) {
 
     try {
         const response = await axios.get(`${API_URL_DISHES}/all`, {headers});
+
         const dishes = response.data;
         dispatch(setAllBranchDishes(dishes));
         return dishes;
@@ -25,7 +26,7 @@ async function getListDish(page: number, size: number, dispatch: Dispatch) {
     const headers = authHeader();
 
     try {
-        const response = await axios.get(`${API_URL_DISHES}/any?page=${page}&size=${size}`, {headers});
+        const response = await axios.get(`${API_URL_DISHES}/customer/any?page=${page}&size=${size}`, {headers});
         const dishes = response.data.content;
         dispatch(setAllDish(dishes));
         return dishes;
@@ -40,7 +41,7 @@ async function updateDish(dish: Dish, dispatch: Dispatch) {
     const headers = authHeader();
 
     try {
-        return (await axios.put(`${API_URL_DISHES}/`, dish, {headers})).data;
+        return (await axios.put(API_URL_DISHES, dish, {headers})).data;
 
     } catch (error) {
         console.error("Ошибка обновления блюда:", error);

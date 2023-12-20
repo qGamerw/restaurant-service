@@ -17,8 +17,13 @@ public interface UserService {
     /**
      * Удаляет сотрудника по id
      *
-     * @param id id сотрудника
      * @return boolean
      */
-    boolean deleteById(String id);
+    boolean deleteById();
+
+    User findById();
+    User findById(String userId);
+    String userUpdate(User user);
+    String getUserToken(String userId);
+    String deleteTokenById(String userId);
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import ru.sber.entities.BranchOffice;
 import ru.sber.entities.Dish;
 import ru.sber.entities.DishesBranchOffice;
+import ru.sber.entities.User;
+import ru.sber.entities.enums.EStatusEmployee;
 import ru.sber.exceptions.UserNotFound;
 import ru.sber.repositories.DishRepository;
 import ru.sber.repositories.DishesBranchOfficeRepository;
@@ -50,7 +52,7 @@ public class DishServiceImp implements DishService {
             dishRepository.save(dish);
         }
         return dishesBranchOfficeRepository.save(
-                new DishesBranchOffice(dish, getUserJwtTokenSecurityContext())).getDish().getId();
+                new DishesBranchOffice(dish, getUserJwtTokenSecurityContext().getBranchOffice())).getDish().getId();
     }
 
     @Override
@@ -60,7 +62,7 @@ public class DishServiceImp implements DishService {
 
         var isExistsDish = dishRepository.existsByName(name);
         Dish dish = dishRepository.findByName(name);
-        var idBranchOffice = getUserJwtTokenSecurityContext();
+        var idBranchOffice = getUserJwtTokenSecurityContext().getBranchOffice();
 
         if (isExistsDish && !dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(
                 idBranchOffice.getId(), dish.getId())) {
@@ -78,7 +80,7 @@ public class DishServiceImp implements DishService {
         log.info("Обновляет блюдо с именем {}", dish.getName());
 
         var isExists = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(
-                getUserJwtTokenSecurityContext().getId(), dish.getId());
+                getUserJwtTokenSecurityContext().getBranchOffice().getId(), dish.getId());
         if (isExists) {
             dishRepository.save(dish);
             return true;
@@ -90,7 +92,7 @@ public class DishServiceImp implements DishService {
     @Override
     @Transactional
     public boolean deleteDish(long id) {
-        var idBranchOffice = getUserJwtTokenSecurityContext().getId();
+        var idBranchOffice = getUserJwtTokenSecurityContext().getBranchOffice().getId();
         log.info("Удаляет из филиала блюдо с id {} {}", id, idBranchOffice);
 
         var isExistsDish = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(idBranchOffice, id);
@@ -103,10 +105,12 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
+    @Transactional
     public List<Dish> getListDish() {
         log.info("Получает все блюда в филиале");
 
-        return dishesBranchOfficeRepository.findByBranchOffice_Id(getUserJwtTokenSecurityContext().getId())
+        return dishesBranchOfficeRepository
+                .findByBranchOffice_Id(getUserJwtTokenSecurityContext().getBranchOffice().getId())
                 .stream()
                 .map(DishesBranchOffice::getDish)
                 .toList();
@@ -153,15 +157,13 @@ public class DishServiceImp implements DishService {
         return dishRepository.findAll(PageRequest.of(page, size));
     }
 
-    private BranchOffice getUserJwtTokenSecurityContext() {
+    private User getUserJwtTokenSecurityContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
 
-            var user = userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
+            return userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
                     .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
-
-            return user.getBranchOffice();
         } else {
             throw new UserNotFound("Пользователь не найден");
         }

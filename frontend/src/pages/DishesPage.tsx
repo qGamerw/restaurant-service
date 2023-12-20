@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Input, Row, Select, Typography} from 'antd';
+import {Button, Card, Col, Input, message, Row, Select, Typography} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
 import dishService from "../services/dishService";
@@ -34,7 +34,6 @@ export function changeCategory(str: string) {
             break;
         }
         default: {
-            //statements;
             break;
         }
     }
@@ -70,7 +69,12 @@ const DishesPage = () => {
         }
 
         dishService.updateDish(updatedDish, dispatch)
-            .then(() => setIsUpdate(true));
+            .then(() => {message.warning("Добавление успешно выполнилось!");}
+            , (error) => {
+            const _content = (error.response && error.response.data)
+            console.log(_content);
+            message.error("Недостаточно прав!");
+        });
     }
 
     useEffect(() => {

@@ -24,12 +24,11 @@ public class EmployeeController {
         this.userService = userService;
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('client_admin')")
-    public ResponseEntity<Void> deleteEmployeeById(@PathVariable String id) {
-        log.info("Удаление аккаунта сотрудника по id {}", id);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteEmployeeById() {
+        log.info("Удаление аккаунта сотрудника");
 
-        var isDeleted = userService.deleteById(id);
+        var isDeleted = userService.deleteById();
 
         if (isDeleted) {
             return ResponseEntity.noContent()

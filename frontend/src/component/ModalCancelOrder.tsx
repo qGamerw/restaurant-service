@@ -55,10 +55,10 @@ const ModalCancelOrder: React.FC<Props> = ({id}) => {
         }
     }
 
-    useEffect(() => {
-        orderService.getListOrders(dispatch);
-        setIsUpdate(false);
-    }, [isUpdate, dispatch]);
+    // useEffect(() => {
+    //     orderService.getListOrders(dispatch);
+    //     setIsUpdate(false);
+    // }, [isUpdate, dispatch]);
 
     return (
         <>

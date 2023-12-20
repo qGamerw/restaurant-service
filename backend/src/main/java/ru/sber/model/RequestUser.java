@@ -9,7 +9,9 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class UserRequest {
+public class RequestUser {
+    private String firstName;
+    private String lastName;
     private String username;
     private String email;
     private boolean enabled;
