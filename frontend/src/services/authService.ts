@@ -1,7 +1,9 @@
 import axios from "axios";
-import {AuthData, Dish, Login, Registration, User, UserRegistration} from "../types/types";
+import {AuthData, Dish, Login, RecoveryPassword, Registration, User, UserRegistration} from "../types/types";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
+import {message} from "antd";
+import {updateOrders} from "../slices/orderSlice";
 
 const API_URL = "/api/auth"
 
@@ -50,6 +52,25 @@ async function login(login: Login): Promise<User> {
     return responseUser.data;
 }
 
+async function resetPasswordToken(email: string) {
+    try {
+        await axios.post(`${API_URL}/reset-password/token`, {
+            email: email
+        }).then(message.success(`Письмо отправили на почту: ${email}!`))
+    } catch (error) {
+        message.error("Неизвестная ошибка при отправлении письма!");
+    }
+}
+
+async function resetPassword(value: RecoveryPassword) {
+    console.log(value);
+    return await axios.put(`${API_URL}/reset-password`, {
+        email: value.email,
+        password: value.password,
+        token: value.token,
+        });
+}
+
 async function refresh(refresh_token: string, dispatch: Dispatch): Promise<User> {
     const responseAuthData = await axios
         .post<AuthData>(`${API_URL}/refresh`, {refresh_token: refresh_token});
@@ -83,7 +104,9 @@ const authService = {
     register,
     login,
     logout,
-    refresh
+    refresh,
+    resetPasswordToken,
+    resetPassword
 };
 
 export default authService;

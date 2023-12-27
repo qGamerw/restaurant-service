@@ -55,6 +55,12 @@ export interface Login {
     password: string;
 }
 
+export interface RecoveryPassword {
+    email: string;
+    password: string;
+    token: string;
+}
+
 export interface Category {
     id: number;
     category: string;

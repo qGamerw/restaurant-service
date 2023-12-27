@@ -37,7 +37,7 @@ public class UserServiceImp implements UserService {
                 .orElseThrow(() -> new RuntimeException("Филиал не найден"));
 
         user.setBranchOffice(branchOffice);
-        user.setStatus(EStatusEmployee.UNDER_CONSIDERATION);
+        user.setStatus(EStatusEmployee.INACTIVE);
         userRepository.save(user);
 
         return true;

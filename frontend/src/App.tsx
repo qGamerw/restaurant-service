@@ -14,6 +14,7 @@ import orderService from './services/orderService';
 import AccountPage from "./pages/AccountPage";
 import {Order} from "./types/types";
 import AboutPage from "./pages/AboutPage";
+import RecoveryPasswordPage from "./pages/RecoveryPasswordPage";
 
 const {Header, Content, Footer} = Layout;
 
@@ -190,6 +191,8 @@ const App: React.FC = () => {
                         <Route path="/dishes" element={<DishesPage/>}/>
                         <Route path="/user" element={<AccountPage/>}/>
                         <Route path="/about" element={<AboutPage/>}/>
+
+                        <Route path="/recovery" element={<RecoveryPasswordPage/>}/>
 
                         <Route path="*" element={<NotFoundPage/>}/>
                     </Routes>

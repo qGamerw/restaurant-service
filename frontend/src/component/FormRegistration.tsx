@@ -13,13 +13,10 @@ interface Registration {
 }
 
 const FormRegistration: React.FC = () => {
-    const navigate = useNavigate();
-
     async function onFinish(values: UserRegistration) {
 
         authService.register(values).then((massage) => {
             console.log('Success:', massage);
-            navigate("/dishes")
         }, (error) => {
             const _content = (error.response && error.response.data)
             console.log(_content);
@@ -37,70 +34,70 @@ const FormRegistration: React.FC = () => {
             autoComplete="off"
         >
             <Form.Item
-                label="Username"
+                label="Ник"
                 name="username"
-                rules={[{required: true, message: 'Please input your username!'}]}
+                rules={[{required: true, message: 'Пожалуйста введите ваш ник!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Ник"/>
             </Form.Item>
 
             <Form.Item
-                label="First name"
+                label="Имя"
                 name="firstName"
-                rules={[{required: true, message: 'Please input your first name!'}]}
+                rules={[{required: true, message: 'Пожалуйста введите ваше имя!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="First name"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Имя"/>
             </Form.Item>
 
             <Form.Item
-                label="Last name"
+                label="Фамилия"
                 name="lastName"
-                rules={[{required: true, message: 'Please input your last name!'}]}
+                rules={[{required: true, message: 'Пожалуйста введите вашу фамилию!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Last name"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Фамилия"/>
             </Form.Item>
 
             <Form.Item
-                label="Phone number"
+                label="Телефон"
                 name="phoneNumber"
-                rules={[{required: true, message: 'Please input your last name!'}]}
+                rules={[{required: true, message: 'Пожалуйста введите ваш телефон!'}]}
             >
-                <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Phone number"/>
+                <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Номер телефона"/>
             </Form.Item>
 
             <Form.Item
-                label="Email"
+                label="Почта"
                 name="email"
                 rules={[
                     {type: 'email', message: 'Введите email!'},
-                    {required: true, message: 'Please input your email!'},
+                    {required: true, message: 'Пожалуйста введите вашу почту!'},
                 ]}
             >
-                <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Email"/>
+                <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Почта"/>
             </Form.Item>
 
             <Form.Item
-                label="Branch office"
+                label="Id филиала"
                 name="idBranchOffice"
-                rules={[{required: true, message: 'Please input your id branch Office!'}]}
+                rules={[{required: true, message: 'Пожалуйста введите номер филиала!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Id branch office"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Номер филиала"/>
             </Form.Item>
 
             <Form.Item
-                label="Password"
+                label="Пароль"
                 name="password"
-                rules={[{required: true, message: 'Please input your password!'}]}
+                rules={[{required: true, message: 'Пожалуйста введите пароль!'}]}
             >
                 <Input.Password
                     prefix={<LockOutlined className="site-form-item-icon"/>}
-                    placeholder="Password"
+                    placeholder="Пароль"
                 />
             </Form.Item>
 
             <Form.Item wrapperCol={{offset: 8, span: 16}}>
                 <Button type="primary" htmlType="submit">
-                    Sign Up
+                    Зарегистрироваться
                 </Button>
             </Form.Item>
         </Form>
