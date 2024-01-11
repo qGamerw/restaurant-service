@@ -149,6 +149,8 @@ public class AuthController {
                 jwtService.getPreferredUsernameClaim(jwt),
                 jwtService.getEmailClaim(jwt),
                 jwtService.getPhoneNumberClaim(jwt),
+                jwtService.getFirstNameClaim(jwt),
+                jwtService.getLastNameClaim(jwt),
                 user.getBranchOffice(),
                 user.getStatus().name());
 

@@ -27,10 +27,9 @@ const App: React.FC = () => {
     const allOrders = useSelector((store: RootState) => store.orders.allOrders).filter(item => item.status === 'REVIEW');
     const isLoginIn = sessionStorage.getItem('auth-date') !== null;
     const userDataString = sessionStorage.getItem('user');
-    const userData = userDataString ? JSON.parse(userDataString).username : 'U';
+    const userName = userDataString ? JSON.parse(userDataString).username : 'U';
     const isAdmin = true; // sessionStorage.getItem('auth-date') !== null && sessionStorage.user.position.position === 'ADMIN';
     const currentDate = new Date();
-
 
     function onCancel(id: string) {
         orderService.cancelOrderByListId(id, 'Истекло время ожидания', dispatch).then(() => {
@@ -86,7 +85,7 @@ const App: React.FC = () => {
 
         if (authObj) {
             const refresh_token = authObj.refresh_token;
-            authService.refresh(refresh_token, dispatch)
+            authService.refresh(refresh_token)
                 .catch(() => {
                     message.error("Ошибка обновления данных пользователя");
                 });
@@ -171,7 +170,7 @@ const App: React.FC = () => {
                                 style={{
                                     backgroundColor: '#1677ff',
                                     cursor: 'pointer'
-                                }}>{userData ? userData.charAt(0).toUpperCase() : null} </Avatar>
+                                }}>{userName ? userName.charAt(0).toUpperCase() : null} </Avatar>
                         </Badge>
                         <Button
                             type="primary"

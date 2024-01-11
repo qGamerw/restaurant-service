@@ -18,7 +18,15 @@ public interface AnalyticService {
      *
      * @param year  год
      * @param mouth месяц
-     * @return количество заказов
+     * @return количество заказов за месяц
      */
     ResponseEntity<?> findOrdersPerMonth(Integer year, Integer mouth);
+
+    /**
+     * Определяет количество заказов поступивших за год
+     *
+     * @param year год
+     * @return количество заказов за год
+     */
+    ResponseEntity<?> findOrdersPerYear(Integer year);
 }

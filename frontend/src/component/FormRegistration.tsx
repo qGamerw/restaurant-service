@@ -38,7 +38,7 @@ const FormRegistration: React.FC = () => {
                 name="username"
                 rules={[{required: true, message: 'Пожалуйста введите ваш ник!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Ник"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Ник" maxLength={30} />
             </Form.Item>
 
             <Form.Item
@@ -46,7 +46,7 @@ const FormRegistration: React.FC = () => {
                 name="firstName"
                 rules={[{required: true, message: 'Пожалуйста введите ваше имя!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Имя"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Имя" maxLength={30} />
             </Form.Item>
 
             <Form.Item
@@ -54,7 +54,7 @@ const FormRegistration: React.FC = () => {
                 name="lastName"
                 rules={[{required: true, message: 'Пожалуйста введите вашу фамилию!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Фамилия"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Фамилия" maxLength={30} />
             </Form.Item>
 
             <Form.Item
@@ -62,7 +62,7 @@ const FormRegistration: React.FC = () => {
                 name="phoneNumber"
                 rules={[{required: true, message: 'Пожалуйста введите ваш телефон!'}]}
             >
-                <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Номер телефона"/>
+                <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Номер телефона" maxLength={12} />
             </Form.Item>
 
             <Form.Item
@@ -73,7 +73,7 @@ const FormRegistration: React.FC = () => {
                     {required: true, message: 'Пожалуйста введите вашу почту!'},
                 ]}
             >
-                <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Почта"/>
+                <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Почта" maxLength={30} />
             </Form.Item>
 
             <Form.Item
@@ -81,7 +81,7 @@ const FormRegistration: React.FC = () => {
                 name="idBranchOffice"
                 rules={[{required: true, message: 'Пожалуйста введите номер филиала!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Номер филиала"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Номер филиала" maxLength={5} pattern="^d+$" />
             </Form.Item>
 
             <Form.Item

@@ -42,4 +42,8 @@ public interface OrderFeign {
     ResponseEntity<Long> getOrderPerMonth(@RequestHeader("Authorization") String bearerToken,
                                           @RequestParam(required = false) Integer year,
                                           @RequestParam(required = false) Integer month);
+
+    @GetMapping("analytic/orders/per/year")
+    ResponseEntity<List<?>> getOrderPerYear(@RequestHeader("Authorization") String bearerToken,
+                                          @RequestParam Integer year);
 }

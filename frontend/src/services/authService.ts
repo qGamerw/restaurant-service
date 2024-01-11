@@ -1,5 +1,14 @@
 import axios from "axios";
-import {AuthData, Dish, Login, RecoveryPassword, Registration, User, UserRegistration} from "../types/types";
+import {
+    AuthData,
+    Dish,
+    Login,
+    NewDataUser,
+    RecoveryPassword,
+    Registration,
+    User,
+    UserRegistration
+} from "../types/types";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
 import {message} from "antd";
@@ -44,7 +53,6 @@ async function login(login: Login): Promise<User> {
         });
     saveLocalStore(responseAuthData.data);
 
-
     const headers = authHeader();
     const responseUser = await axios.get<User>(API_URL, {headers});
     saveLocalStoreUser(responseUser.data);
@@ -71,11 +79,29 @@ async function resetPassword(value: RecoveryPassword) {
         });
 }
 
-async function refresh(refresh_token: string, dispatch: Dispatch): Promise<User> {
+async function newDataUser(value: NewDataUser) {
+    console.log(value);
+    const headers = authHeader();
+
+    const responseUpdate = await axios.put(`${API_URL}`, {
+        email: value.email,
+        phoneNumber: value.phoneNumber,
+        idBranchOffice: value.idBranchOffice,
+        firstName: value.firstName,
+        lastName: value.lastName
+        }, {headers});
+
+    const authDataString = sessionStorage.getItem('auth-date');
+    const userName = authDataString? JSON.parse(authDataString).refresh_token: '';
+    await refresh(userName);
+
+    return responseUpdate;
+}
+
+async function refresh(refresh_token: string): Promise<User> {
     const responseAuthData = await axios
         .post<AuthData>(`${API_URL}/refresh`, {refresh_token: refresh_token});
     saveLocalStore(responseAuthData.data);
-
 
     const headers = authHeader();
     const responseUser = await axios.get<User>(API_URL, {headers});
@@ -106,7 +132,8 @@ const authService = {
     logout,
     refresh,
     resetPasswordToken,
-    resetPassword
+    resetPassword,
+    newDataUser
 };
 
 export default authService;

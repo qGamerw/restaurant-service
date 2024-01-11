@@ -65,6 +65,16 @@ public class AnalyticServiceImpl implements AnalyticService {
                 mouth);
     }
 
+    @Override
+    public ResponseEntity<?> findOrdersPerYear(Integer year) {
+        log.info("Ищет количество заказов за год: {}", year);
+
+        checkAndUpdateOrderTokens();
+        OrderToken orderToken = orderTokenService.findById().get();
+
+        return orderFeign.getOrderPerYear("Bearer "+ orderToken.getAccessToken(), year);
+    }
+
     private Jwt getUserJwtTokenSecurityContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

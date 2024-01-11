@@ -12,6 +12,8 @@ public class UserDetails {
     private String username;
     private String email;
     private String phoneNumber;
+    private String firstName;
+    private String lastName;
     private BranchOffice idBranchOffice;
     private String status;
 }

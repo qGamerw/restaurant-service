@@ -9,14 +9,11 @@ export interface BranchOffice {
     nameCity: string
 }
 
-export interface Position {
-    id: number,
-    position: string
-}
-
 export interface User {
     email: string,
+    firstName: string,
     idBranchOffice: BranchOffice,
+    lastName: string,
     phoneNumber: string,
     status: string,
     username: string,
@@ -27,6 +24,14 @@ export interface UserRegistration {
     email: string,
     phoneNumber: string,
     password: string,
+    idBranchOffice: string,
+    firstName: string,
+    lastName: string,
+}
+
+export interface NewDataUser {
+    email: string,
+    phoneNumber: string,
     idBranchOffice: string,
     firstName: string,
     lastName: string,

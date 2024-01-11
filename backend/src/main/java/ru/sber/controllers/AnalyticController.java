@@ -32,10 +32,18 @@ public class AnalyticController {
 
     @GetMapping("/orders/per/month")
     @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<?> getOrderPerData(@RequestParam(required = false) Integer year,
+    public ResponseEntity<?> getOrderPerMonth(@RequestParam(required = false) Integer year,
                                              @RequestParam(required = false) Integer month) {
         log.info("Получает количество заказов поступивших за месяц");
 
         return analyticService.findOrdersPerMonth(year, month);
+    }
+
+    @GetMapping("/orders/per/year")
+    @PreAuthorize("hasRole('client_user')")
+    public ResponseEntity<?> getOrderPerYear(@RequestParam Integer year) {
+        log.info("Получает количество заказов поступивших за год");
+
+        return analyticService.findOrdersPerYear(year);
     }
 }

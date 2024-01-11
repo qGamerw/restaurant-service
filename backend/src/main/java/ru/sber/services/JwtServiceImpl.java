@@ -33,11 +33,11 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String getFirstNameClaim(Jwt jwt) {
-        return jwt.getClaim("firstName");
+        return jwt.getClaim("given_name");
     }
 
     @Override
     public String getLastNameClaim(Jwt jwt) {
-        return jwt.getClaim("lastName");
+        return jwt.getClaim("family_name");
     }
 }
