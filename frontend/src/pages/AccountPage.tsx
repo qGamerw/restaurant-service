@@ -1,49 +1,38 @@
 import React from 'react';
-import {Avatar, MenuProps} from 'antd';
-import {Menu} from 'antd';
-import {useDispatch} from "react-redux";
+import {Avatar, Tabs} from 'antd';
+import account from "../employee.png"
 import {AntDesignOutlined, AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
+import RecoveryPasswordPage from "./RecoveryPasswordPage";
+import FormLogin from "../component/FormLogin";
+import FormNewDataUser from "../component/FormNewDataUser";
+import FormUserAchievements from "../component/FormUserAchievements";
 
-type MenuItem = Required<MenuProps>['items'][number];
 
 const AccountPage = () => {
-    const dispatch = useDispatch();
-
-    const items: MenuItem[] = [
-        getItem('News', 'sub1', <MailOutlined />),
-        getItem('Achievement', 'sub2', <AppstoreOutlined />),
-        getItem('Settings', 'sub4', <SettingOutlined />),
-    ];
-
-    function getItem(
-        label: React.ReactNode,
-        key?: React.Key | null,
-        icon?: React.ReactNode,
-        children?: MenuItem[],
-        type?: 'group',
-    ): MenuItem {
-        return {
-            key,
-            icon,
-            children,
-            label,
-            type,
-        } as MenuItem;
-    }
-
-    const onClick: MenuProps['onClick'] = (e) => {
-        console.log('click', e);
-    };
 
     return (
-        < >
+        <div>
             <Avatar
-                size={{ xxl: 100 }}
-                icon={<AntDesignOutlined />}
-                style={{marginTop: 10}}
+                size={150}
+                icon={<AntDesignOutlined/>}
+                style={{marginTop: 10, marginLeft: -40}}
+                src={account}
             />
-            <Menu onClick={onClick} style={{ width: 256, marginLeft: -40 }} mode="vertical" items={items} />
-        </>
+                <Tabs style={{marginBottom: 24, marginTop: 20,}} tabPosition={'left'}>
+                    <Tabs.TabPane tab={<><AppstoreOutlined />Достижения</>} key={'1'}>
+                        <FormUserAchievements/>
+                    </Tabs.TabPane>
+
+                    <Tabs.TabPane tab={<><MailOutlined />Новости</>} key={'2'}>
+                        <>Новости</>
+                    </Tabs.TabPane>
+
+                    <Tabs.TabPane tab={<><SettingOutlined />Настройки</>} key={'3'} >
+                        <FormNewDataUser/>
+                    </Tabs.TabPane>
+
+                </Tabs>
+        </div>
     );
 };
 
