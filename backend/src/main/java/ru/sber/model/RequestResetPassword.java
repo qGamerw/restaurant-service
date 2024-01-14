@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Модель для отправки данных на сервис LeyCloak
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

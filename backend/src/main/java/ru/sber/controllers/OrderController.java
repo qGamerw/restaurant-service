@@ -25,7 +25,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrderStatusById(@PathVariable Long id,@RequestBody Order order) {
+    public ResponseEntity<?> updateOrderStatusById(@PathVariable Long id, @RequestBody Order order) {
         log.info("Обновляет статус у заказа {}", id);
 
         return orderService.updateOrderStatusById(id, order);
@@ -56,9 +56,6 @@ public class OrderController {
     public ResponseEntity<List<?>> getListOrdersByNotify() {
         log.info("Получает заказы для уведомления");
 
-        List<?> orders = orderService.getListOrdersByNotify();
-
-        log.info("{}", orders);
-        return ResponseEntity.ok().body(orders);
+        return ResponseEntity.ok().body(orderService.getListOrdersByNotify());
     }
 }

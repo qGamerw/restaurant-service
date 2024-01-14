@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Модель для хранения данных для сброса пароля
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

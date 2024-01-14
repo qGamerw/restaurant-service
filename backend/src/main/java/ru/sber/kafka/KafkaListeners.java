@@ -9,7 +9,7 @@ import ru.sber.model.Order;
 import ru.sber.services.NotifyServiceImp;
 
 /**
- * Класс для получения информации из кафки
+ * Класс для чтения информации из Kafka
  */
 @Slf4j
 @Component

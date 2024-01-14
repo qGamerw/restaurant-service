@@ -14,6 +14,8 @@ import java.util.Properties;
 public class EmailConfig {
     @Bean
     public JavaMailSender javaMailSender() {
+        // настройка почты: https://yandex.ru/support/mail/mail-clients/others.html#smtpsetting
+
         String host = "smtp.yandex.ru";
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

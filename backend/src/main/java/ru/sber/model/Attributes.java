@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Атрибуты пользователя для отправки запроса на сервис KeyCloak
+ */
 @AllArgsConstructor
 @Data
 @NoArgsConstructor

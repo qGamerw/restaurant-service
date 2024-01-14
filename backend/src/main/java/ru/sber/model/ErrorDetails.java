@@ -4,7 +4,7 @@ package ru.sber.model;
 import lombok.Data;
 
 /**
- * Класс для отправки ошибки на запрос
+ * Класс для отправки ошибки при запросе
  */
 @Data
 public class ErrorDetails {

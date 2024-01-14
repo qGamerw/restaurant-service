@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Модель для хранения информации о токена пользователя
+ */
 @AllArgsConstructor
 @Data
 @NoArgsConstructor

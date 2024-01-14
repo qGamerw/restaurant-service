@@ -1,4 +1,4 @@
-package ru.sber.order;
+package ru.sber.proxies;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import ru.sber.model.Order;
 import java.util.List;
 
 /**
- * Отвечает за взаимодействие с order-service
+ * Класс для взаимодействия с сервисом заказы
  */
 @FeignClient(name = "orderService", url = "localhost:8083/")
 public interface OrderFeign {
@@ -45,5 +45,5 @@ public interface OrderFeign {
 
     @GetMapping("analytic/orders/per/year")
     ResponseEntity<List<?>> getOrderPerYear(@RequestHeader("Authorization") String bearerToken,
-                                          @RequestParam Integer year);
+                                            @RequestParam Integer year);
 }

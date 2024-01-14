@@ -5,19 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-import ru.sber.entities.BranchOffice;
 import ru.sber.entities.Dish;
 import ru.sber.entities.DishesBranchOffice;
-import ru.sber.entities.User;
-import ru.sber.entities.enums.EStatusEmployee;
-import ru.sber.exceptions.UserNotFound;
 import ru.sber.repositories.DishRepository;
 import ru.sber.repositories.DishesBranchOfficeRepository;
-import ru.sber.repositories.UserRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,18 +20,15 @@ import java.util.Optional;
 public class DishServiceImp implements DishService {
     private final DishRepository dishRepository;
     private final DishesBranchOfficeRepository dishesBranchOfficeRepository;
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final UserService userService;
 
     @Autowired
     public DishServiceImp(DishRepository dishRepository,
                           DishesBranchOfficeRepository dishesBranchOfficeRepository,
-                          UserRepository userRepository,
-                          JwtService jwtService) {
+                          UserService userService) {
         this.dishRepository = dishRepository;
         this.dishesBranchOfficeRepository = dishesBranchOfficeRepository;
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @Override
@@ -52,7 +41,7 @@ public class DishServiceImp implements DishService {
             dishRepository.save(dish);
         }
         return dishesBranchOfficeRepository.save(
-                new DishesBranchOffice(dish, getUserJwtTokenSecurityContext().getBranchOffice())).getDish().getId();
+                new DishesBranchOffice(dish, userService.getBranchOffice())).getDish().getId();
     }
 
     @Override
@@ -62,7 +51,7 @@ public class DishServiceImp implements DishService {
 
         var isExistsDish = dishRepository.existsByName(name);
         Dish dish = dishRepository.findByName(name);
-        var idBranchOffice = getUserJwtTokenSecurityContext().getBranchOffice();
+        var idBranchOffice = userService.getBranchOffice();
 
         if (isExistsDish && !dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(
                 idBranchOffice.getId(), dish.getId())) {
@@ -80,7 +69,8 @@ public class DishServiceImp implements DishService {
         log.info("Обновляет блюдо с именем {}", dish.getName());
 
         var isExists = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(
-                getUserJwtTokenSecurityContext().getBranchOffice().getId(), dish.getId());
+                userService.getBranchOffice().getId(), dish.getId());
+
         if (isExists) {
             dishRepository.save(dish);
             return true;
@@ -92,7 +82,7 @@ public class DishServiceImp implements DishService {
     @Override
     @Transactional
     public boolean deleteDish(long id) {
-        var idBranchOffice = getUserJwtTokenSecurityContext().getBranchOffice().getId();
+        var idBranchOffice = userService.getBranchOffice().getId();
         log.info("Удаляет из филиала блюдо с id {} {}", id, idBranchOffice);
 
         var isExistsDish = dishesBranchOfficeRepository.existsByBranchOffice_IdAndDish_Id(idBranchOffice, id);
@@ -110,7 +100,7 @@ public class DishServiceImp implements DishService {
         log.info("Получает все блюда в филиале");
 
         return dishesBranchOfficeRepository
-                .findByBranchOffice_Id(getUserJwtTokenSecurityContext().getBranchOffice().getId())
+                .findByBranchOffice_Id(userService.getBranchOffice().getId())
                 .stream()
                 .map(DishesBranchOffice::getDish)
                 .toList();
@@ -155,17 +145,5 @@ public class DishServiceImp implements DishService {
         log.info("Получает блюдо по страницам");
 
         return dishRepository.findAll(PageRequest.of(page, size));
-    }
-
-    private User getUserJwtTokenSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
-
-            return userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
-                    .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
     }
 }

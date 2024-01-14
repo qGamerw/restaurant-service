@@ -11,15 +11,11 @@ import java.math.BigDecimal;
 /**
  * Блюдо
  */
-
 @Entity
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Table(name = "dishes",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "name")
-        })
+@Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Модель для получения данных с сервиса KeyCloak
+ */
 @AllArgsConstructor
 @Data
 @NoArgsConstructor

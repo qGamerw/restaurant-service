@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Table(name = "branchs_office",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "address")
-        })
+@Table(name = "branchs_office", uniqueConstraints = {@UniqueConstraint(columnNames = "address")})
 public class BranchOffice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

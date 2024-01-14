@@ -10,7 +10,7 @@ import ru.sber.entities.Notify;
 import ru.sber.entities.User;
 import ru.sber.entities.enums.EStatusEmployee;
 import ru.sber.exceptions.UserNotApproved;
-import ru.sber.exceptions.UserNotFound;
+import ru.sber.exceptions.UserNotFoundException;
 import ru.sber.repositories.NotifyRepository;
 import ru.sber.repositories.UserRepository;
 
@@ -67,11 +67,11 @@ public class NotifyServiceImp implements NotifyService {
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
 
             var user = userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
-                    .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                    .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
 
             return user;
         } else {
-            throw new UserNotFound("Пользователь не найден");
+            throw new UserNotFoundException("Пользователь не найден");
         }
     }
 }

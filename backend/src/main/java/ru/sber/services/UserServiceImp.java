@@ -8,9 +8,10 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.sber.entities.BranchOffice;
 import ru.sber.entities.User;
 import ru.sber.entities.enums.EStatusEmployee;
-import ru.sber.exceptions.UserNotFound;
+import ru.sber.exceptions.UserNotFoundException;
 import ru.sber.repositories.BranchOfficeRepository;
 import ru.sber.repositories.UserRepository;
 
@@ -48,7 +49,7 @@ public class UserServiceImp implements UserService {
     public boolean deleteById() {
         log.info("Удаляет сотрудника");
         var user = userRepository.findById(jwtService.getSubClaim(getUserJwtTokenSecurityContext()))
-                .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
 
         return userRepository.deleteById(user.getId());
     }
@@ -56,13 +57,13 @@ public class UserServiceImp implements UserService {
     @Override
     public User findById() {
         return userRepository.findById(jwtService.getSubClaim(getUserJwtTokenSecurityContext()))
-                .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
     }
 
     @Override
     public User findById(String userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
     }
 
     @Override
@@ -73,17 +74,34 @@ public class UserServiceImp implements UserService {
     @Override
     public String getUserToken(String userId) {
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
         return user.getResetPasswordToken();
     }
 
     @Override
     public String deleteTokenById(String userId) {
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
         user.setResetPasswordToken("");
 
         return userRepository.save(user).getId();
+    }
+
+    @Override
+    public User getUser() {
+        return userRepository.findById(jwtService.getSubClaim(getUserJwtTokenSecurityContext()))
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+    }
+
+    @Override
+    public BranchOffice getBranchOffice() {
+        return getUser().getBranchOffice();
+    }
+
+    @Override
+    public int countActiveUserByBranchOffice() {
+        return userRepository.countByBranchOffice_IdAndStatus(
+                getUser().getBranchOffice().getId(), EStatusEmployee.INACTIVE);
     }
 
     private Jwt getUserJwtTokenSecurityContext() {
@@ -93,7 +111,7 @@ public class UserServiceImp implements UserService {
 
             return jwtAuthenticationToken.getToken();
         } else {
-            throw new UserNotFound("Пользователь не найден");
+            throw new UserNotFoundException("Пользователь не найден");
         }
     }
 }

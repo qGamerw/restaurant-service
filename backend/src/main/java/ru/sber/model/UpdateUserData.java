@@ -2,6 +2,9 @@ package ru.sber.model;
 
 import lombok.Data;
 
+/**
+ * Модель для обновления данных о пользователе
+ */
 @Data
 public class UpdateUserData {
     private String firstName;

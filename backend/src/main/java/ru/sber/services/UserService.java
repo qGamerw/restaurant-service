@@ -1,5 +1,6 @@
 package ru.sber.services;
 
+import ru.sber.entities.BranchOffice;
 import ru.sber.entities.User;
 
 /**
@@ -26,4 +27,7 @@ public interface UserService {
     String userUpdate(User user);
     String getUserToken(String userId);
     String deleteTokenById(String userId);
+    User getUser();
+    BranchOffice getBranchOffice();
+    int countActiveUserByBranchOffice();
 }

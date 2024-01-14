@@ -36,6 +36,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return boolean
      */
     boolean deleteById(String id);
-
-
 }

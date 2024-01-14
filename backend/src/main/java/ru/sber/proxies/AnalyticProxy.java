@@ -1,17 +1,17 @@
-package ru.sber.services;
+package ru.sber.proxies;
 
 import org.springframework.http.ResponseEntity;
 
 /**
- * Сервис для аналитических запросов
+ * Сервис для аналитических запросов к сервису Заказы
  */
-public interface AnalyticService {
+public interface AnalyticProxy {
     /**
-     * Определяет количество заказов принятых работником ресторана
+     * Определяет количество заказов принятых работником ресторана за все время
      *
      * @return количество заказов
      */
-    ResponseEntity<?> findCountOrderFromEmployeeRestaurantId();
+    ResponseEntity<?> findCountOrdersByEmployee();
 
     /**
      * Определяет количество заказов поступивших за месяц

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Заказ
+ * Модель для хранения информации о заказе
  */
 @AllArgsConstructor
 @Data

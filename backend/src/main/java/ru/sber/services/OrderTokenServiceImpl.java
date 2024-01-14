@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.entities.OrderToken;
+import ru.sber.exceptions.OrderTokenNotFoundException;
 import ru.sber.repositories.OrderTokenRepository;
-
-import javax.swing.text.html.Option;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,9 +26,10 @@ public class OrderTokenServiceImpl implements OrderTokenService {
     }
     
     @Override
-    public Optional<OrderToken> findById() {
-        log.info("Получение токена(ов) из базы данных");
+    public OrderToken getToken() {
+        log.info("Получение токена из базы данных");
 
-        return orderTokenRepository.findById(1);
+        return orderTokenRepository.findById(1)
+                .orElseThrow(() -> new OrderTokenNotFoundException("Токен не найден в базе данных"));
     }
 }

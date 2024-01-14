@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,9 +17,9 @@ import ru.sber.entities.OrderToken;
 import ru.sber.entities.User;
 import ru.sber.entities.enums.EStatusEmployee;
 import ru.sber.exceptions.UserNotApproved;
-import ru.sber.exceptions.UserNotFound;
+import ru.sber.exceptions.UserNotFoundException;
 import ru.sber.model.Order;
-import ru.sber.order.OrderFeign;
+import ru.sber.proxies.OrderFeign;
 import ru.sber.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -56,7 +55,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public ResponseEntity<?> updateOrderStatusById(Long id, Order order) {
         checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
+        Optional<OrderToken> orderToken = orderTokenService.getToken();
         var user = getUserJwtTokenSecurityContext();
 
         order.setBranchAddress(user.getBranchOffice().getAddress());
@@ -69,7 +68,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public ResponseEntity<?> cancelOrderById(Long id, Object massage) {
         checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
+        Optional<OrderToken> orderToken = orderTokenService.getToken();
 
         return orderFeign.cancelOrderById("Bearer "+ orderToken.get().getAccessToken(), id, massage);
     }
@@ -77,7 +76,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public ResponseEntity<?> cancelOrderByListId(String listId, Object massage) {
         checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
+        Optional<OrderToken> orderToken = orderTokenService.getToken();
 
         return orderFeign.cancelOrderByListId("Bearer "+ orderToken.get().getAccessToken(), listId, massage);
     }
@@ -90,7 +89,7 @@ public class OrderServiceImp implements OrderService {
             throw new UserNotApproved("Пользователь не допущен к работе");
         }
         checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
+        Optional<OrderToken> orderToken = orderTokenService.getToken();
 
         return orderFeign.getListOrders("Bearer "+ orderToken.get().getAccessToken()).getBody();
     }
@@ -101,7 +100,7 @@ public class OrderServiceImp implements OrderService {
         log.info("Обновляет информацию о заказах с id {}", strOrder);
 
         checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
+        Optional<OrderToken> orderToken = orderTokenService.getToken();
 
         if (!strOrder.isEmpty()) {
                 return orderFeign.getListOrdersByNotify(
@@ -116,14 +115,14 @@ public class OrderServiceImp implements OrderService {
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
 
             return userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
-                    .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
+                    .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
         } else {
-            throw new UserNotFound("Пользователь не найден");
+            throw new UserNotFoundException("Пользователь не найден");
         }
     }
 
     private void checkAndUpdateOrderTokens() {
-        Optional<OrderToken> orderTokens = orderTokenService.findById();
+        Optional<OrderToken> orderTokens = orderTokenService.getToken();
         log.info("Проверка получения токена");
 
         if (orderTokens.isEmpty() ||

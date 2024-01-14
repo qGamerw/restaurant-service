@@ -3,7 +3,6 @@ package ru.sber.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +15,12 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import ru.sber.config.GeneratePasswordCode;
-import ru.sber.entities.BranchOffice;
 import ru.sber.entities.User;
 import ru.sber.entities.enums.EStatusEmployee;
-import ru.sber.entities.request.LoginRequest;
-import ru.sber.entities.request.SignupRequest;
-import ru.sber.exceptions.UserInvalidToken;
-import ru.sber.exceptions.UserNotFound;
+import ru.sber.exceptions.UserNotFoundException;
 import ru.sber.model.*;
-import ru.sber.services.EmailService;
+import ru.sber.proxies.KeyCloakProxy;
+import ru.sber.proxies.KeyCloakProxyImp;
 import ru.sber.services.JwtService;
 import ru.sber.services.UserService;
 
@@ -42,20 +36,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final String keycloakTokenUrl = "http://localhost:8080/realms/restaurant-realm/protocol/openid-connect/token";
-    private final String keycloakCreateUserUrl = "http://localhost:8080/admin/realms/restaurant-realm/users";
-    private final String keycloakUpdateUserUrl = "http://localhost:8080/admin/realms/restaurant-realm/users/";
-    private final String clientId = "login-app";
-    private final String grantType = "password";
     private final UserService userService;
     private final JwtService jwtService;
-    private final EmailService emailService;
+    private final KeyCloakProxy keyCloakProxy;
 
     @Autowired
-    public AuthController(UserService userService, JwtService jwtService, EmailService emailService) {
+    public AuthController(UserService userService,
+                          JwtService jwtService,
+                          KeyCloakProxy keyCloakProxy) {
         this.userService = userService;
         this.jwtService = jwtService;
-        this.emailService = emailService;
+        this.keyCloakProxy = keyCloakProxy;
     }
 
     @Transactional
@@ -75,7 +66,7 @@ public class AuthController {
         requestUser.setAttributes(attributes);
 
         Credential credential = new Credential();
-        credential.setType(grantType);
+        credential.setType(KeyCloakProxyImp.grantType);
         credential.setValue(signupRequest.getPassword());
 
         List<Credential> credentials = new ArrayList<>();
@@ -85,22 +76,7 @@ public class AuthController {
         HttpHeaders userHeaders = getHttpHeadersAdmin();
         HttpEntity<RequestUser> userEntity = new HttpEntity<>(requestUser, userHeaders);
 
-        try {
-            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
-                    keycloakCreateUserUrl, HttpMethod.POST, userEntity, String.class);
-
-            String responseHeader = userResponseEntity.getHeaders().get("Location").get(0);
-
-            int lastSlashIndex = responseHeader.lastIndexOf("/");
-            String userId = responseHeader.substring(lastSlashIndex + 1);
-
-            userService.addUserById(userId, signupRequest.getIdBranchOffice());
-
-            return new ResponseEntity<>(userResponseEntity.getStatusCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return keyCloakProxy.signUpUserREST(userEntity, signupRequest.getIdBranchOffice());
     }
 
     @PostMapping("/signin")
@@ -111,25 +87,29 @@ public class AuthController {
         tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
-        tokenBody.add("grant_type", grantType);
-        tokenBody.add("client_id", clientId);
+        tokenBody.add("grant_type", KeyCloakProxyImp.grantType);
+        tokenBody.add("client_id", KeyCloakProxyImp.clientId);
         tokenBody.add("username", loginRequest.getUsername());
         tokenBody.add("password", loginRequest.getPassword());
 
-        return getStringResponseEntity(tokenHeaders, tokenBody);
+        HttpEntity<MultiValueMap<String, String>> userEntity = new HttpEntity<>(tokenBody, tokenHeaders);
+        return keyCloakProxy.signInUserREST(userEntity);
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<String> refreshUser(@RequestBody RefreshToken refreshToken) {
+        log.info("Обновление токена у пользователя");
+
         HttpHeaders tokenHeaders = new HttpHeaders();
         tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
         tokenBody.add("grant_type", "refresh_token");
-        tokenBody.add("client_id", clientId);
+        tokenBody.add("client_id", KeyCloakProxyImp.clientId);
         tokenBody.add("refresh_token", refreshToken.getRefresh_token());
 
-        return getStringResponseEntity(tokenHeaders, tokenBody);
+        HttpEntity<MultiValueMap<String, String>> userEntity = new HttpEntity<>(tokenBody, tokenHeaders);
+        return keyCloakProxy.signInUserREST(userEntity);
     }
 
     @GetMapping
@@ -162,6 +142,7 @@ public class AuthController {
     @Transactional
     public ResponseEntity<?> updateUserInfo(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
         log.info("Обновляет данные о клиенте c email {}", signupRequest.getEmail());
+
         Jwt jwt = getUserJwtTokenSecurityContext();
 
         UpdateUserData updateUserData = new UpdateUserData();
@@ -184,23 +165,10 @@ public class AuthController {
         HttpHeaders userHeaders = getHttpHeadersAdmin();
         HttpEntity<UpdateUserData> userEntity = new HttpEntity<>(updateUserData, userHeaders);
 
-        log.info("Http entity: {}", userEntity);
-        try {
-            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
-                    keycloakUpdateUserUrl + jwtService.getSubClaim(getUserJwtTokenSecurityContext()),
-                    HttpMethod.PUT, userEntity, String.class);
-            log.info("Результат отправки на keycloak: {}", userResponseEntity.getStatusCode());
-
-            var user = userService.findById();
-            user.setBranchOffice(signupRequest.getIdBranchOffice() != null ?
-                    new BranchOffice(Long.parseLong(signupRequest.getIdBranchOffice())) : user.getBranchOffice());
-            userService.userUpdate(user);
-
-            return new ResponseEntity<>(userResponseEntity.getStatusCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return keyCloakProxy.updateUserInfoREST(
+                userEntity,
+                jwtService.getSubClaim(getUserJwtTokenSecurityContext()),
+                signupRequest.getIdBranchOffice());
     }
 
     @PutMapping("/logout")
@@ -222,7 +190,7 @@ public class AuthController {
         log.info("Получение токена для изменения пароля у пользователя {}", resetPassword.getEmail());
 
         RequestResetPassword requestResetPassword = new RequestResetPassword();
-        requestResetPassword.setType("password");
+        requestResetPassword.setType(KeyCloakProxyImp.grantType);
         requestResetPassword.setTemporary(false);
         String newPassword = resetPassword.getPassword();
         requestResetPassword.setValue(newPassword);
@@ -230,31 +198,7 @@ public class AuthController {
         HttpHeaders headersAdmin = getHttpHeadersAdmin();
         HttpEntity<RequestResetPassword> resetEntity = new HttpEntity<>(requestResetPassword, headersAdmin);
 
-        try {
-            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
-                    keycloakCreateUserUrl + "?email=" + resetPassword.getEmail(),
-                    HttpMethod.GET, resetEntity, String.class);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode usersNode = objectMapper.readTree(userResponseEntity.getBody());
-
-            if (!usersNode.isArray() || usersNode.size() <= 0) {
-                throw new UserNotFound("Пользователь не найден");
-            }
-
-            JsonNode userNode = usersNode.get(0);
-            var user = userService.findById(userNode.get("id").asText());
-            String passwordToken = GeneratePasswordCode.generateOneTimeToken();
-            user.setResetPasswordToken(passwordToken);
-            userService.userUpdate(user);
-            resetPassword.setToken(passwordToken);
-
-            emailService.sendResetPasswordToken(resetPassword);
-            return new ResponseEntity<>(userResponseEntity.getStatusCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return keyCloakProxy.sendPasswordTokenREST(resetEntity, resetPassword);
     }
 
     @PutMapping("/reset-password")
@@ -262,7 +206,7 @@ public class AuthController {
         log.info("Обновление пароля у пользователя {}", resetPassword.getEmail());
 
         RequestResetPassword requestResetPassword = new RequestResetPassword();
-        requestResetPassword.setType("password");
+        requestResetPassword.setType(KeyCloakProxyImp.grantType);
         requestResetPassword.setTemporary(false);
         String newPassword = resetPassword.getPassword();
         requestResetPassword.setValue(newPassword);
@@ -270,52 +214,7 @@ public class AuthController {
         HttpHeaders userHeaders = getHttpHeadersAdmin();
         HttpEntity<RequestResetPassword> resetEntity = new HttpEntity<>(requestResetPassword, userHeaders);
 
-        log.info("Http entity: {}", resetEntity);
-        try {
-            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
-                    keycloakCreateUserUrl + "?email=" + resetPassword.getEmail(),
-                    HttpMethod.GET, resetEntity, String.class);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode usersNode = objectMapper.readTree(userResponseEntity.getBody());
-            if (!usersNode.isArray() || usersNode.size() <= 0) {
-                throw new UserNotFound("Пользователь не найден");
-            }
-            JsonNode userNode = usersNode.get(0);
-            String userId = userNode.get("id").asText();
-
-            if (!resetPassword.getToken().trim().equals(userService.getUserToken(userId))){
-                throw new UserInvalidToken("Неверный токен");
-            } else {
-                userService.deleteTokenById(userId);
-            }
-
-            ResponseEntity<String> resetResponseEntity = new RestTemplate().exchange(
-                    keycloakUpdateUserUrl + userId + "/reset-password",HttpMethod.PUT, resetEntity, String.class);
-            log.info("Результат отправки на keycloak: {}", resetResponseEntity.getStatusCode());
-
-            resetPassword.setPassword(newPassword);
-            emailService.sendUpdatePasswordToken(resetPassword);
-            return new ResponseEntity<>(resetResponseEntity.getStatusCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    private ResponseEntity<String> getStringResponseEntity(HttpHeaders tokenHeaders, MultiValueMap<String, String> tokenBody) {
-        HttpEntity<MultiValueMap<String, String>> tokenEntity = new HttpEntity<>(tokenBody, tokenHeaders);
-
-        try {
-            ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
-                    keycloakTokenUrl, HttpMethod.POST, tokenEntity, String.class);
-
-            return new ResponseEntity<>(tokenResponseEntity.getBody(),
-                    tokenResponseEntity.getStatusCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return keyCloakProxy.resetPasswordREST(resetEntity, resetPassword);
     }
 
     /**
@@ -328,7 +227,7 @@ public class AuthController {
 
             return jwtAuthenticationToken.getToken();
         } else {
-            throw new UserNotFound("Пользователь не найден");
+            throw new UserNotFoundException("Пользователь не найден");
         }
     }
 
@@ -337,7 +236,11 @@ public class AuthController {
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(signInUser(new LoginRequest("admin", "11111")).getBody());
+        JsonNode rootNode = objectMapper.readTree(signInUser(
+                new LoginRequest(
+                        KeyCloakProxyImp.adminRestaurantUsername,
+                        KeyCloakProxyImp.adminRestaurantPassword)).getBody());
+
         String accessToken = rootNode.path("access_token").asText();
         userHeaders.setBearerAuth(accessToken);
         return userHeaders;

@@ -39,7 +39,7 @@ public class BranchOfficeController {
                     .build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Access denied");
+                    .body("Недостаточно прав для выполенния команды");
         }
     }
 

@@ -5,11 +5,9 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import ru.sber.config.GeneratePasswordCode;
 import ru.sber.model.ResetPassword;
 
 @Slf4j

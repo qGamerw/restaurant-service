@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.sber.entities.BranchOffice;
 
+/**
+ * Модель для вывода неполной информации о пользователе
+ */
 @AllArgsConstructor
 @Data
 @NoArgsConstructor

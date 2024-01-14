@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.sber.model.ErrorDetails;
 
 /**
- * Контроллер для перехвата исключений
+ * Контроллер для перехвата исключений во время выполнения программы
  */
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
