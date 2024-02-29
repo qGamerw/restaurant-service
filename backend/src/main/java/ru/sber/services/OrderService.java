@@ -12,7 +12,7 @@ public interface OrderService {
     /**
      * Обновляет статус заказа
      *
-     * @param id     id заказа
+     * @param id    id заказа
      * @param order заказ
      */
     ResponseEntity<?> updateOrderStatusById(Long id, Order order);

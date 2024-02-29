@@ -19,11 +19,13 @@ import ru.sber.model.RequestResetPassword;
 import ru.sber.model.RequestUser;
 import ru.sber.model.ResetPassword;
 import ru.sber.model.UpdateUserData;
+import ru.sber.repositories.OrderTokenRepository;
 import ru.sber.services.EmailService;
 import ru.sber.services.OrderTokenService;
 import ru.sber.services.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,13 +41,15 @@ public class KeyCloakProxyImp implements KeyCloakProxy {
     private final static String keycloakCreateUserUrl = "http://localhost:8080/admin/realms/restaurant-realm/users";
     private final static String keycloakUpdateUserUrl = "http://localhost:8080/admin/realms/restaurant-realm/users/";
 
-    private final OrderTokenService orderTokenService;
+    private final OrderTokenRepository orderTokenRepository;
     private final UserService userService;
     private final EmailService emailService;
 
     @Autowired
-    public KeyCloakProxyImp(OrderTokenService orderTokenService, UserService userService, EmailService emailService) {
-        this.orderTokenService = orderTokenService;
+    public KeyCloakProxyImp(OrderTokenRepository orderTokenRepository,
+                            UserService userService,
+                            EmailService emailService) {
+        this.orderTokenRepository = orderTokenRepository;
         this.userService = userService;
         this.emailService = emailService;
     }
@@ -92,7 +96,7 @@ public class KeyCloakProxyImp implements KeyCloakProxy {
                     HttpMethod.PUT, userEntity, String.class);
             log.info("Результат отправки на keycloak: {}", userResponseEntity.getStatusCode());
 
-            var user = userService.findById();
+            var user = userService.findByContext();
             user.setBranchOffice(idBranchOffice != null ?
                     new BranchOffice(Long.parseLong(idBranchOffice)) : user.getBranchOffice());
 
@@ -168,17 +172,7 @@ public class KeyCloakProxyImp implements KeyCloakProxy {
     }
 
     @Override
-    public String checkingValidityOfToken() {
-        OrderToken orderTokens = orderTokenService.getToken();
-        log.info("Проверка получения токена");
-
-        if (orderTokens.getAccessToken().isEmpty() || !LocalDateTime.now().isBefore(orderTokens.getTokenExpiration())) {
-            return updateOrderToken();
-        }
-        return orderTokens.getAccessToken();
-    }
-
-    private String updateOrderToken() {
+    public OrderToken updateOrderToken() {
         log.info("Обновление токена заказа");
 
         HttpHeaders tokenHeaders = new HttpHeaders();
@@ -201,9 +195,13 @@ public class KeyCloakProxyImp implements KeyCloakProxy {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(jsonResponse);
 
+
             String accessToken = jsonNode.get("access_token").asText();
-            orderTokenService.save(new OrderToken(accessToken));
-            return accessToken;
+            log.info("Добавление в базу данных токена {}", accessToken);
+
+            OrderToken orderToken = new OrderToken(accessToken);
+            orderTokenRepository.save(orderToken);
+            return orderToken;
 
         } catch (Exception e) {
             e.printStackTrace();

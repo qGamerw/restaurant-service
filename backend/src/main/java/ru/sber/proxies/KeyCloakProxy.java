@@ -3,6 +3,7 @@ package ru.sber.proxies;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+import ru.sber.entities.OrderToken;
 import ru.sber.model.RequestResetPassword;
 import ru.sber.model.RequestUser;
 import ru.sber.model.ResetPassword;
@@ -17,7 +18,7 @@ public interface KeyCloakProxy {
      *
      * @return токен
      */
-    String checkingValidityOfToken();
+    OrderToken updateOrderToken();
 
     /**
      * Отравляет запрос на регистрацию

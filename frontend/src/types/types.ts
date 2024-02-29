@@ -19,16 +19,6 @@ export interface User {
     username: string,
 }
 
-export interface UserRegistration {
-    username: string,
-    email: string,
-    phoneNumber: string,
-    password: string,
-    idBranchOffice: string,
-    firstName: string,
-    lastName: string,
-}
-
 export interface NewDataUser {
     email: string,
     phoneNumber: string,
@@ -46,24 +36,6 @@ export interface AuthData {
     scope: string,
     session_state: string,
     token_type: string
-}
-
-export interface Registration {
-    employeeName: string;
-    email: string;
-    password: string;
-    branchOffice: string;
-}
-
-export interface Login {
-    employeeName: string;
-    password: string;
-}
-
-export interface RecoveryPassword {
-    email: string;
-    password: string;
-    token: string;
 }
 
 export interface Category {

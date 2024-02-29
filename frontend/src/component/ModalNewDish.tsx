@@ -10,6 +10,8 @@ interface ModalDishProperty {
     onClose: () => void;
 }
 
+// не смотрел
+
 const ModalNewDish: React.FC<ModalDishProperty> = ({modal2Open, category, onClose}) => {
     const dispatch = useDispatch();
 

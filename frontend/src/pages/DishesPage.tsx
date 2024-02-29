@@ -1,47 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Input, message, Row, Select, Typography} from 'antd';
+import {Button, Card, Col, Input, Row, Select, Typography} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
-import dishService from "../services/dishService";
-import logo from "../logo.jpg"
-import categoryService from "../services/categoryService";
+import logo from "../images/logo.jpg"
 import {Dish, UpdateDish} from "../types/types";
 import ModalNewDish from "../component/ModalNewDish";
+import {useNavigate} from "react-router-dom";
+import {ChangeCategory} from "../types/dishType";
 
 const {Paragraph} = Typography;
 
-export function changeCategory(str: string) {
-    let newStr = '';
-    switch (str) {
-        case 'SALAD': {
-            newStr = 'Салат';
-            break;
-        }
-        case 'ROLLS': {
-            newStr = 'Роллы';
-            break;
-        }
-        case 'SECOND_COURSES': {
-            newStr = 'Вторые блюда';
-            break;
-        }
-        case 'PIZZA': {
-            newStr = 'Пицца';
-            break;
-        }
-        case 'DRINKS': {
-            newStr = 'Напитки';
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    return newStr;
-}
-
+// не смотрел
 const DishesPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const allDishes = useSelector((store: RootState) => store.dishes.allDishes);
     const branchDishes = useSelector((store: RootState) => store.dishes.allBranchDishes);
@@ -53,39 +25,40 @@ const DishesPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [categoryFilter, setCategoryFilter] = useState<number>(-1);
 
-    useEffect(() => {
-        categoryService.getListDishByBranch(dispatch);
-        dishService.getListDish(0, 50, dispatch);
-    }, []);
+    // useEffect(() => {
+    //     const f = sessionStorage.getItem('auth-date') != null;
+    //     console.log(f);
+    //
+    // }, []);
 
 
     function updateDish(dish: Dish, newStr: UpdateDish) {
-        let updatedDish: Dish;
-
-        if (newStr.name === 'price' || newStr.name === 'weight') {
-            updatedDish = {...dish, [newStr.name]: parseInt(newStr.newName)};
-        } else {
-            updatedDish = {...dish, [newStr.name]: newStr.newName};
-        }
-
-        dishService.updateDish(updatedDish, dispatch)
-            .then(() => {message.warning("Добавление успешно выполнилось!");}
-            , (error) => {
-            const _content = (error.response && error.response.data)
-            console.log(_content);
-            message.error("Недостаточно прав!");
-        });
+        // let updatedDish: Dish;
+        //
+        // if (newStr.name === 'price' || newStr.name === 'weight') {
+        //     updatedDish = {...dish, [newStr.name]: parseInt(newStr.newName)};
+        // } else {
+        //     updatedDish = {...dish, [newStr.name]: newStr.newName};
+        // }
+        //
+        // dishService.updateDish(updatedDish, dispatch)
+        //     .then(() => {message.warning("Добавление успешно выполнилось!");}
+        //     , (error) => {
+        //     const _content = (error.response && error.response.data)
+        //     console.log(_content);
+        //     message.error("Недостаточно прав!");
+        // });
     }
 
-    useEffect(() => {
-        if (isAllDish) {
-            dishService.getListDish(0, 50, dispatch);
-        } else {
-            dishService.getListDishByBranch(dispatch);
-        }
-        setIsUpdate(false);
-
-    }, [isUpdate, dispatch]);
+    // useEffect(() => {
+    //     if (isAllDish) {
+    //         dishService.getListDish(0, 50, dispatch);
+    //     } else {
+    //         dishService.getListDishByBranch(dispatch);
+    //     }
+    //     setIsUpdate(false);
+    //
+    // }, [isUpdate, dispatch]);
 
     function viewBranchDishes() {
         setIsAllDish(false);
@@ -107,6 +80,8 @@ const DishesPage = () => {
         dish.name?.toLowerCase().includes(searchQuery.toLowerCase()) && (categoryFilter === -1 || dish.category.id === categoryFilter)
     );
 
+
+
     return (
         <>
             <ModalNewDish modal2Open={modal2Open} category={categoryList} onClose={() => {
@@ -126,7 +101,7 @@ const DishesPage = () => {
                     Все </Select.Option>
                 {categoryList.map((item) => (
                     <Select.Option key={item.id} value={item.id}>
-                        {changeCategory(item.category)}
+                        {ChangeCategory(item.category)}
                     </Select.Option>
                 ))}
             </Select>
@@ -164,7 +139,7 @@ const DishesPage = () => {
                                 }}>{dish.price}</Paragraph>
                             </p><br/>
                             <p><b>Спецификация блюда: </b></p>
-                            <p><b>Категория: </b>{changeCategory(dish.category.category)}</p>
+                            <p><b>Категория: </b>{ChangeCategory(dish.category.category)}</p>
                             <p><b>Описание: </b><Paragraph
                                 editable={isAllDish ? false : {
                                     onChange: (newStr) => updateDish(dish, {

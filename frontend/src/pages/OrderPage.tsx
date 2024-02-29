@@ -8,6 +8,7 @@ import ModalCancelOrder from "../component/ModalCancelOrder";
 
 const {Panel} = Collapse;
 
+// не смотрел
 const OrderPage: React.FC = () => {
     const dispatch = useDispatch();
     const allOrders = useSelector((store: RootState) => store.orders.allOrders);

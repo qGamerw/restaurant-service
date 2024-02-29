@@ -22,12 +22,19 @@ public interface UserService {
      */
     boolean deleteById();
 
-    User findById();
     User findById(String userId);
+
+    User findByContext();
+
     String userUpdate(User user);
+
     String getUserToken(String userId);
+
     String deleteTokenById(String userId);
+
     User getUser();
+
     BranchOffice getBranchOffice();
+
     int countActiveUserByBranchOffice();
 }

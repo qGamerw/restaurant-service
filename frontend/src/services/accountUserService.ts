@@ -33,6 +33,26 @@ async function getOrderPerMonth(year: number|null, month: number|null): Promise<
     }
 }
 
+//
+// async function newDataUser(value: NewDataUser) {
+//     console.log(value);
+//     const headers = authHeader();
+//
+//     const responseUpdate = await axios.put(`${API_URL}`, {
+//         email: value.email,
+//         phoneNumber: value.phoneNumber,
+//         idBranchOffice: value.idBranchOffice,
+//         firstName: value.firstName,
+//         lastName: value.lastName
+//         }, {headers});
+//
+//     const authDataString = sessionStorage.getItem('auth-date');
+//     const userName = authDataString? JSON.parse(authDataString).refresh_token: '';
+//     await refresh(userName);
+//
+//     return responseUpdate;
+// }
+
 const analyticService = {
     getCountOrderFromEmployeeRestaurant,
     getOrderPerMonth,

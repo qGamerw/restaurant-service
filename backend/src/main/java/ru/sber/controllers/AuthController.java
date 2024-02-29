@@ -119,7 +119,7 @@ public class AuthController {
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
         Jwt jwt = getUserJwtTokenSecurityContext();
 
-        var user = userService.findById();
+        var user = userService.findByContext();
         if (!user.getStatus().name().equals(EStatusEmployee.UNDER_CONSIDERATION.name())) {
             user.setStatus(EStatusEmployee.ACTIVE);
             userService.userUpdate(user);
@@ -175,7 +175,7 @@ public class AuthController {
     public ResponseEntity<String> logOutUser() {
         log.info("Выход пользователя");
 
-        var user = userService.findById();
+        var user = userService.findByContext();
         if (!user.getStatus().name().equals(EStatusEmployee.UNDER_CONSIDERATION.name())) {
             user.setStatus(EStatusEmployee.INACTIVE);
             userService.userUpdate(user);

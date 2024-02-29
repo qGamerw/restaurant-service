@@ -45,7 +45,7 @@ public class NotifyServiceImp implements NotifyService {
     @Override
     public String getList() {
         var user = getUserJwtTokenSecurityContext();
-        if (user.getStatus().equals(EStatusEmployee.UNDER_CONSIDERATION)){
+        if (user.getStatus().equals(EStatusEmployee.UNDER_CONSIDERATION)) {
             throw new UserNotApproved("Пользователь не допущен к работе");
         }
 

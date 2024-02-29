@@ -1,19 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Form, Input, message} from 'antd';
-import {authLoginPath, AuthRegistration} from "../types/authType";
+import {authLoginPath, AuthResetPassword} from "../types/authType";
 import {useNavigate} from "react-router-dom";
 import authService from "../services/authService";
 
-const FormRegistration: React.FC = () => {
+const FormResetPassword: React.FC = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState<string>('');
 
-    const onFinish = (values: AuthRegistration) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+    };
+
+    const onFinish = (values: AuthResetPassword) => {
         console.log('Success:', values);
-        authService.authRegisterUser(values).then(() => navigate(authLoginPath));
-    }
+        authService.authResetPassword(values).then(() => {
+            message.warning("Попытка сброса пароля пользователя.");
+            navigate(authLoginPath);
+        });
+    };
 
     const onFinishFailed = () => {
-        message.error("Ошибка регистрации, поля не заполнены полностью.");
+        message.error("Ошибка восстановления пароля, поля не заполнены полностью.");
+    }
+
+    const getToken = () => {
+        if (email === '') {
+            message.error('Поле email не заполнено!')
+            return;
+        }
+        authService.authGetPasswordToken(email);
     };
 
     return (
@@ -27,15 +43,7 @@ const FormRegistration: React.FC = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
-            <Form.Item<AuthRegistration>
-                label="Логин"
-                name="username"
-                rules={[{required: true, message: 'Пожалуйста, введите!'}]}
-            >
-                <Input placeholder={"********"}/>
-            </Form.Item>
-
-            <Form.Item<AuthRegistration>
+            <Form.Item<AuthResetPassword>
                 label="Email"
                 name="email"
                 rules={[
@@ -49,10 +57,10 @@ const FormRegistration: React.FC = () => {
                     },
                 ]}
             >
-                <Input type="email" placeholder={"********"}/>
+                <Input type="email" placeholder={"********"} onChange={handleEmailChange}/>
             </Form.Item>
 
-            <Form.Item<AuthRegistration>
+            <Form.Item<AuthResetPassword>
                 label="Пароль"
                 name="password"
                 rules={[{required: true, message: 'Пожалуйста, введите!'}]}
@@ -60,19 +68,22 @@ const FormRegistration: React.FC = () => {
                 <Input.Password placeholder={"********"}/>
             </Form.Item>
 
-            <Form.Item<AuthRegistration>
-                label="Office"
-                name="idBranchOffice"
+            <Form.Item<AuthResetPassword>
+                label="Токен"
+                name="token"
                 rules={[{required: true, message: 'Пожалуйста, введите!'}]}
             >
                 <Input placeholder={"********"}/>
             </Form.Item>
 
-            <Form.Item wrapperCol={{offset: 6, span: 8}}>
-                <Button type="primary" htmlType="submit">
-                    Зарегистрироваться
+            <Form.Item wrapperCol={{offset: 4, span: 2}}>
+                <Button type="primary" onClick={getToken}>
+                    Получить токен на почту
                 </Button>
 
+                <Button type="primary" htmlType="submit" style={{marginTop: 10, marginLeft: 50, marginRight: -60}}>
+                    Сбросить
+                </Button>
             </Form.Item>
 
             <div style={{
@@ -84,4 +95,4 @@ const FormRegistration: React.FC = () => {
     );
 };
 
-export default FormRegistration;
+export default FormResetPassword;

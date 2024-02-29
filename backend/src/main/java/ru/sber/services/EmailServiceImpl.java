@@ -35,9 +35,9 @@ public class EmailServiceImpl implements EmailService {
         helper.setSubject("Привет!");
         helper.setText(String.format("""
                 Мы получили запрос на сброса пароля для твоего аккаунта. Чтобы восстановить пароль, введи следующий токен:
-                
+                                
                 Токен для сброса пароля: %s
-                
+                                
                 Если ты не запрашивал восстановление пароля, проигнорируй это сообщение. Если сам запросил восстановление, пожалуйста, следуй инструкциям далее.
                                              
                 С уважением,
@@ -59,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
         helper.setSubject("Привет!");
         helper.setText(String.format("""
                 Мы получили запрос на обновление пароля для твоего аккаунта.
-                
+                                
                 Новый пароль: %s
                                                             
                 С уважением,

@@ -4,6 +4,7 @@ import orderService from '../services/orderService';
 import {useDispatch} from 'react-redux';
 import {Props} from "../types/types";
 
+// не смотрел
 const ModalCancelOrder: React.FC<Props> = ({id}) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);

@@ -32,8 +32,9 @@ public class User {
         this.id = id;
     }
 
-    public User(String id, BranchOffice branchOffice) {
+    public User(String id, BranchOffice branchOffice, EStatusEmployee status) {
         this.id = id;
         this.branchOffice = branchOffice;
+        this.status = status;
     }
 }

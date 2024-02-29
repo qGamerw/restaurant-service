@@ -5,6 +5,7 @@ import {Typography} from "antd";
 
 const { Title } = Typography;
 
+// не смотрел
 const FormUserAchievements = () => {
     const data: EChartOption = {
         series: [

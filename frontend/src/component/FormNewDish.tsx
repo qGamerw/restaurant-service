@@ -4,7 +4,7 @@ import {EditOutlined} from '@ant-design/icons';
 import {Category, Dish} from "../types/types";
 import dishService from "../services/dishService";
 import {Dispatch} from "redux";
-import {changeCategory} from "../pages/DishesPage";
+import {ChangeCategory} from "../types/dishType";
 
 interface AddNewDish {
     dispatch: Dispatch;
@@ -21,6 +21,8 @@ const layout = {
 const tailLayout = {
     wrapperCol: {offset: 8, span: 16},
 };
+
+// не смотрел
 
 const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
     const [form] = Form.useForm();
@@ -89,7 +91,7 @@ const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
                 <Select style={{width: 200}} onChange={handleCategoryFilter}>
                     {category.map((item) => (
                         <Select.Option key={item.id} value={item.id}>
-                            {changeCategory(item.category)}
+                            {ChangeCategory(item.category)}
                         </Select.Option>
                     ))}
                 </Select>

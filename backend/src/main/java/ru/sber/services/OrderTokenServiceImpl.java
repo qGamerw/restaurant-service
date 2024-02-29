@@ -4,32 +4,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.entities.OrderToken;
-import ru.sber.exceptions.OrderTokenNotFoundException;
+import ru.sber.proxies.KeyCloakProxy;
 import ru.sber.repositories.OrderTokenRepository;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
 public class OrderTokenServiceImpl implements OrderTokenService {
     private final OrderTokenRepository orderTokenRepository;
+    private final KeyCloakProxy keyCloakProxy;
 
     @Autowired
-    public OrderTokenServiceImpl(OrderTokenRepository orderTokenRepository) {
+    public OrderTokenServiceImpl(OrderTokenRepository orderTokenRepository,
+                                 KeyCloakProxy keyCloakProxy) {
         this.orderTokenRepository = orderTokenRepository;
+        this.keyCloakProxy = keyCloakProxy;
     }
-    
-    @Override
-    public boolean save(OrderToken orderToken) {
-        log.info("Добавление в базу данных токена {}", orderToken.getAccessToken());
 
-        orderTokenRepository.save(orderToken);
-        return true;
-    }
-    
     @Override
     public OrderToken getToken() {
         log.info("Получение токена из базы данных");
 
-        return orderTokenRepository.findById(1)
-                .orElseThrow(() -> new OrderTokenNotFoundException("Токен не найден в базе данных"));
+        OrderToken orderTokens = orderTokenRepository.findById(1).orElse(null);
+
+        if (orderTokens == null || !LocalDateTime.now().isBefore(orderTokens.getTokenExpiration())){
+            return keyCloakProxy.updateOrderToken();
+        }
+        return orderTokens;
     }
 }
