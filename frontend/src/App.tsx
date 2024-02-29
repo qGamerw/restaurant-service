@@ -12,6 +12,8 @@ import {authDatesSessionStorage, authRegistrationPath, authResetPasswordPath} fr
 import {AccountUser, userDatesSessionStorage} from "./types/accountType";
 import authService from "./services/authService";
 import userAvatar from "./images/employee.png"
+import {orderPath} from "./types/orderType";
+import OrderPage from "./pages/OrderPage";
 
 const {Header, Content, Footer,} = Layout;
 const { Title } = Typography;
@@ -95,7 +97,7 @@ const App: React.FC = () => {
                     <Content style={{margin: '0 16px'}}>
                         <Routes>
                             <Route index element={<DishesPage/>}/>
-                            {/*<Route path='/branch-offices/dishes' element={<DishesPage/>}/>*/}
+                            <Route path={orderPath} element={<OrderPage/>}/>
 
                             <Route path="/about" element={<AboutPage/>}/>
                             <Route path="*" element={<NotFoundPage/>}/>

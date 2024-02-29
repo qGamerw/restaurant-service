@@ -1,4 +1,5 @@
 export const userDatesSessionStorage = 'user';
+export const analyticAPIPath = '/analytic';
 
 export interface AccountBranchOffice {
     id: number,

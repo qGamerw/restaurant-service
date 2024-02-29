@@ -1,13 +1,14 @@
 import React from 'react';
-import {Avatar, Button, Form, Input, message} from 'antd';
-import authService from '../services/authService';
-import {AntDesignOutlined, EditOutlined} from '@ant-design/icons';
+import {Avatar, Button, Form, Input, Space, Upload} from 'antd';
+import {AntDesignOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons';
 import {NewDataUser, User} from "../types/types";
 import account from "../images/employee.png";
+import {userDatesSessionStorage} from "../types/accountType";
+import accountUserService from "../services/accountUserService";
+import authService from "../services/authService";
 
-// не смотрел
 const FormNewDataUser = () => {
-    const userDataString = sessionStorage.getItem('user');
+    const userDataString = sessionStorage.getItem(userDatesSessionStorage);
     const userData: User = userDataString ? JSON.parse(userDataString) : {};
 
     function onFinish(values: NewDataUser) {
@@ -19,25 +20,28 @@ const FormNewDataUser = () => {
             lastName: values.lastName || userData.lastName,
         };
 
-        // authService.newDataUser(updateData).then((user) => {
-        //     message.success("Сохранено");
-        //     window.location.reload();
-        //
-        // }, (error) => {
-        //     const _content = (error.response && error.response.data)
-        //     console.log(_content);
-        //     message.error("Ошибка обновления данных");
-        // })
+        accountUserService.accountUserUpdate(updateData);
+        authService.authUserGetData();
     }
 
     return (
         <>
-            <Avatar
-                size={150}
-                icon={<AntDesignOutlined/>}
-                style={{marginTop: 10, marginBottom: 10 }}
-                src={account}
-            />
+            <Space direction="horizontal">
+                <Avatar
+                    size={150}
+                    icon={<AntDesignOutlined/>}
+                    style={{marginTop: 10, marginBottom: 10}}
+                    src={account}
+                />
+                <Upload
+                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                    listType="picture"
+                    maxCount={1}
+                    style={{marginTop: 50}}
+                >
+                    <Button icon={<UploadOutlined/>}>Upload</Button>
+                </Upload>
+            </Space>
 
             <Form
                 name="basic"
@@ -52,31 +56,38 @@ const FormNewDataUser = () => {
                     label="Почта"
                     name="email"
                     rules={[
-                        {type: 'email', message: 'Введите почту!'}
+                        {
+                            type: 'email',
+                            message: 'Некорректный формат!',
+                        },
                     ]}
                 >
-                    <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder={String(userData.email)} maxLength={30} />
+                    <Input type="email" prefix={<EditOutlined className="site-form-item-icon"/>}
+                           placeholder={String(userData.email)} maxLength={30}/>
                 </Form.Item>
 
                 <Form.Item
                     label="Номер телефона"
                     name="phoneNumber"
                 >
-                    <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder={String(userData.phoneNumber)} maxLength={12} />
+                    <Input prefix={<EditOutlined className="site-form-item-icon"/>}
+                           placeholder={String(userData.phoneNumber)} maxLength={12}/>
                 </Form.Item>
 
                 <Form.Item
                     label="Имя"
                     name="firstName"
                 >
-                    <Input prefix={<EditOutlined  className="site-form-item-icon"/>} placeholder={String(userData.firstName)} maxLength={30} />
+                    <Input prefix={<EditOutlined className="site-form-item-icon"/>}
+                           placeholder={String(userData.firstName)} maxLength={30}/>
                 </Form.Item>
 
                 <Form.Item
                     label="Фамилия"
                     name="lastName"
                 >
-                    <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder={String(userData.lastName)} maxLength={30} />
+                    <Input prefix={<EditOutlined className="site-form-item-icon"/>}
+                           placeholder={String(userData.lastName)} maxLength={30}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>

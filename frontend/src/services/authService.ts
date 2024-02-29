@@ -38,6 +38,17 @@ async function authLogin(login: AuthLogin): Promise<AccountUser> {
     return responseUser.data;
 }
 
+async function authUserGetData() {
+    try {
+        const headers = authHeader();
+        const responseUser = await axios.get<AccountUser>(authAPIPath, {headers});
+        saveLocalStoreUser(responseUser.data);
+    } catch (error) {
+        message.error('Ошибка получения данных пользователя!')
+    }
+
+}
+
 async function authLogOut() {
     const headers = authHeader();
 
@@ -109,6 +120,7 @@ async function authRefreshToken(refresh_token: string) {
 
 const authService = {
     authLogin,
+    authUserGetData,
     authLogOut,
     authGetPasswordToken,
     authResetPassword,
