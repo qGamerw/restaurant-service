@@ -1,32 +1,27 @@
 package ru.sber.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.User;
 import ru.sber.entities.enums.EStatusEmployee;
-import ru.sber.exceptions.UserNotFoundException;
-import ru.sber.model.*;
-import ru.sber.proxies.KeyCloakProxy;
-import ru.sber.proxies.KeyCloakProxyImp;
-import ru.sber.services.JwtService;
+import ru.sber.exceptions.TokenNotFoundException;
+import ru.sber.model.LoginRequest;
+import ru.sber.model.RefreshToken;
+import ru.sber.model.ResetPassword;
+import ru.sber.model.SignupRequest;
+import ru.sber.proxies.AuthProxy;
+import ru.sber.security.JwtService;
 import ru.sber.services.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Контроллер для взаимодействия с регистрацией и входом у {@link User сотрудника}
@@ -38,211 +33,148 @@ import java.util.Optional;
 public class AuthController {
     private final UserService userService;
     private final JwtService jwtService;
-    private final KeyCloakProxy keyCloakProxy;
+    private final AuthProxy authProxy;
 
     @Autowired
     public AuthController(UserService userService,
                           JwtService jwtService,
-                          KeyCloakProxy keyCloakProxy) {
+                          AuthProxy authProxy) {
         this.userService = userService;
         this.jwtService = jwtService;
-        this.keyCloakProxy = keyCloakProxy;
+        this.authProxy = authProxy;
     }
 
+    /**
+     * Регистрация пользователя
+     *
+     * @param signupRequest данные для регистрации
+     * @return результат
+     */
     @Transactional
     @PostMapping("/signup")
-    public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
+    public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) {
         log.info("Регистрация пользователя с email {}", signupRequest.getEmail());
 
-        RequestUser requestUser = new RequestUser();
-        requestUser.setUsername(signupRequest.getUsername());
-        requestUser.setEmail(signupRequest.getEmail());
-        requestUser.setEnabled(true);
-        requestUser.setFirstName(signupRequest.getFirstName());
-        requestUser.setLastName(signupRequest.getLastName());
-
-        Attributes attributes = new Attributes();
-        attributes.setPhoneNumber(signupRequest.getPhoneNumber());
-        requestUser.setAttributes(attributes);
-
-        Credential credential = new Credential();
-        credential.setType(KeyCloakProxyImp.grantType);
-        credential.setValue(signupRequest.getPassword());
-
-        List<Credential> credentials = new ArrayList<>();
-        credentials.add(credential);
-        requestUser.setCredentials(credentials);
-
-        HttpHeaders userHeaders = getHttpHeadersAdmin();
-        HttpEntity<RequestUser> userEntity = new HttpEntity<>(requestUser, userHeaders);
-
-        return keyCloakProxy.signUpUserREST(userEntity, signupRequest.getIdBranchOffice());
+        return authProxy.signUpUserREST(signupRequest);
     }
 
+    /**
+     * Вход пользователя
+     *
+     * @param loginRequest данные для входа
+     * @return результат
+     */
     @PostMapping("/signin")
     public ResponseEntity<String> signInUser(@RequestBody LoginRequest loginRequest) {
         log.info("Вход пользователя с Username: {}", loginRequest.getUsername());
 
-        HttpHeaders tokenHeaders = new HttpHeaders();
-        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
-        tokenBody.add("grant_type", KeyCloakProxyImp.grantType);
-        tokenBody.add("client_id", KeyCloakProxyImp.clientId);
-        tokenBody.add("username", loginRequest.getUsername());
-        tokenBody.add("password", loginRequest.getPassword());
-
-        HttpEntity<MultiValueMap<String, String>> userEntity = new HttpEntity<>(tokenBody, tokenHeaders);
-        return keyCloakProxy.signInUserREST(userEntity);
+        return authProxy.signInUserREST(loginRequest);
     }
 
+    /**
+     * Обновление токена пользователя
+     *
+     * @param refreshToken токен пользователя
+     * @return результат
+     */
     @PostMapping("/refresh")
-    public ResponseEntity<String> refreshUser(@RequestBody RefreshToken refreshToken) {
+    public ResponseEntity<String> refreshToken(@RequestBody RefreshToken refreshToken) {
         log.info("Обновление токена у пользователя");
 
-        HttpHeaders tokenHeaders = new HttpHeaders();
-        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
-        tokenBody.add("grant_type", "refresh_token");
-        tokenBody.add("client_id", KeyCloakProxyImp.clientId);
-        tokenBody.add("refresh_token", refreshToken.getRefresh_token());
-
-        HttpEntity<MultiValueMap<String, String>> userEntity = new HttpEntity<>(tokenBody, tokenHeaders);
-        return keyCloakProxy.signInUserREST(userEntity);
+        return authProxy.refreshTokenREST(refreshToken);
     }
 
+    /**
+     * Получение данных пользователя
+     *
+     * @return результат
+     */
     @GetMapping
-    @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<UserDetails> getUserDetails() {
-        HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setContentType(MediaType.APPLICATION_JSON);
-        Jwt jwt = getUserJwtTokenSecurityContext();
+    public ResponseEntity<?> getUserDetails() {
+        try {
+            log.info("Получение информации об пользователе.");
 
-        var user = userService.findByContext();
-        if (!user.getStatus().name().equals(EStatusEmployee.UNDER_CONSIDERATION.name())) {
-            user.setStatus(EStatusEmployee.ACTIVE);
-            userService.userUpdate(user);
+            HttpHeaders userHeaders = new HttpHeaders();
+            userHeaders.setContentType(MediaType.APPLICATION_JSON);
+            Jwt jwt = getJwtTokenSecurityContext();
+
+            var user = userService.findByContext();
+            if (!user.getStatus().equals(EStatusEmployee.UNDER_CONSIDERATION)) {
+                user.setStatus(EStatusEmployee.ACTIVE);
+                userService.userUpdate(user);
+            }
+
+            var userDetails = jwtService.getDataUser(jwt, user.getBranchOffice(), user.getStatus().name());
+
+            return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.info("Ошибка чтения токена: Пользователь не найден.");
+            return new ResponseEntity<>("Ошибка чтения токена: Пользователь не найден.", HttpStatus.BAD_REQUEST);
         }
-
-        var userDetails = new UserDetails(
-                jwtService.getPreferredUsernameClaim(jwt),
-                jwtService.getEmailClaim(jwt),
-                jwtService.getPhoneNumberClaim(jwt),
-                jwtService.getFirstNameClaim(jwt),
-                jwtService.getLastNameClaim(jwt),
-                user.getBranchOffice(),
-                user.getStatus().name());
-
-        return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('client_user')")
+    /**
+     * Обновление данных пользователя
+     *
+     * @param signupRequest данные для входа на сервис KeyCloak
+     * @return результат
+     */
     @PutMapping
     @Transactional
-    public ResponseEntity<?> updateUserInfo(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
+    public ResponseEntity<String> updateUserInfo(@RequestBody SignupRequest signupRequest) {
         log.info("Обновляет данные о клиенте c email {}", signupRequest.getEmail());
-
-        Jwt jwt = getUserJwtTokenSecurityContext();
-
-        UpdateUserData updateUserData = new UpdateUserData();
-        updateUserData.setEmail(Optional.ofNullable(signupRequest.getEmail())
-                .orElseGet(() -> jwtService.getEmailClaim(jwt))
-        );
-        updateUserData.setFirstName(Optional.ofNullable(signupRequest.getFirstName())
-                .orElseGet(() -> jwtService.getFirstNameClaim(jwt))
-        );
-        updateUserData.setLastName(Optional.ofNullable(signupRequest.getLastName())
-                .orElseGet(() -> jwtService.getLastNameClaim(jwt))
-        );
-
-        Attributes attributes = new Attributes();
-        attributes.setPhoneNumber(Optional.ofNullable(signupRequest.getPhoneNumber())
-                .orElseGet(() -> jwtService.getPhoneNumberClaim(jwt))
-        );
-        updateUserData.setAttributes(attributes);
-
-        HttpHeaders userHeaders = getHttpHeadersAdmin();
-        HttpEntity<UpdateUserData> userEntity = new HttpEntity<>(updateUserData, userHeaders);
-
-        return keyCloakProxy.updateUserInfoREST(
-                userEntity,
-                jwtService.getSubClaim(getUserJwtTokenSecurityContext()),
-                signupRequest.getIdBranchOffice());
+        Jwt jwt = getJwtTokenSecurityContext();
+        return authProxy.updateUserInfoREST(signupRequest, jwtService.getDataUserByContext(jwt), jwtService.getSubClaim(jwt));
     }
 
     @PutMapping("/logout")
     public ResponseEntity<String> logOutUser() {
-        log.info("Выход пользователя");
+        log.info("Выход пользователя из системы");
 
-        var user = userService.findByContext();
-        if (!user.getStatus().name().equals(EStatusEmployee.UNDER_CONSIDERATION.name())) {
-            user.setStatus(EStatusEmployee.INACTIVE);
-            userService.userUpdate(user);
-        }
-
+        userService.findByContext();
         return ResponseEntity.ok()
                 .build();
     }
 
+    /**
+     * Токен для сброса пароля
+     *
+     * @param resetPassword данные для сброса пароля
+     * @return результат
+     */
     @PostMapping("/reset-password/token")
-    public ResponseEntity<?> sendPasswordToken(@RequestBody ResetPassword resetPassword) throws JsonProcessingException {
+    public ResponseEntity<String> sendPasswordToken(@RequestBody ResetPassword resetPassword) {
         log.info("Получение токена для изменения пароля у пользователя {}", resetPassword.getEmail());
 
-        RequestResetPassword requestResetPassword = new RequestResetPassword();
-        requestResetPassword.setType(KeyCloakProxyImp.grantType);
-        requestResetPassword.setTemporary(false);
-        String newPassword = resetPassword.getPassword();
-        requestResetPassword.setValue(newPassword);
-
-        HttpHeaders headersAdmin = getHttpHeadersAdmin();
-        HttpEntity<RequestResetPassword> resetEntity = new HttpEntity<>(requestResetPassword, headersAdmin);
-
-        return keyCloakProxy.sendPasswordTokenREST(resetEntity, resetPassword);
+        return authProxy.sendPasswordToken(resetPassword);
     }
 
+    /**
+     * Сброс пароля
+     *
+     * @param resetPassword данные для сброса пароля
+     * @return результат
+     */
     @PutMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@RequestBody ResetPassword resetPassword) throws JsonProcessingException {
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPassword resetPassword) {
         log.info("Обновление пароля у пользователя {}", resetPassword.getEmail());
 
-        RequestResetPassword requestResetPassword = new RequestResetPassword();
-        requestResetPassword.setType(KeyCloakProxyImp.grantType);
-        requestResetPassword.setTemporary(false);
-        String newPassword = resetPassword.getPassword();
-        requestResetPassword.setValue(newPassword);
-
-        HttpHeaders userHeaders = getHttpHeadersAdmin();
-        HttpEntity<RequestResetPassword> resetEntity = new HttpEntity<>(requestResetPassword, userHeaders);
-
-        return keyCloakProxy.resetPasswordREST(resetEntity, resetPassword);
+        return authProxy.updateUserPassword(resetPassword);
     }
 
     /**
      * Получение токена из контекста
+     *
+     * @return токен из контекста
      */
-    private Jwt getUserJwtTokenSecurityContext() {
+    private Jwt getJwtTokenSecurityContext() throws TokenNotFoundException {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
-
             return jwtAuthenticationToken.getToken();
         } else {
-            throw new UserNotFoundException("Пользователь не найден");
+            throw new TokenNotFoundException("Ошибка чтения токена: Токен пользователя не найден.");
         }
-    }
-
-    private HttpHeaders getHttpHeadersAdmin() throws JsonProcessingException {
-        HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(signInUser(
-                new LoginRequest(
-                        KeyCloakProxyImp.adminRestaurantUsername,
-                        KeyCloakProxyImp.adminRestaurantPassword)).getBody());
-
-        String accessToken = rootNode.path("access_token").asText();
-        userHeaders.setBearerAuth(accessToken);
-        return userHeaders;
     }
 }
