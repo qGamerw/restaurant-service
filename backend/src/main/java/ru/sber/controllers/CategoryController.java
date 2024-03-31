@@ -27,13 +27,17 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Получает все категории
+     *
+     * @return результат
+     */
     @GetMapping
     public ResponseEntity<List<Category>> getListCategory() {
         log.info("Получает все категории");
 
-        List<Category> category = categoryService.getListCategory();
-
-        return ResponseEntity.ok()
-                .body(category);
+        return ResponseEntity
+                .ok()
+                .body(categoryService.getListCategory());
     }
 }

@@ -104,11 +104,14 @@ public class AuthController {
                 userService.userUpdate(user);
             }
 
-            var userDetails = jwtService.getDataUser(jwt, user.getBranchOffice(), user.getStatus().name());
+            var userDetails = jwtService.getDataUser(
+                    jwt,
+                    user.getBranchOffice(),
+                    user.getStatus().name());
 
             return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            log.info("Ошибка чтения токена: Пользователь не найден.");
+        } catch (TokenNotFoundException e) {
+            log.error("Ошибка чтения токена: Пользователь не найден.");
             return new ResponseEntity<>("Ошибка чтения токена: Пользователь не найден.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -123,8 +126,17 @@ public class AuthController {
     @Transactional
     public ResponseEntity<String> updateUserInfo(@RequestBody SignupRequest signupRequest) {
         log.info("Обновляет данные о клиенте c email {}", signupRequest.getEmail());
-        Jwt jwt = getJwtTokenSecurityContext();
-        return authProxy.updateUserInfoREST(signupRequest, jwtService.getDataUserByContext(jwt), jwtService.getSubClaim(jwt));
+
+        try {
+            Jwt jwt = getJwtTokenSecurityContext();
+            return authProxy.updateUserInfoREST(
+                    signupRequest,
+                    jwtService.getDataUserByContext(jwt),
+                    jwtService.getSubClaim(jwt));
+        } catch (TokenNotFoundException e) {
+            log.error("Ошибка чтения токена: Пользователь не найден.");
+            return new ResponseEntity<>("Ошибка чтения токена: Пользователь не найден.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/logout")
@@ -132,7 +144,8 @@ public class AuthController {
         log.info("Выход пользователя из системы");
 
         userService.findByContext();
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .ok()
                 .build();
     }
 
@@ -160,6 +173,24 @@ public class AuthController {
         log.info("Обновление пароля у пользователя {}", resetPassword.getEmail());
 
         return authProxy.updateUserPassword(resetPassword);
+    }
+
+    /**
+     * Удаление пользователя
+     *
+     * @return результат
+     */
+    @DeleteMapping
+    public ResponseEntity<String> deleteEmployeeById() {
+        log.info("Удаление аккаунта сотрудника");
+
+        try {
+            Jwt jwt = getJwtTokenSecurityContext();
+            return authProxy.deleteUser(jwtService.getSubClaim(jwt), jwt);
+        } catch (TokenNotFoundException e) {
+            log.error("Ошибка чтения токена: Пользователь не найден.");
+            return new ResponseEntity<>("Ошибка чтения токена: Пользователь не найден.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**

@@ -28,23 +28,31 @@ public class DishBranchOfficeController {
         this.dishBranchOfficeService = dishBranchOfficeService;
     }
 
+    /**
+     * Получает блюда по филиалу
+     *
+     * @return результат
+     */
     @GetMapping
     public ResponseEntity<List<DishesBranchOffice>> getListDishBranchOffice() {
         log.info("Получает блюда по филиалу");
 
-        List<DishesBranchOffice> category = dishBranchOfficeService.getListDishBranchOffice();
-
-        return ResponseEntity.ok()
-                .body(category);
+        return ResponseEntity
+                .ok()
+                .body(dishBranchOfficeService.getListDishBranchOffice());
     }
 
+    /**
+     * Получает все блюда
+     *
+     * @return результат
+     */
     @GetMapping("/all")
     public ResponseEntity<List<DishesBranchOffice>> getListDishBranchOfficeAll() {
         log.info("Получает все блюда");
 
-        List<DishesBranchOffice> category = dishBranchOfficeService.getListDishBranchOfficeAll();
-
-        return ResponseEntity.ok()
-                .body(category);
+        return ResponseEntity
+                .ok()
+                .body(dishBranchOfficeService.getListDishBranchOfficeAll());
     }
 }

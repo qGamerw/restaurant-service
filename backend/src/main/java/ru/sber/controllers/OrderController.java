@@ -24,6 +24,13 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    /**
+     * Обновляет статус заказа
+     *
+     * @param id    id заказа
+     * @param order новый статус заказа
+     * @return результат
+     */
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrderStatusById(@PathVariable Long id, @RequestBody Order order) {
         log.info("Обновляет статус у заказа {}", id);
@@ -31,6 +38,13 @@ public class OrderController {
         return orderService.updateOrderStatusById(id, order);
     }
 
+    /**
+     * Обновляет статус заказа
+     *
+     * @param id      id заказа
+     * @param massage причина отмены
+     * @return результат
+     */
     @PutMapping("/{id}/cancel")
     public ResponseEntity<?> cancelOrderById(@PathVariable Long id, @RequestBody Object massage) {
         log.info("Отменяет заказа с {}", id);
@@ -38,6 +52,13 @@ public class OrderController {
         return orderService.cancelOrderById(id, massage);
     }
 
+    /**
+     * Обновляет статус заказа
+     *
+     * @param listId  список заказов
+     * @param message причина отмены
+     * @return результат
+     */
     @PutMapping("/cancel")
     public ResponseEntity<?> cancelOrderByListId(@RequestParam String listId, @RequestBody Object message) {
         log.info("Отменяет заказы с {}", listId);
@@ -45,17 +66,31 @@ public class OrderController {
         return orderService.cancelOrderByListId(listId, message);
     }
 
+    /**
+     * Получает заказы
+     *
+     * @return результат
+     */
     @GetMapping
     public ResponseEntity<List<?>> getListOrders() {
         log.info("Получает заказы");
 
-        return ResponseEntity.ok().body(orderService.getListOrders());
+        return ResponseEntity
+                .ok()
+                .body(orderService.getListOrders());
     }
 
+    /**
+     * Получает заказы по уведомлению
+     *
+     * @return результат
+     */
     @GetMapping("/notify")
     public ResponseEntity<List<?>> getListOrdersByNotify() {
         log.info("Получает заказы для уведомления");
 
-        return ResponseEntity.ok().body(orderService.getListOrdersByNotify());
+        return ResponseEntity
+                .ok()
+                .body(orderService.getListOrdersByNotify());
     }
 }

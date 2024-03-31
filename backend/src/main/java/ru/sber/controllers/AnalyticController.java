@@ -30,6 +30,13 @@ public class AnalyticController {
         return analyticProxy.findCountOrdersByEmployee();
     }
 
+    /**
+     * Получает количество заказов поступивших за месяц
+     *
+     * @param year  год
+     * @param month месяц
+     * @return результат
+     */
     @GetMapping("/orders/per/month")
     @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> getOrdersPerMonth(@RequestParam(required = false) Integer year,
@@ -39,6 +46,12 @@ public class AnalyticController {
         return analyticProxy.findOrdersPerMonth(year, month);
     }
 
+    /**
+     * Получает количество заказов поступивших за год
+     *
+     * @param year год
+     * @return результат
+     */
     @GetMapping("/orders/per/year")
     @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> getOrdersPerYear(@RequestParam Integer year) {
