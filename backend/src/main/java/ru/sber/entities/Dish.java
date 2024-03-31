@@ -40,12 +40,4 @@ public class Dish {
 
     @Column(nullable = false)
     private double weight;
-
-    public Dish(String name, String urlImage, Category category, BigDecimal price, double weight) {
-        this.name = name;
-        this.urlImage = urlImage;
-        this.category = category;
-        this.price = price;
-        this.weight = weight;
-    }
 }

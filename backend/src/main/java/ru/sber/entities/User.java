@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import ru.sber.entities.enums.EStatusEmployee;
 
 /**
- * Сотрудник
+ * Работник филиала
  */
 @Entity
 @AllArgsConstructor
@@ -26,11 +26,7 @@ public class User {
     @Column(length = 20)
     private EStatusEmployee status;
 
-    private String resetPasswordToken;
-
-    public User(String id) {
-        this.id = id;
-    }
+    private String resetTokenPassword;
 
     public User(String id, BranchOffice branchOffice, EStatusEmployee status) {
         this.id = id;

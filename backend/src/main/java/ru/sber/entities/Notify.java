@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Уведомления о новом заказе
+ * Уведомления о новом или измененном заказе
  */
 @Entity
 @AllArgsConstructor

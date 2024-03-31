@@ -20,8 +20,4 @@ public class Category {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ECategory category;
-
-    public Category(ECategory category) {
-        this.category = category;
-    }
 }
