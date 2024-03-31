@@ -1,7 +1,7 @@
 package ru.sber.exceptions;
 
 /**
- * Стоит выбрасывать если не удалось сгенерировать токен
+ * Стоит выбрасывать, если филиал не найден
  */
 public class BranchOfficeNotFoundException extends RuntimeException {
       public BranchOfficeNotFoundException(String message) {

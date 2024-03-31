@@ -3,8 +3,8 @@ package ru.sber.exceptions;
 /**
  * Стоит выбрасывать, если токен не найден
  */
-public class UserNotFoundException extends RuntimeException {
-      public UserNotFoundException(String message) {
+public class TokenNotFoundException extends RuntimeException {
+      public TokenNotFoundException(String message) {
         super(message);
     }
 }
