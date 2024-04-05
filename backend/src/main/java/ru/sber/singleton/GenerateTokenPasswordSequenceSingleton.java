@@ -1,6 +1,6 @@
 package ru.sber.singleton;
 
-import ru.sber.exceptions.GenerateTokenException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,13 +11,13 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Генерация токена и пароля
  */
+@Slf4j
 public class GenerateTokenPasswordSequenceSingleton {
-    private static GenerateTokenPasswordSequenceSingleton instance = null;
-
     private static final SecureRandom secureRandom = new SecureRandom();
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
+    private static GenerateTokenPasswordSequenceSingleton instance = null;
 
     private GenerateTokenPasswordSequenceSingleton() {
     }
@@ -34,22 +34,18 @@ public class GenerateTokenPasswordSequenceSingleton {
      *
      * @return Токен
      */
-    public String generateToken() {
-        try {
-            // Создание случайной последовательности байтов
-            byte[] randomBytes = new byte[32];
-            secureRandom.nextBytes(randomBytes);
+    public String generateToken() throws NoSuchAlgorithmException {
 
-            // Хеширование случайной последовательности с использованием SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = digest.digest(randomBytes);
+        // Создание случайной последовательности байтов
+        byte[] randomBytes = new byte[32];
+        secureRandom.nextBytes(randomBytes);
 
-            // Кодирование хеша в Base64
-            return Base64.getEncoder().encodeToString(hashedBytes);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new GenerateTokenException("Не удалось сгенерировать токен");
-        }
+        // Хеширование случайной последовательности с использованием SHA-256
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashedBytes = digest.digest(randomBytes);
+
+        // Кодирование хеша в Base64
+        return Base64.getEncoder().encodeToString(hashedBytes);
     }
 
     /**
