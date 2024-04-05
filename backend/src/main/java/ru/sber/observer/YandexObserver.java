@@ -40,11 +40,11 @@ public class YandexObserver implements EmailObserver {
         helper.setSubject("Привет!");
         helper.setText(String.format("""
                 Мы получили запрос на сброса пароля для твоего аккаунта. Чтобы восстановить пароль, введи следующий токен:
-                               \s
+                                                           \s
                 Токен для сброса пароля: %s
-                               \s
+                                                           \s
                 Если ты не запрашивал восстановление пароля, проигнорируй это сообщение. Если сам запросил восстановление, пожалуйста, следуй инструкциям далее.
-                                            \s
+                                                           \s
                 С уважением,
                 Команда поддержки сайта
                \s""", resetPassword.getToken()));
@@ -64,7 +64,7 @@ public class YandexObserver implements EmailObserver {
         helper.setSubject("Привет!");
         helper.setText(String.format("""
                 Мы получили запрос на обновление пароля для твоего аккаунта.
-                               \s
+                                                           \s
                 Новый пароль: %s
                                                            \s
                 С уважением,
