@@ -1,35 +1,31 @@
 package ru.sber.services;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.entities.OrderToken;
-import ru.sber.proxies.KeyCloakProxy;
+import ru.sber.proxies.AuthProxy;
 import ru.sber.repositories.OrderTokenRepository;
 
 import java.time.LocalDateTime;
 
-@Slf4j
 @Service
 public class OrderTokenServiceImpl implements OrderTokenService {
     private final OrderTokenRepository orderTokenRepository;
-    private final KeyCloakProxy keyCloakProxy;
+    private final AuthProxy authProxy;
 
     @Autowired
     public OrderTokenServiceImpl(OrderTokenRepository orderTokenRepository,
-                                 KeyCloakProxy keyCloakProxy) {
+                                 AuthProxy authProxy) {
         this.orderTokenRepository = orderTokenRepository;
-        this.keyCloakProxy = keyCloakProxy;
+        this.authProxy = authProxy;
     }
 
     @Override
     public OrderToken getToken() {
-        log.info("Получение токена из базы данных");
-
         OrderToken orderTokens = orderTokenRepository.findById(1).orElse(null);
 
-        if (orderTokens == null || !LocalDateTime.now().isBefore(orderTokens.getTokenExpiration())){
-            return keyCloakProxy.updateOrderToken();
+        if (orderTokens == null || !LocalDateTime.now().isBefore(orderTokens.getTokenExpiration())) {
+            return authProxy.updateOrderToken();
         }
         return orderTokens;
     }

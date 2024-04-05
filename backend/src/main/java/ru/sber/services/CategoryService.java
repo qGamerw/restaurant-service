@@ -11,7 +11,7 @@ public interface CategoryService {
     /**
      * Получает все категории
      *
-     * @return List<Category>
+     * @return Список категорий
      */
     List<Category> getListCategory();
 }

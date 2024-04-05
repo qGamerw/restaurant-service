@@ -1,14 +1,13 @@
 package ru.sber.services;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.sber.model.BranchOfficeLimit;
+import ru.sber.models.BranchOfficeLimit;
 import ru.sber.repositories.BranchOfficeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-@Slf4j
 @Service
 public class BranchOfficeServiceImp implements BranchOfficeService {
     private final BranchOfficeRepository branchOfficeRepository;
@@ -22,32 +21,27 @@ public class BranchOfficeServiceImp implements BranchOfficeService {
     }
 
     @Override
-    public boolean openCloseBranchOffice() {
-        log.info("Закрывает/Открывает филиал");
-
+    public Optional<String> openCloseBranchOffice() {
         if (userService.countActiveUserByBranchOffice() == 1) {
             var user = userService.getUser();
 
             var branchOffice = user.getBranchOffice();
             branchOffice.setStatus(branchOffice.getStatus().equals("OPEN") ? "CLOSE" : "OPEN");
             branchOfficeRepository.save(branchOffice);
-            return true;
+            return Optional.of("Филиал " + branchOffice.getId() + ": " + branchOffice.getStatus());
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
     public BranchOfficeLimit getBranchOfficeByEmployee() {
-        log.info("Получает информацию о филиале по сотруднику");
-
         return new BranchOfficeLimit(userService.getUser().getBranchOffice());
     }
 
     @Override
     public List<BranchOfficeLimit> getListBranchOffice() {
-        log.info("Получает информацию о всех филиалах");
-
-        return branchOfficeRepository.findAll()
+        return branchOfficeRepository
+                .findAll()
                 .stream()
                 .map(BranchOfficeLimit::new)
                 .toList();

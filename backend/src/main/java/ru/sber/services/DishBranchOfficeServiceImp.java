@@ -1,6 +1,5 @@
 package ru.sber.services;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sber.entities.DishesBranchOffice;
 import ru.sber.repositories.DishesBranchOfficeRepository;
@@ -8,13 +7,13 @@ import ru.sber.repositories.DishesBranchOfficeRepository;
 import java.util.List;
 
 @Service
-@Slf4j
 public class DishBranchOfficeServiceImp implements DishBranchOfficeService {
     private final DishesBranchOfficeRepository dishesBranchOfficeRepository;
     private final UserService userService;
 
-    public DishBranchOfficeServiceImp(DishesBranchOfficeRepository dishesBranchOfficeRepository,
-                                      UserService userService) {
+    public DishBranchOfficeServiceImp(
+            DishesBranchOfficeRepository dishesBranchOfficeRepository,
+            UserService userService) {
         this.dishesBranchOfficeRepository = dishesBranchOfficeRepository;
         this.userService = userService;
     }
