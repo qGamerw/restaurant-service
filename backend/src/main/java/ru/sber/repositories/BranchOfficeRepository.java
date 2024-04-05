@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.sber.entities.BranchOffice;
 
 /**
- * Репозиторий с {@link BranchOffice филиалами}
+ * Репозиторий для взаимодействия с {@link BranchOffice филиалами}
  */
 @Repository
 public interface BranchOfficeRepository extends JpaRepository<BranchOffice, Long> {

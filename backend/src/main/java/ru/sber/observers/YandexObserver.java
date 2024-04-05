@@ -39,15 +39,15 @@ public class YandexObserver implements EmailObserver {
         helper.setTo(resetPassword.getEmail());
         helper.setSubject("Привет!");
         helper.setText(String.format("""
-                Мы получили запрос на сброса пароля для твоего аккаунта. Чтобы восстановить пароль, введи следующий токен:
-                                                           \s
-                Токен для сброса пароля: %s
-                                                           \s
-                Если ты не запрашивал восстановление пароля, проигнорируй это сообщение. Если сам запросил восстановление, пожалуйста, следуй инструкциям далее.
-                                                           \s
-                С уважением,
-                Команда поддержки сайта
-               \s""", resetPassword.getToken()));
+                 Мы получили запрос на сброса пароля для твоего аккаунта. Чтобы восстановить пароль, введи следующий токен:
+                                                            \s
+                 Токен для сброса пароля: %s
+                                                            \s
+                 Если ты не запрашивал восстановление пароля, проигнорируй это сообщение. Если сам запросил восстановление, пожалуйста, следуй инструкциям далее.
+                                                            \s
+                 С уважением,
+                 Команда поддержки сайта
+                \s""", resetPassword.getToken()));
         javaMailSender.send(message);
     }
 
@@ -63,13 +63,13 @@ public class YandexObserver implements EmailObserver {
         helper.setTo(resetPassword.getEmail());
         helper.setSubject("Привет!");
         helper.setText(String.format("""
-                Мы получили запрос на обновление пароля для твоего аккаунта.
-                                                           \s
-                Новый пароль: %s
-                                                           \s
-                С уважением,
-                Команда поддержки сайта
-               \s""", resetPassword.getPassword()));
+                 Мы получили запрос на обновление пароля для твоего аккаунта.
+                                                            \s
+                 Новый пароль: %s
+                                                            \s
+                 С уважением,
+                 Команда поддержки сайта
+                \s""", resetPassword.getPassword()));
         javaMailSender.send(message);
     }
 }

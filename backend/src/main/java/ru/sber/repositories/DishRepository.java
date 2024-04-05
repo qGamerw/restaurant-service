@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.sber.entities.Dish;
 
 /**
- * Репозиторий с {@link Dish блюдами}
+ * Репозиторий для взаимодействия с {@link Dish блюдами}
  */
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Long> {
@@ -13,7 +13,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
      * Проверяет есть ли блюдо в базе данных по имени
      *
      * @param name имя блюда
-     * @return boolean
+     * @return результат
      */
     boolean existsByName(String name);
 
@@ -21,7 +21,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
      * Ищет блюдо по имени
      *
      * @param name имя блюда
-     * @return Dish
+     * @return блюдо
      */
     Dish findByName(String name);
 }

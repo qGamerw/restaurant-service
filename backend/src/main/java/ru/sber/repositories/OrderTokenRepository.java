@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.sber.entities.OrderToken;
 
 /**
- * Репозиторий с {@link OrderToken токенами для авторизации в сервисе заказов}
+ * Репозиторий для взаимодействия с {@link OrderToken токенами для авторизации в сервисе заказов}
  */
 @Repository
 public interface OrderTokenRepository extends JpaRepository<OrderToken, Integer> {

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.sber.entities.Category;
 
 /**
- * Репозиторий с {@link Category категориями}
+ * Репозиторий для взаимодействия с {@link Category категориями}
  */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
