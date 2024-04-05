@@ -9,7 +9,7 @@ public interface AnalyticProxy {
     /**
      * Определяет количество заказов принятых работником ресторана за все время
      *
-     * @return количество заказов
+     * @return Количество заказов
      */
     ResponseEntity<?> findCountOrdersByEmployee();
 
@@ -18,7 +18,7 @@ public interface AnalyticProxy {
      *
      * @param year  год
      * @param mouth месяц
-     * @return количество заказов за месяц
+     * @return Количество заказов за месяц
      */
     ResponseEntity<?> findOrdersPerMonth(Integer year, Integer mouth);
 
@@ -26,7 +26,7 @@ public interface AnalyticProxy {
      * Определяет количество заказов поступивших за год
      *
      * @param year год
-     * @return количество заказов за год
+     * @return Количество заказов за год
      */
     ResponseEntity<?> findOrdersPerYear(Integer year);
 }

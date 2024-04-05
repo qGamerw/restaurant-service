@@ -25,7 +25,8 @@ public class OrderTokenServiceImpl implements OrderTokenService {
         OrderToken orderTokens = orderTokenRepository.findById(1).orElse(null);
 
         if (orderTokens == null || !LocalDateTime.now().isBefore(orderTokens.getTokenExpiration())) {
-            return authProxy.updateOrderToken();
+            authProxy.updateOrderToken();
+            return orderTokenRepository.findById(1).get();
         }
         return orderTokens;
     }
