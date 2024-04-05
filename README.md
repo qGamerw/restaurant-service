@@ -36,10 +36,12 @@
 * Hibernate
 * Apache Kafka
 * Spring CLoud OpenFeign
+* KeyCloak
 
 ### Frontend
 
 * React js
+* Ant design
 
 ### БД
 
