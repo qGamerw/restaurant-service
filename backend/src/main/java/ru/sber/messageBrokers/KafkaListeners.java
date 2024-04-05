@@ -1,4 +1,4 @@
-package ru.sber.messageBroker;
+package ru.sber.messageBrokers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

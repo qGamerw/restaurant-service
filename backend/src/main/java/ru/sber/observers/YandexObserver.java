@@ -1,4 +1,4 @@
-package ru.sber.observer;
+package ru.sber.observers;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
