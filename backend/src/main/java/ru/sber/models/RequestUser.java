@@ -1,4 +1,4 @@
-package ru.sber.model;
+package ru.sber.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Модель для получения данных с сервиса KeyCloak
+ * Модель для регистрации данных пользователя на сервисе KeyCloak
  */
 @AllArgsConstructor
 @Data

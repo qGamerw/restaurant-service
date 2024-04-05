@@ -1,11 +1,11 @@
-package ru.sber.model;
+package ru.sber.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Параметры для отправки на сервис KeyCloak
+ * Параметры запроса для отправки на сервис KeyCloak
  */
 @AllArgsConstructor
 @Data

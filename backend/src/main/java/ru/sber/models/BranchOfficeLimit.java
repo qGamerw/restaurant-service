@@ -1,4 +1,4 @@
-package ru.sber.model;
+package ru.sber.models;
 
 import lombok.Data;
 import ru.sber.entities.BranchOffice;

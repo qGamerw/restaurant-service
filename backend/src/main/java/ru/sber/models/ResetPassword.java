@@ -1,11 +1,11 @@
-package ru.sber.model;
+package ru.sber.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для хранения данных для сброса пароля
+ * Модель данных для сброса пароля пользователя
  */
 @Data
 @AllArgsConstructor
