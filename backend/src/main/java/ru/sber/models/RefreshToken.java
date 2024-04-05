@@ -1,11 +1,11 @@
-package ru.sber.model;
+package ru.sber.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для хранения информации о токена пользователя
+ * Модель для хранения информации при обновлении токена пользователя
  */
 @AllArgsConstructor
 @Data

@@ -1,10 +1,10 @@
-package ru.sber.kafka;
+package ru.sber.messageBroker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import ru.sber.model.Order;
+import ru.sber.models.Order;
 import ru.sber.services.NotifyServiceImp;
 
 /**

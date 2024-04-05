@@ -1,16 +1,16 @@
-package ru.sber.model;
+package ru.sber.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для отправки данных на сервис LeyCloak
+ * Модель настроек для запроса на сервис LeyCloak
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestResetPassword {
+public class ResetPasswordRequest {
     private String type;
     private Boolean temporary;
     private String value;
