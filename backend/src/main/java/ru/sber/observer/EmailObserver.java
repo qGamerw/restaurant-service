@@ -1,12 +1,12 @@
-package ru.sber.services;
+package ru.sber.observer;
 
 import jakarta.mail.MessagingException;
-import ru.sber.model.ResetPassword;
+import ru.sber.models.ResetPassword;
 
 /**
  * Сервис отправки письма на электронную почту
  */
-public interface EmailService {
+public interface EmailObserver {
     /**
      * Отправляет на почту сообщение с токен
      *
