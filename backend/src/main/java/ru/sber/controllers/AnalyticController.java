@@ -35,7 +35,7 @@ public class AnalyticController {
      *
      * @param year  год
      * @param month месяц
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/orders/per/month")
     @PreAuthorize("hasRole('client_user')")
@@ -50,7 +50,7 @@ public class AnalyticController {
      * Получает количество заказов поступивших за год
      *
      * @param year год
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/orders/per/year")
     @PreAuthorize("hasRole('client_user')")

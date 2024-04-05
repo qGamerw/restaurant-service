@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Находит пользователя по id
      *
      * @param idUser id пользователя
-     * @return пользователь
+     * @return Пользователь
      */
     Optional<User> findById(String idUser);
 
@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      *
      * @param idBranchOffice id филиала
      * @param statusEmployee статус
-     * @return количество сотрудников
+     * @return Количество сотрудников
      */
     int countByBranchOffice_IdAndStatus(long idBranchOffice, EStatusEmployee statusEmployee);
 
@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Удаление пользователя по id
      *
      * @param id id пользователя
-     * @return сколько записей удалено
+     * @return Сколько записей удалено
      */
     long deleteById(String id);
 }

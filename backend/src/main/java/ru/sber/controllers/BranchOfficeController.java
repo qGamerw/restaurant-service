@@ -30,7 +30,7 @@ public class BranchOfficeController {
     /**
      * Открывает или закрывает филиал
      *
-     * @return результат
+     * @return Результат
      */
     @PutMapping
     @PreAuthorize("hasRole('client_admin')")
@@ -49,7 +49,7 @@ public class BranchOfficeController {
     /**
      * Выводит данные о филиале
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping
     public ResponseEntity<BranchOfficeLimit> getBranchOfficeByEmployee() {
@@ -63,7 +63,7 @@ public class BranchOfficeController {
     /**
      * Выводит данные о всех филиалах
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/all")
     public ResponseEntity<List<BranchOfficeLimit>> getListBranchOffice() {

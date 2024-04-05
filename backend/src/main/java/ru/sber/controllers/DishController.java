@@ -29,7 +29,7 @@ public class DishController {
     /**
      * Добавляет блюдо в офис
      *
-     * @return результат
+     * @return Результат
      */
     @PostMapping("/")
 //    @PreAuthorize("hasRole('client_admin')")
@@ -44,7 +44,7 @@ public class DishController {
     /**
      * Добавляет блюдо по имени в офис
      *
-     * @return результат
+     * @return Результат
      */
     @PostMapping("/add")
 //    @PreAuthorize("hasRole('client_admin')")
@@ -61,7 +61,7 @@ public class DishController {
     /**
      * Обновляет блюдо в офисе
      *
-     * @return результат
+     * @return Результат
      */
     @PutMapping
 //    @PreAuthorize("hasRole('client_admin')")
@@ -78,7 +78,7 @@ public class DishController {
     /**
      * Выводит все блюда в офисе
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/all")
     public ResponseEntity<List<Dish>> getListDish() {
@@ -93,7 +93,7 @@ public class DishController {
      * Получает блюдо по id для клиента
      *
      * @param id id блюда
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/customer/{id}")
     public ResponseEntity<Dish> getDishById(@PathVariable long id) {
@@ -113,7 +113,7 @@ public class DishController {
      *
      * @param page номер страницы
      * @param size размер страницы
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/customer/any")
     public ResponseEntity<Page<Dish>> getListAllDish(@RequestParam int page, @RequestParam int size) {
@@ -128,7 +128,7 @@ public class DishController {
      * Получает все блюда в городе для клиента
      *
      * @param city город
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/customer")
     public ResponseEntity<List<Dish>> getListAllDish(@RequestParam String city) {
@@ -143,7 +143,7 @@ public class DishController {
      * Получает список блюд с id для клиента
      *
      * @param list список id
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/customer/basket")
     public ResponseEntity<List<Dish>> getListDishesById(@RequestParam String list) {
@@ -158,7 +158,7 @@ public class DishController {
      * Удаляет блюда в офисе
      *
      * @param id id блюда
-     * @return результат
+     * @return Результат
      */
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasRole('client_admin')")

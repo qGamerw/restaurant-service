@@ -31,7 +31,7 @@ public class DishBranchOfficeController {
     /**
      * Получает блюда по филиалу
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping
     public ResponseEntity<List<DishesBranchOffice>> getListDishBranchOffice() {
@@ -45,7 +45,7 @@ public class DishBranchOfficeController {
     /**
      * Получает все блюда
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/all")
     public ResponseEntity<List<DishesBranchOffice>> getListDishBranchOfficeAll() {

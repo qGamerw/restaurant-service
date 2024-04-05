@@ -1,4 +1,4 @@
-package ru.sber.config;
+package ru.sber.singleton;
 
 import ru.sber.exceptions.GenerateTokenException;
 
@@ -11,13 +11,22 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Генерация токена и пароля
  */
-public class GenerateTokenPasswordSequence {
+public class GenerateTokenPasswordSequenceSingleton {
+    private static GenerateTokenPasswordSequenceSingleton instance = null;
+
     private static final SecureRandom secureRandom = new SecureRandom();
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
 
-    private GenerateTokenPasswordSequence() {
+    private GenerateTokenPasswordSequenceSingleton() {
+    }
+
+    public static GenerateTokenPasswordSequenceSingleton getInstance() {
+        if (instance == null) {
+            instance = new GenerateTokenPasswordSequenceSingleton();
+        }
+        return instance;
     }
 
     /**
@@ -25,7 +34,7 @@ public class GenerateTokenPasswordSequence {
      *
      * @return Токен
      */
-    public static String generateToken() {
+    public String generateToken() {
         try {
             // Создание случайной последовательности байтов
             byte[] randomBytes = new byte[32];
@@ -48,7 +57,7 @@ public class GenerateTokenPasswordSequence {
      *
      * @return Пароль
      */
-    public static String generatePassword(int length) {
+    public String generatePassword(int length) {
         String setCharacters = LOWER + UPPER + DIGITS;
 
         StringBuilder password = new StringBuilder(length);

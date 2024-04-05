@@ -35,7 +35,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
      * Конвертация объекта Jwt в объект AbstractAuthenticationToken
      *
      * @param jwt токен
-     * @return объект AbstractAuthenticationToken
+     * @return Объект AbstractAuthenticationToken
      */
     @Override
     public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
@@ -55,7 +55,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
      * Получение имени основного принципа (пользователя) из Jwt токена
      *
      * @param jwt токен
-     * @return имя
+     * @return Имя
      */
     private String getPrincipleClaimName(Jwt jwt) {
         String claimName = JwtClaimNames.SUB;
@@ -69,7 +69,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
      * Получение ролей пользователя
      *
      * @param jwt токен
-     * @return коллекция ролей
+     * @return Коллекция ролей
      */
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
         Map<String, Object> resourceAccess;

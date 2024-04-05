@@ -13,7 +13,7 @@ public interface NotifyRepository extends JpaRepository<Notify, Long> {
      * Проверяет есть ли заказ в уведомлениях по id
      *
      * @param id id заказа
-     * @return результат
+     * @return Результат
      */
     boolean existsByIdOrder(Long id);
 }

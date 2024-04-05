@@ -30,7 +30,7 @@ public class CategoryController {
     /**
      * Получает все категории
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping
     public ResponseEntity<List<Category>> getListCategory() {

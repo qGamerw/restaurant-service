@@ -29,7 +29,7 @@ public class OrderController {
      *
      * @param id    id заказа
      * @param order новый статус заказа
-     * @return результат
+     * @return Результат
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrderStatusById(@PathVariable Long id, @RequestBody Order order) {
@@ -43,7 +43,7 @@ public class OrderController {
      *
      * @param id      id заказа
      * @param massage причина отмены
-     * @return результат
+     * @return Результат
      */
     @PutMapping("/{id}/cancel")
     public ResponseEntity<?> cancelOrderById(@PathVariable Long id, @RequestBody Object massage) {
@@ -57,7 +57,7 @@ public class OrderController {
      *
      * @param listId  список заказов
      * @param message причина отмены
-     * @return результат
+     * @return Результат
      */
     @PutMapping("/cancel")
     public ResponseEntity<?> cancelOrderByListId(@RequestParam String listId, @RequestBody Object message) {
@@ -69,7 +69,7 @@ public class OrderController {
     /**
      * Получает заказы
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping
     public ResponseEntity<List<?>> getListOrders() {
@@ -83,7 +83,7 @@ public class OrderController {
     /**
      * Получает заказы по уведомлению
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping("/notify")
     public ResponseEntity<List<?>> getListOrdersByNotify() {

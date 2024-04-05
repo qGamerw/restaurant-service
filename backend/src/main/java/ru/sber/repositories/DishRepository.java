@@ -13,7 +13,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
      * Проверяет есть ли блюдо в базе данных по имени
      *
      * @param name имя блюда
-     * @return результат
+     * @return Результат
      */
     boolean existsByName(String name);
 
@@ -21,7 +21,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
      * Ищет блюдо по имени
      *
      * @param name имя блюда
-     * @return блюдо
+     * @return Блюдо
      */
     Dish findByName(String name);
 }

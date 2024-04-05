@@ -22,7 +22,7 @@ public class EmailConfig {
      * Настройка Yandex почты:
      * https://yandex.ru/support/mail/mail-clients/others.html#smtpsetting
      *
-     * @return JavaMailSender конфигурация
+     * @return Конфигурация
      */
     @Bean
     public JavaMailSender yandexMailSenderSMTP() {

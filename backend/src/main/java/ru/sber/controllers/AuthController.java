@@ -48,7 +48,7 @@ public class AuthController {
      * Регистрация пользователя
      *
      * @param signupRequest данные для регистрации
-     * @return результат
+     * @return Результат
      */
     @Transactional
     @PostMapping("/signup")
@@ -62,7 +62,7 @@ public class AuthController {
      * Вход пользователя
      *
      * @param loginRequest данные для входа
-     * @return результат
+     * @return Результат
      */
     @PostMapping("/signin")
     public ResponseEntity<String> signInUser(@RequestBody LoginRequest loginRequest) {
@@ -75,7 +75,7 @@ public class AuthController {
      * Обновление токена пользователя
      *
      * @param refreshToken токен пользователя
-     * @return результат
+     * @return Результат
      */
     @PostMapping("/refresh")
     public ResponseEntity<String> refreshToken(@RequestBody RefreshToken refreshToken) {
@@ -87,7 +87,7 @@ public class AuthController {
     /**
      * Получение данных пользователя
      *
-     * @return результат
+     * @return Результат
      */
     @GetMapping
     public ResponseEntity<?> getUserDetails() {
@@ -120,7 +120,7 @@ public class AuthController {
      * Обновление данных пользователя
      *
      * @param signupRequest данные для входа на сервис KeyCloak
-     * @return результат
+     * @return Результат
      */
     @PutMapping
     @Transactional
@@ -139,6 +139,11 @@ public class AuthController {
         }
     }
 
+    /**
+     * Выход пользователя из системы
+     *
+     * @return Результат
+     */
     @PutMapping("/logout")
     public ResponseEntity<String> logOutUser() {
         log.info("Выход пользователя из системы");
@@ -153,7 +158,7 @@ public class AuthController {
      * Токен для сброса пароля
      *
      * @param resetPassword данные для сброса пароля
-     * @return результат
+     * @return Результат
      */
     @PostMapping("/reset-password/token")
     public ResponseEntity<String> sendPasswordToken(@RequestBody ResetPassword resetPassword) {
@@ -166,7 +171,7 @@ public class AuthController {
      * Сброс пароля
      *
      * @param resetPassword данные для сброса пароля
-     * @return результат
+     * @return Результат
      */
     @PutMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody ResetPassword resetPassword) {
@@ -178,7 +183,7 @@ public class AuthController {
     /**
      * Удаление пользователя
      *
-     * @return результат
+     * @return Результат
      */
     @DeleteMapping
     public ResponseEntity<String> deleteEmployeeById() {
@@ -196,7 +201,7 @@ public class AuthController {
     /**
      * Получение токена из контекста
      *
-     * @return токен из контекста
+     * @return Токен из контекста
      */
     private Jwt getJwtTokenSecurityContext() throws TokenNotFoundException {
 

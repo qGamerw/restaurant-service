@@ -17,7 +17,7 @@ public interface DishesBranchOfficeRepository extends JpaRepository<DishesBranch
      *
      * @param branchId id филиала
      * @param dishId   id блюда
-     * @return результат
+     * @return Результат
      */
     boolean existsByBranchOffice_IdAndDish_Id(Long branchId, Long dishId);
 
@@ -25,7 +25,7 @@ public interface DishesBranchOfficeRepository extends JpaRepository<DishesBranch
      * Проверяет есть ли блюдо в филиале по id
      *
      * @param dishId id блюда
-     * @return результат
+     * @return Результат
      */
     boolean existsByDish_Id(Long dishId);
 
@@ -33,7 +33,7 @@ public interface DishesBranchOfficeRepository extends JpaRepository<DishesBranch
      * Выводит блюда по id филиала
      *
      * @param id id филиала
-     * @return список блюд в филиале
+     * @return Список блюд в филиале
      */
     List<DishesBranchOffice> findByBranchOffice_Id(long id);
 
@@ -41,7 +41,7 @@ public interface DishesBranchOfficeRepository extends JpaRepository<DishesBranch
      * Выводит блюдо по городу
      *
      * @param name имя города
-     * @return List<DishesBranchOffice>
+     * @return Список блюд в филиале
      */
     List<DishesBranchOffice> findByBranchOffice_NameCity(String name);
 
