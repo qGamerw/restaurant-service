@@ -8,7 +8,7 @@ import ru.sber.entities.OrderToken;
 import ru.sber.entities.enums.EStatusEmployee;
 import ru.sber.exceptions.UserNotApproved;
 import ru.sber.models.Order;
-import ru.sber.proxies.OrderFeign;
+import ru.sber.controllers.OrderFeignController;
 
 import java.util.List;
 
@@ -16,17 +16,17 @@ import java.util.List;
 @Service
 public class OrderServiceImp implements OrderService {
 
-    private final OrderFeign orderFeign;
+    private final OrderFeignController orderFeignController;
     private final NotifyService notifyService;
     private final OrderTokenService orderTokenService;
     private final UserService userService;
 
     @Autowired
-    public OrderServiceImp(OrderFeign orderFeign,
+    public OrderServiceImp(OrderFeignController orderFeignController,
                            NotifyService notifyService,
                            OrderTokenService orderTokenService,
                            UserService userService) {
-        this.orderFeign = orderFeign;
+        this.orderFeignController = orderFeignController;
         this.notifyService = notifyService;
         this.orderTokenService = orderTokenService;
         this.userService = userService;
@@ -41,7 +41,7 @@ public class OrderServiceImp implements OrderService {
         order.setBranchId(user.getBranchOffice().getId());
         order.setEmployeeRestaurantId(user.getId());
 
-        return orderFeign.updateOrderStatusById(
+        return orderFeignController.updateOrderStatusById(
                 "Bearer " + orderToken.getAccessToken(),
                 id,
                 order);
@@ -49,7 +49,7 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public ResponseEntity<?> cancelOrderById(Long id, Object massage) {
-        return orderFeign.cancelOrderById(
+        return orderFeignController.cancelOrderById(
                 "Bearer " + orderTokenService.getToken().getAccessToken(),
                 id,
                 massage);
@@ -57,7 +57,7 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public ResponseEntity<?> cancelOrderByListId(String listId, Object massage) {
-        return orderFeign.cancelOrderByListId(
+        return orderFeignController.cancelOrderByListId(
                 "Bearer " + orderTokenService.getToken().getAccessToken(),
                 listId,
                 massage);
@@ -71,7 +71,7 @@ public class OrderServiceImp implements OrderService {
             }
 
             OrderToken orderToken = orderTokenService.getToken();
-            return orderFeign.getListOrders("Bearer " + orderToken.getAccessToken()).getBody();
+            return orderFeignController.getListOrders("Bearer " + orderToken.getAccessToken()).getBody();
         } catch (UserNotApproved e) {
             log.error("{}", e.getMessage());
             return List.of();
@@ -87,7 +87,7 @@ public class OrderServiceImp implements OrderService {
             if (listOrder.isEmpty()) {
                 return List.of();
             } else {
-                return orderFeign.getListOrdersByNotify(
+                return orderFeignController.getListOrdersByNotify(
                         "Bearer " + orderToken.getAccessToken(),
                         listOrder);
             }

@@ -1,4 +1,4 @@
-package ru.sber.proxies;
+package ru.sber.controllers;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +10,10 @@ import java.util.List;
 /**
  * Класс для взаимодействия с сервисом заказы
  */
-@FeignClient(name = "orderService", url = "localhost:8083/")
-public interface OrderFeign {
+@FeignClient(
+        name = "${jwt.order-service.name}",
+        url = "${jwt.order-service.url}")
+public interface OrderFeignController {
     /**
      * Обновляет статус заказа по id
      *

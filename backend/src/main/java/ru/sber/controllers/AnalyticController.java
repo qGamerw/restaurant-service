@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.sber.proxies.AnalyticProxy;
+import ru.sber.services.AnalyticService;
 
 /**
  * Контроллер для взаимодействия с аналитикой по сервису Заказы
@@ -15,11 +15,11 @@ import ru.sber.proxies.AnalyticProxy;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("analytic")
 public class AnalyticController {
-    private final AnalyticProxy analyticProxy;
+    private final AnalyticService analyticService;
 
     @Autowired
-    public AnalyticController(AnalyticProxy analyticProxy) {
-        this.analyticProxy = analyticProxy;
+    public AnalyticController(AnalyticService analyticService) {
+        this.analyticService = analyticService;
     }
 
     @GetMapping("/employee")
@@ -27,7 +27,7 @@ public class AnalyticController {
     public ResponseEntity<?> getCountOrdersByEmployee() {
         log.info("Получает количество заказов сделанных работником");
 
-        return analyticProxy.findCountOrdersByEmployee();
+        return analyticService.findCountOrdersByEmployee();
     }
 
     /**
@@ -43,7 +43,7 @@ public class AnalyticController {
                                                @RequestParam(required = false) Integer month) {
         log.info("Получает количество заказов поступивших за месяц");
 
-        return analyticProxy.findOrdersPerMonth(year, month);
+        return analyticService.findOrdersPerMonth(year, month);
     }
 
     /**
@@ -57,6 +57,6 @@ public class AnalyticController {
     public ResponseEntity<?> getOrdersPerYear(@RequestParam Integer year) {
         log.info("Получает количество заказов поступивших за год");
 
-        return analyticProxy.findOrdersPerYear(year);
+        return analyticService.findOrdersPerYear(year);
     }
 }

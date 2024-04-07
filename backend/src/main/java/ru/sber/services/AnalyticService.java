@@ -1,11 +1,11 @@
-package ru.sber.proxies;
+package ru.sber.services;
 
 import org.springframework.http.ResponseEntity;
 
 /**
  * Сервис для аналитических запросов к сервису Заказы
  */
-public interface AnalyticProxy {
+public interface AnalyticService {
     /**
      * Определяет количество заказов принятых работником ресторана за все время
      *

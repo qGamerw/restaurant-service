@@ -38,6 +38,9 @@ jwt:
   email-address:
     address: mish.uxin2012@yandex.ru
     password: mklvtcplyygdzuzt
+  order-service:
+    url: localhost:8083/
+    name: orderService
 
 api-config:
   url:

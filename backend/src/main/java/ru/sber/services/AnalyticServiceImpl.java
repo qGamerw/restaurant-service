@@ -1,36 +1,35 @@
-package ru.sber.proxies;
+package ru.sber.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.sber.services.OrderTokenService;
-import ru.sber.services.UserService;
+import ru.sber.controllers.OrderFeignController;
 
 @Service
-public class AnalyticProxyImpl implements AnalyticProxy {
-    private final OrderFeign orderFeign;
+public class AnalyticServiceImpl implements AnalyticService {
+    private final OrderFeignController orderFeignController;
     private final UserService userService;
     private final OrderTokenService orderTokenService;
 
     @Autowired
-    public AnalyticProxyImpl(OrderFeign orderFeign,
-                             UserService userService,
-                             OrderTokenService orderTokenService) {
-        this.orderFeign = orderFeign;
+    public AnalyticServiceImpl(OrderFeignController orderFeignController,
+                               UserService userService,
+                               OrderTokenService orderTokenService) {
+        this.orderFeignController = orderFeignController;
         this.userService = userService;
         this.orderTokenService = orderTokenService;
     }
 
     @Override
     public ResponseEntity<?> findCountOrdersByEmployee() {
-        return orderFeign.getCountOrderFromEmployeeRestaurant(
+        return orderFeignController.getCountOrderFromEmployeeRestaurant(
                 "Bearer " + orderTokenService.getToken().getAccessToken(),
                 userService.getUser().getId());
     }
 
     @Override
     public ResponseEntity<?> findOrdersPerMonth(Integer year, Integer mouth) {
-        return orderFeign.getOrderPerMonth(
+        return orderFeignController.getOrderPerMonth(
                 "Bearer " + orderTokenService.getToken().getAccessToken(),
                 year,
                 mouth);
@@ -38,7 +37,7 @@ public class AnalyticProxyImpl implements AnalyticProxy {
 
     @Override
     public ResponseEntity<?> findOrdersPerYear(Integer year) {
-        return orderFeign.getOrderPerYear(
+        return orderFeignController.getOrderPerYear(
                 "Bearer " + orderTokenService.getToken().getAccessToken(),
                 year);
     }
