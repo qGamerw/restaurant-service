@@ -45,6 +45,22 @@ public class AuthController {
     }
 
     /**
+     * Получение токена из контекста
+     *
+     * @return Токен из контекста
+     */
+    private static Jwt getJwtTokenSecurityContext() throws TokenNotFoundException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
+            return jwtAuthenticationToken.getToken();
+        } else {
+            throw new TokenNotFoundException("Ошибка чтения токена: Токен пользователя не найден.");
+        }
+    }
+
+    /**
      * Регистрация пользователя
      *
      * @param signupRequest данные для регистрации
@@ -195,22 +211,6 @@ public class AuthController {
         } catch (TokenNotFoundException e) {
             log.error("Ошибка чтения токена: Пользователь не найден.");
             return new ResponseEntity<>("Ошибка чтения токена: Пользователь не найден.", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    /**
-     * Получение токена из контекста
-     *
-     * @return Токен из контекста
-     */
-    private static Jwt getJwtTokenSecurityContext() throws TokenNotFoundException {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
-            return jwtAuthenticationToken.getToken();
-        } else {
-            throw new TokenNotFoundException("Ошибка чтения токена: Токен пользователя не найден.");
         }
     }
 }
