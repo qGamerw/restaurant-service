@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,23 +33,23 @@ public class AuthProxyImp implements AuthProxy {
     private final EmailObserver emailObserver;
     private final GenerateTokenPasswordSequenceSingleton generateToken;
 
-    private final KeyCloak keyCloak;
+    private final AuthProxy AuthResources;
 
     @Autowired
     public AuthProxyImp(OrderTokenRepository orderTokenRepository,
                         UserService userService,
                         EmailObserver emailObserver,
-                        KeyCloak keyCloak) {
+                        @Qualifier("keyCloak") AuthProxy AuthResources) {
         this.orderTokenRepository = orderTokenRepository;
         this.userService = userService;
         this.emailObserver = emailObserver;
         this.generateToken = GenerateTokenPasswordSequenceSingleton.getInstance();
-        this.keyCloak = keyCloak;
+        this.AuthResources = AuthResources;
     }
 
     @Override
     public OrderToken updateOrderToken() {
-        var token = keyCloak.updateOrderToken();
+        var token = AuthResources.updateOrderToken();
 
         orderTokenRepository.save(token);
         return token;
@@ -57,7 +58,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> signUpUserREST(SignupRequest signupRequest) {
         try {
-            ResponseEntity<String> userResponseEntity = keyCloak.signUpUserREST(signupRequest);
+            ResponseEntity<String> userResponseEntity = AuthResources.signUpUserREST(signupRequest);
             log.info("Статус запроса регистрацию пользователя: {}", userResponseEntity.getStatusCode());
 
             String responseHeader = userResponseEntity.getHeaders().get("Location").get(0);
@@ -75,7 +76,7 @@ public class AuthProxyImp implements AuthProxy {
 
     @Override
     public ResponseEntity<String> signInUserREST(LoginRequest loginRequest) {
-        ResponseEntity<String> tokenResponseEntity = keyCloak.signInUserREST(loginRequest);
+        ResponseEntity<String> tokenResponseEntity = AuthResources.signInUserREST(loginRequest);
         log.info("Статус запроса получение токена пользователя при входе: {}", tokenResponseEntity.getStatusCode());
 
         return new ResponseEntity<>(tokenResponseEntity.getBody(), tokenResponseEntity.getStatusCode());
@@ -83,7 +84,7 @@ public class AuthProxyImp implements AuthProxy {
 
     @Override
     public ResponseEntity<String> refreshTokenREST(RefreshToken refreshToken) {
-        ResponseEntity<String> tokenResponseEntity = keyCloak.refreshTokenREST(refreshToken);
+        ResponseEntity<String> tokenResponseEntity = AuthResources.refreshTokenREST(refreshToken);
         log.info("Статус запроса на обновление токена пользователя: {}", tokenResponseEntity.getStatusCode());
 
         return new ResponseEntity<>(tokenResponseEntity.getBody(), tokenResponseEntity.getStatusCode());
@@ -114,7 +115,7 @@ public class AuthProxyImp implements AuthProxy {
             updateUserData.setAttributes(attributes);
         }
 
-        ResponseEntity<String> userResponseEntity = keyCloak.updateUserInfoREST(signupRequest, updateUserData, idUser);
+        ResponseEntity<String> userResponseEntity = AuthResources.updateUserInfoREST(signupRequest, updateUserData, idUser);
         log.info("Статус запроса на обновления данных: {}", userResponseEntity.getStatusCode());
 
         var user = userService.findByContext();
@@ -132,7 +133,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> sendPasswordToken(ResetPassword resetPassword) {
         try {
-            ResponseEntity<String> userResponseEntity = keyCloak.sendPasswordToken(resetPassword);
+            ResponseEntity<String> userResponseEntity = AuthResources.sendPasswordToken(resetPassword);
             log.info("Статус запроса получение токена пользователя при проверке email: {}", userResponseEntity.getStatusCode());
 
             JsonNode usersNode = new ObjectMapper().readTree(userResponseEntity.getBody());
@@ -169,7 +170,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> updateUserPassword(ResetPassword resetPassword) {
         try {
-            ResponseEntity<String> resetResponseEntity = keyCloak.updateUserPassword(resetPassword);
+            ResponseEntity<String> resetResponseEntity = AuthResources.updateUserPassword(resetPassword);
             log.info("Статус запроса сброса пароля: {}", resetResponseEntity.getStatusCode());
 
             emailObserver.sendUpdatePasswordToken(resetPassword);
@@ -183,7 +184,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> deleteUser(String idUser, Jwt jwt) {
         if (userService.deleteById(idUser)) {
-            ResponseEntity<String> responseEntity = keyCloak.deleteUser(idUser, jwt);
+            ResponseEntity<String> responseEntity = AuthResources.deleteUser(idUser, jwt);
             return new ResponseEntity<>("Пользователь успешно удален.", responseEntity.getStatusCode());
         } else {
             return new ResponseEntity<>(

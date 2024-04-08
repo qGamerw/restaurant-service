@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@Qualifier("keyCloak")
 @Service
 public class KeyCloak implements AuthProxy {
     public final static String orderServiceUsername = "user";
