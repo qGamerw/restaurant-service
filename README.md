@@ -38,11 +38,19 @@
 * Apache Kafka
 * Spring CLoud OpenFeign
 * KeyCloak
+* Rest Api
+* Lombok
+* Maven
+* JWT Api
 
 ### Frontend
 
-* React js
-* Ant design
+* React JS
+* Node.js
+* Redux
+* Ant Design
+* Axios
+* React Router Dom
 
 ### БД
 
