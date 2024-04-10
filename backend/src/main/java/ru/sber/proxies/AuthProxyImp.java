@@ -33,7 +33,7 @@ public class AuthProxyImp implements AuthProxy {
     private final EmailObserver emailObserver;
     private final GenerateTokenPasswordSequenceSingleton generateToken;
 
-    private final AuthProxy AuthResources;
+    private final AuthProxy authResources;
 
     @Autowired
     public AuthProxyImp(OrderTokenRepository orderTokenRepository,
@@ -44,12 +44,12 @@ public class AuthProxyImp implements AuthProxy {
         this.userService = userService;
         this.emailObserver = emailObserver;
         this.generateToken = GenerateTokenPasswordSequenceSingleton.getInstance();
-        this.AuthResources = AuthResources;
+        this.authResources = AuthResources;
     }
 
     @Override
     public OrderToken updateOrderToken() {
-        var token = AuthResources.updateOrderToken();
+        var token = authResources.updateOrderToken();
 
         orderTokenRepository.save(token);
         return token;
@@ -58,7 +58,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> signUpUserREST(SignupRequest signupRequest) {
         try {
-            ResponseEntity<String> userResponseEntity = AuthResources.signUpUserREST(signupRequest);
+            ResponseEntity<String> userResponseEntity = authResources.signUpUserREST(signupRequest);
             log.info("Статус запроса регистрацию пользователя: {}", userResponseEntity.getStatusCode());
 
             String responseHeader = userResponseEntity.getHeaders().get("Location").get(0);
@@ -76,7 +76,7 @@ public class AuthProxyImp implements AuthProxy {
 
     @Override
     public ResponseEntity<String> signInUserREST(LoginRequest loginRequest) {
-        ResponseEntity<String> tokenResponseEntity = AuthResources.signInUserREST(loginRequest);
+        ResponseEntity<String> tokenResponseEntity = authResources.signInUserREST(loginRequest);
         log.info("Статус запроса получение токена пользователя при входе: {}", tokenResponseEntity.getStatusCode());
 
         return new ResponseEntity<>(tokenResponseEntity.getBody(), tokenResponseEntity.getStatusCode());
@@ -84,7 +84,7 @@ public class AuthProxyImp implements AuthProxy {
 
     @Override
     public ResponseEntity<String> refreshTokenREST(RefreshToken refreshToken) {
-        ResponseEntity<String> tokenResponseEntity = AuthResources.refreshTokenREST(refreshToken);
+        ResponseEntity<String> tokenResponseEntity = authResources.refreshTokenREST(refreshToken);
         log.info("Статус запроса на обновление токена пользователя: {}", tokenResponseEntity.getStatusCode());
 
         return new ResponseEntity<>(tokenResponseEntity.getBody(), tokenResponseEntity.getStatusCode());
@@ -115,7 +115,7 @@ public class AuthProxyImp implements AuthProxy {
             updateUserData.setAttributes(attributes);
         }
 
-        ResponseEntity<String> userResponseEntity = AuthResources.updateUserInfoREST(signupRequest, updateUserData, idUser);
+        ResponseEntity<String> userResponseEntity = authResources.updateUserInfoREST(signupRequest, updateUserData, idUser);
         log.info("Статус запроса на обновления данных: {}", userResponseEntity.getStatusCode());
 
         var user = userService.findByContext();
@@ -133,7 +133,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> sendPasswordToken(ResetPassword resetPassword) {
         try {
-            ResponseEntity<String> userResponseEntity = AuthResources.sendPasswordToken(resetPassword);
+            ResponseEntity<String> userResponseEntity = authResources.sendPasswordToken(resetPassword);
             log.info("Статус запроса получение токена пользователя при проверке email: {}", userResponseEntity.getStatusCode());
 
             JsonNode usersNode = new ObjectMapper().readTree(userResponseEntity.getBody());
@@ -170,7 +170,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> updateUserPassword(ResetPassword resetPassword) {
         try {
-            ResponseEntity<String> resetResponseEntity = AuthResources.updateUserPassword(resetPassword);
+            ResponseEntity<String> resetResponseEntity = authResources.updateUserPassword(resetPassword);
             log.info("Статус запроса сброса пароля: {}", resetResponseEntity.getStatusCode());
 
             emailObserver.sendUpdatePasswordToken(resetPassword);
@@ -184,7 +184,7 @@ public class AuthProxyImp implements AuthProxy {
     @Override
     public ResponseEntity<String> deleteUser(String idUser, Jwt jwt) {
         if (userService.deleteById(idUser)) {
-            ResponseEntity<String> responseEntity = AuthResources.deleteUser(idUser, jwt);
+            ResponseEntity<String> responseEntity = authResources.deleteUser(idUser, jwt);
             return new ResponseEntity<>("Пользователь успешно удален.", responseEntity.getStatusCode());
         } else {
             return new ResponseEntity<>(
