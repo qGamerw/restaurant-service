@@ -1,168 +1,99 @@
 package ru.sber.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import ru.sber.controllers.openFeign.OrderFeignController;
 import ru.sber.entities.OrderToken;
-import ru.sber.entities.User;
 import ru.sber.entities.enums.EStatusEmployee;
 import ru.sber.exceptions.UserNotApproved;
-import ru.sber.exceptions.UserNotFound;
-import ru.sber.model.Order;
-import ru.sber.order.OrderFeign;
-import ru.sber.repositories.UserRepository;
+import ru.sber.models.Order;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
-/**
- * Реализует логику работы с order-service
- */
 @Slf4j
 @Service
 public class OrderServiceImp implements OrderService {
 
-    private final OrderFeign orderFeign;
+    private final OrderFeignController orderFeignController;
     private final NotifyService notifyService;
     private final OrderTokenService orderTokenService;
-    private final JwtService jwtService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public OrderServiceImp(OrderFeign orderFeign,
+    public OrderServiceImp(OrderFeignController orderFeignController,
                            NotifyService notifyService,
                            OrderTokenService orderTokenService,
-                           JwtService jwtService,
-                           UserRepository userRepository) {
-        this.orderFeign = orderFeign;
+                           UserService userService) {
+        this.orderFeignController = orderFeignController;
         this.notifyService = notifyService;
         this.orderTokenService = orderTokenService;
-        this.jwtService = jwtService;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
     public ResponseEntity<?> updateOrderStatusById(Long id, Order order) {
-        checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
-        var user = getUserJwtTokenSecurityContext();
+        OrderToken orderToken = orderTokenService.getToken();
 
+        var user = userService.getUser();
         order.setBranchAddress(user.getBranchOffice().getAddress());
         order.setBranchId(user.getBranchOffice().getId());
         order.setEmployeeRestaurantId(user.getId());
 
-        return orderFeign.updateOrderStatusById("Bearer "+ orderToken.get().getAccessToken(), id, order);
+        return orderFeignController.updateOrderStatusById(
+                "Bearer " + orderToken.getAccessToken(),
+                id,
+                order);
     }
 
     @Override
     public ResponseEntity<?> cancelOrderById(Long id, Object massage) {
-        checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
-
-        return orderFeign.cancelOrderById("Bearer "+ orderToken.get().getAccessToken(), id, massage);
+        return orderFeignController.cancelOrderById(
+                "Bearer " + orderTokenService.getToken().getAccessToken(),
+                id,
+                massage);
     }
 
     @Override
     public ResponseEntity<?> cancelOrderByListId(String listId, Object massage) {
-        checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
-
-        return orderFeign.cancelOrderByListId("Bearer "+ orderToken.get().getAccessToken(), listId, massage);
+        return orderFeignController.cancelOrderByListId(
+                "Bearer " + orderTokenService.getToken().getAccessToken(),
+                listId,
+                massage);
     }
 
     @Override
     public List<?> getListOrders() {
-        log.info("Получает заказы для ресторана");
-        var user = getUserJwtTokenSecurityContext();
-        if (user.getStatus().equals(EStatusEmployee.UNDER_CONSIDERATION)){
-            throw new UserNotApproved("Пользователь не допущен к работе");
-        }
-        checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
+        try {
+            if (userService.getUser().getStatus().equals(EStatusEmployee.UNDER_CONSIDERATION)) {
+                throw new UserNotApproved("Пользователь не допущен к работе");
+            }
 
-        return orderFeign.getListOrders("Bearer "+ orderToken.get().getAccessToken()).getBody();
+            OrderToken orderToken = orderTokenService.getToken();
+            return orderFeignController.getListOrders("Bearer " + orderToken.getAccessToken()).getBody();
+        } catch (UserNotApproved e) {
+            log.error("{}", e.getMessage());
+            return List.of();
+        }
     }
 
     @Override
     public List<?> getListOrdersByNotify() {
-        String strOrder = notifyService.getList();
-        log.info("Обновляет информацию о заказах с id {}", strOrder);
-
-        checkAndUpdateOrderTokens();
-        Optional<OrderToken> orderToken = orderTokenService.findById();
-
-        if (!strOrder.isEmpty()) {
-                return orderFeign.getListOrdersByNotify(
-                        "Bearer "+ orderToken.get().getAccessToken(), strOrder);
-        }
-        return List.of();
-    }
-
-    private User getUserJwtTokenSecurityContext() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
-
-            return userRepository.findById(jwtService.getSubClaim(jwtAuthenticationToken.getToken()))
-                    .orElseThrow(() -> new UserNotFound("Пользователь не найден"));
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
-    }
-
-    private void checkAndUpdateOrderTokens() {
-        Optional<OrderToken> orderTokens = orderTokenService.findById();
-        log.info("Проверка получения токена");
-
-        if (orderTokens.isEmpty() ||
-                !orderTokens.stream().allMatch(token -> LocalDateTime.now().isBefore(token.getTokenExpiration()))) {
-            updateOrderTokens();
-        }
-    }
-
-    @Transactional
-    private void updateOrderTokens() {
-        log.info("Обновление токена заказа");
-
-        HttpHeaders tokenHeaders = new HttpHeaders();
-        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
-        tokenBody.add("grant_type", "password");
-        tokenBody.add("client_id", "login-app");
-        tokenBody.add("username", "user");
-        tokenBody.add("password", "11111");
-
-        HttpEntity<MultiValueMap<String, String>> tokenEntity = new HttpEntity<>(tokenBody, tokenHeaders);
-
         try {
-            ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
-                    "http://localhost:8080/realms/order-realm/protocol/openid-connect/token",
-                    HttpMethod.POST, tokenEntity, String.class);
+            String listOrder = notifyService.getListId();
+            OrderToken orderToken = orderTokenService.getToken();
 
-            String jsonResponse = tokenResponseEntity.getBody();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
-
-            String accessToken = jsonNode.get("access_token").asText();
-
-            OrderToken newToken = new OrderToken(1, accessToken, LocalDateTime.now().plusMinutes(14));
-
-            orderTokenService.save(newToken);
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (listOrder.isEmpty()) {
+                return List.of();
+            } else {
+                return orderFeignController.getListOrdersByNotify(
+                        "Bearer " + orderToken.getAccessToken(),
+                        listOrder);
+            }
+        } catch (UserNotApproved e) {
+            log.error("{}", e.getMessage());
+            return List.of();
         }
     }
 }

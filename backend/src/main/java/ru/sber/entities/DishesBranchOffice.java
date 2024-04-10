@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 /**
  * Блюдо для {@link BranchOffice филиала}
  */
-
 @Entity
 @AllArgsConstructor
 @Data

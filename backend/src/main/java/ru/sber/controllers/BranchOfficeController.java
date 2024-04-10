@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.entities.BranchOffice;
-import ru.sber.model.BranchOfficeLimit;
+import ru.sber.models.BranchOfficeLimit;
 import ru.sber.services.BranchOfficeService;
 
 import java.util.List;
@@ -27,35 +27,50 @@ public class BranchOfficeController {
         this.branchOfficeService = branchOfficeService;
     }
 
+    /**
+     * Открывает или закрывает филиал
+     *
+     * @return Результат
+     */
     @PutMapping
     @PreAuthorize("hasRole('client_admin')")
-    public ResponseEntity<?> openCloseBranchOffice() {
+    public ResponseEntity<String> openCloseBranchOffice() {
         log.info("Закрывает или открывает филиал");
 
-        boolean isStatus = branchOfficeService.openCloseBranchOffice();
-
-        if (isStatus) {
-            return ResponseEntity.ok()
-                    .build();
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Access denied");
-        }
+        return branchOfficeService.openCloseBranchOffice()
+                .map(s -> ResponseEntity
+                        .ok()
+                        .body(s))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("Недостаточно прав для выполнения команды"));
     }
 
+    /**
+     * Выводит данные о филиале
+     *
+     * @return Результат
+     */
     @GetMapping
     public ResponseEntity<BranchOfficeLimit> getBranchOfficeByEmployee() {
         log.info("Выводит данные о филиале");
 
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .ok()
                 .body(branchOfficeService.getBranchOfficeByEmployee());
     }
 
+    /**
+     * Выводит данные о всех филиалах
+     *
+     * @return Результат
+     */
     @GetMapping("/all")
     public ResponseEntity<List<BranchOfficeLimit>> getListBranchOffice() {
         log.info("Выводит данные о всех филиалах");
 
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .ok()
                 .body(branchOfficeService.getListBranchOffice());
     }
 }

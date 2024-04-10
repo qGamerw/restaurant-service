@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.sber.services.AnalyticService;
 
 /**
- * Контроллер для взаимодействия с аналитикой сервиса
+ * Контроллер для взаимодействия с аналитикой по сервису Заказы
  */
 @Slf4j
 @RestController
@@ -24,24 +24,37 @@ public class AnalyticController {
 
     @GetMapping("/employee")
     @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<?> getCountOrderFromEmployee() {
-        log.info("Получает количество заказов сделанных работником ресторана");
+    public ResponseEntity<?> getCountOrdersByEmployee() {
+        log.info("Получает количество заказов сделанных работником");
 
-        return analyticService.findCountOrderFromEmployeeRestaurantId();
+        return analyticService.findCountOrdersByEmployee();
     }
 
+    /**
+     * Получает количество заказов поступивших за месяц
+     *
+     * @param year  год
+     * @param month месяц
+     * @return Результат
+     */
     @GetMapping("/orders/per/month")
     @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<?> getOrderPerMonth(@RequestParam(required = false) Integer year,
-                                             @RequestParam(required = false) Integer month) {
+    public ResponseEntity<?> getOrdersPerMonth(@RequestParam(required = false) Integer year,
+                                               @RequestParam(required = false) Integer month) {
         log.info("Получает количество заказов поступивших за месяц");
 
         return analyticService.findOrdersPerMonth(year, month);
     }
 
+    /**
+     * Получает количество заказов поступивших за год
+     *
+     * @param year год
+     * @return Результат
+     */
     @GetMapping("/orders/per/year")
     @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<?> getOrderPerYear(@RequestParam Integer year) {
+    public ResponseEntity<?> getOrdersPerYear(@RequestParam Integer year) {
         log.info("Получает количество заказов поступивших за год");
 
         return analyticService.findOrdersPerYear(year);

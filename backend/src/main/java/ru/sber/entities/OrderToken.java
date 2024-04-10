@@ -1,6 +1,5 @@
 package ru.sber.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,4 +26,10 @@ public class OrderToken {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime tokenExpiration;
+
+    public OrderToken(String accessToken) {
+        this.id = 1;
+        this.accessToken = accessToken;
+        this.tokenExpiration = LocalDateTime.now().plusMinutes(14);
+    }
 }

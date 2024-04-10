@@ -1,105 +1,85 @@
 import React from 'react';
-import {Button, Form, Input} from 'antd';
-import authService from '../services/authService';
-import {LockOutlined, MailOutlined, PhoneOutlined, UserOutlined} from '@ant-design/icons';
-import {useNavigate} from 'react-router-dom';
-import {UserRegistration} from "../types/types";
-
-interface Registration {
-    employeeName: string;
-    email: string;
-    password: string;
-    branchOffice: string;
-}
+import {Button, Form, Input, message} from 'antd';
+import {authLoginPath, AuthRegistration} from "../types/authType";
+import {useNavigate} from "react-router-dom";
+import authService from "../services/authService";
 
 const FormRegistration: React.FC = () => {
-    async function onFinish(values: UserRegistration) {
+    const navigate = useNavigate();
 
-        authService.register(values).then((massage) => {
-            console.log('Success:', massage);
-        }, (error) => {
-            const _content = (error.response && error.response.data)
-            console.log(_content);
-        })
+    const onFinish = (values: AuthRegistration) => {
+        console.log('Success:', values);
+        authService.authRegisterUser(values).then(() => navigate(authLoginPath));
     }
+
+    const onFinishFailed = () => {
+        message.error("Ошибка регистрации, поля не заполнены полностью.");
+    };
 
     return (
         <Form
             name="basic"
-            labelCol={{span: 8}}
+            labelCol={{span: 6}}
             wrapperCol={{span: 16}}
-            style={{maxWidth: 600}}
-            initialValues={{remember: true}}
+            style={{maxWidth: 500}}
+            initialValues={{remember: false}}
             onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
-            <Form.Item
-                label="Ник"
+            <Form.Item<AuthRegistration>
+                label="Логин"
                 name="username"
-                rules={[{required: true, message: 'Пожалуйста введите ваш ник!'}]}
+                rules={[{required: true, message: 'Пожалуйста, введите!'}]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Ник" maxLength={30} />
+                <Input placeholder={"********"}/>
             </Form.Item>
 
-            <Form.Item
-                label="Имя"
-                name="firstName"
-                rules={[{required: true, message: 'Пожалуйста введите ваше имя!'}]}
-            >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Имя" maxLength={30} />
-            </Form.Item>
-
-            <Form.Item
-                label="Фамилия"
-                name="lastName"
-                rules={[{required: true, message: 'Пожалуйста введите вашу фамилию!'}]}
-            >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Фамилия" maxLength={30} />
-            </Form.Item>
-
-            <Form.Item
-                label="Телефон"
-                name="phoneNumber"
-                rules={[{required: true, message: 'Пожалуйста введите ваш телефон!'}]}
-            >
-                <Input prefix={<PhoneOutlined className="site-form-item-icon"/>} placeholder="Номер телефона" maxLength={12} />
-            </Form.Item>
-
-            <Form.Item
-                label="Почта"
+            <Form.Item<AuthRegistration>
+                label="Email"
                 name="email"
                 rules={[
-                    {type: 'email', message: 'Введите email!'},
-                    {required: true, message: 'Пожалуйста введите вашу почту!'},
+                    {
+                        type: 'email',
+                        message: 'Некорректный формат!',
+                    },
+                    {
+                        required: true,
+                        message: 'Пожалуйста, введите email',
+                    },
                 ]}
             >
-                <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Почта" maxLength={30} />
+                <Input type="email" placeholder={"********"}/>
             </Form.Item>
 
-            <Form.Item
-                label="Id филиала"
-                name="idBranchOffice"
-                rules={[{required: true, message: 'Пожалуйста введите номер филиала!'}]}
-            >
-                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Номер филиала" maxLength={5} pattern="^d+$" />
-            </Form.Item>
-
-            <Form.Item
+            <Form.Item<AuthRegistration>
                 label="Пароль"
                 name="password"
-                rules={[{required: true, message: 'Пожалуйста введите пароль!'}]}
+                rules={[{required: true, message: 'Пожалуйста, введите!'}]}
             >
-                <Input.Password
-                    prefix={<LockOutlined className="site-form-item-icon"/>}
-                    placeholder="Пароль"
-                />
+                <Input.Password placeholder={"********"}/>
             </Form.Item>
 
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item<AuthRegistration>
+                label="Office"
+                name="idBranchOffice"
+                rules={[{required: true, message: 'Пожалуйста, введите!'}]}
+            >
+                <Input placeholder={"********"}/>
+            </Form.Item>
+
+            <Form.Item wrapperCol={{offset: 6, span: 8}}>
                 <Button type="primary" htmlType="submit">
                     Зарегистрироваться
                 </Button>
+
             </Form.Item>
+
+            <div style={{
+                fontSize: 12
+            }}>
+                Есть учетная запись? <a href={authLoginPath}> Войти</a>
+            </div>
         </Form>
     );
 };

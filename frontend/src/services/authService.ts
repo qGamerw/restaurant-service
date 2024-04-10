@@ -1,123 +1,61 @@
 import axios from "axios";
-import {
-    AuthData,
-    Dish,
-    Login,
-    NewDataUser,
-    RecoveryPassword,
-    Registration,
-    User,
-    UserRegistration
-} from "../types/types";
-import {Dispatch} from "redux";
 import authHeader from "./auth-header";
+import {AccountUser, userDatesSessionStorage} from "../types/accountType";
+import {
+    authAPIPath,
+    AuthDataUser,
+    authDatesSessionStorage,
+    AuthLogin,
+    AuthRegistration,
+    AuthResetPassword
+} from "../types/authType";
 import {message} from "antd";
-import {updateOrders} from "../slices/orderSlice";
 
-const API_URL = "/api/auth"
-
-function saveLocalStore(authData: AuthData) {
+function saveLocalStore(authData: AuthDataUser) {
     if (authData.access_token) {
-        sessionStorage.setItem('auth-date', JSON.stringify(authData));
+        sessionStorage.setItem(authDatesSessionStorage, JSON.stringify(authData));
     }
 }
 
-function saveLocalStoreUser(user: User) {
+function saveLocalStoreUser(user: AccountUser) {
     if (user.username) {
-        sessionStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.setItem(userDatesSessionStorage, JSON.stringify(user));
     }
 }
 
-
-async function register(registration: UserRegistration) {
-    const {username, email, phoneNumber, password, idBranchOffice, firstName, lastName} = registration;
-    const response = await axios.post<UserRegistration>(`${API_URL}/signup`, {
-        username,
-        email,
-        phoneNumber,
-        password,
-        idBranchOffice,
-        firstName,
-        lastName
-    });
-    return response.data;
-}
-
-async function login(login: Login): Promise<User> {
-    const {employeeName, password} = login;
-
+async function authLogin(login: AuthLogin): Promise<AccountUser> {
     const responseAuthData = await axios
-        .post<AuthData>(`${API_URL}/signin`, {
-            username: employeeName,
-            password,
+        .post<AuthDataUser>(`${authAPIPath}/signin`, {
+            username: login.username,
+            password: login.password,
         });
     saveLocalStore(responseAuthData.data);
 
     const headers = authHeader();
-    const responseUser = await axios.get<User>(API_URL, {headers});
+    const responseUser = await axios.get<AccountUser>(authAPIPath, {headers});
     saveLocalStoreUser(responseUser.data);
-
     return responseUser.data;
 }
 
-async function resetPasswordToken(email: string) {
+async function authUserGetData() {
     try {
-        await axios.post(`${API_URL}/reset-password/token`, {
-            email: email
-        }).then(message.success(`Письмо отправили на почту: ${email}!`))
+        const headers = authHeader();
+        const responseUser = await axios.get<AccountUser>(authAPIPath, {headers});
+        saveLocalStoreUser(responseUser.data);
     } catch (error) {
-        message.error("Неизвестная ошибка при отправлении письма!");
+        message.error('Ошибка получения данных пользователя!')
     }
+
 }
 
-async function resetPassword(value: RecoveryPassword) {
-    console.log(value);
-    return await axios.put(`${API_URL}/reset-password`, {
-        email: value.email,
-        password: value.password,
-        token: value.token,
-        });
-}
-
-async function newDataUser(value: NewDataUser) {
-    console.log(value);
+async function authLogOut() {
     const headers = authHeader();
 
-    const responseUpdate = await axios.put(`${API_URL}`, {
-        email: value.email,
-        phoneNumber: value.phoneNumber,
-        idBranchOffice: value.idBranchOffice,
-        firstName: value.firstName,
-        lastName: value.lastName
-        }, {headers});
-
-    const authDataString = sessionStorage.getItem('auth-date');
-    const userName = authDataString? JSON.parse(authDataString).refresh_token: '';
-    await refresh(userName);
-
-    return responseUpdate;
-}
-
-async function refresh(refresh_token: string): Promise<User> {
-    const responseAuthData = await axios
-        .post<AuthData>(`${API_URL}/refresh`, {refresh_token: refresh_token});
-    saveLocalStore(responseAuthData.data);
-
-    const headers = authHeader();
-    const responseUser = await axios.get<User>(API_URL, {headers});
-    saveLocalStoreUser(responseUser.data);
-
-    return responseUser.data;
-}
-
-function logout() {
-    const headers = authHeader();
-
-    if (headers.Authorization !== ''){
+    if (headers.Authorization !== '') {
         try {
-            sessionStorage.removeItem('auth-date');
-            sessionStorage.removeItem('user');
-            return axios.put(`${API_URL}/logout`, {},{headers});
+            sessionStorage.removeItem(authDatesSessionStorage);
+            sessionStorage.removeItem(userDatesSessionStorage);
+            await axios.put(`${authAPIPath}/logout`, {}, {headers});
 
         } catch (error) {
             console.error("Ошибка выхода:", error);
@@ -126,14 +64,67 @@ function logout() {
     }
 }
 
+async function authGetPasswordToken(email: string) {
+    try {
+        await axios.post(`${authAPIPath}/reset-password/token`, { email: email })
+        message.success(`Письмо отправили на почту: ${email}!`);
+    } catch (error) {
+        message.error("Неизвестная ошибка при отправлении письма!");
+    }
+}
+
+async function authResetPassword(value: AuthResetPassword) {
+    console.log(value);
+    try {
+        await axios.put(`${authAPIPath}/reset-password`, {
+            email: value.email,
+            password: value.password,
+            token: value.token,
+        })
+        message.success("Успешная смена пароля.");
+    } catch (error) {
+        message.error("Не удалось сменить пароль.");
+    }
+}
+
+async function authRegisterUser(registration: AuthRegistration) {
+    const {username, email,password, idBranchOffice} = registration;
+    try {
+        await axios.post<AuthRegistration>(`${authAPIPath}/signup`, {
+            username,
+            email,
+            phoneNumber: '',
+            password,
+            idBranchOffice,
+            firstName: '',
+            lastName: ''
+        });
+        message.success("Успешная регистрации пользователя!");
+    } catch (error) {
+        message.error("Не удалось зарегистрироваться.");
+    }
+}
+
+async function authRefreshToken(refresh_token: string) {
+    try {
+        const responseAuthData = await axios
+            .post<AuthDataUser>(`${authAPIPath}/refresh`, {refresh_token: refresh_token});
+
+        saveLocalStore(responseAuthData.data);
+        message.success("Сессия продлена!");
+    } catch (error) {
+        message.error("Не удалось продлить сессию!")
+    }
+}
+
 const authService = {
-    register,
-    login,
-    logout,
-    refresh,
-    resetPasswordToken,
-    resetPassword,
-    newDataUser
+    authLogin,
+    authUserGetData,
+    authLogOut,
+    authGetPasswordToken,
+    authResetPassword,
+    authRegisterUser,
+    authRefreshToken
 };
 
 export default authService;

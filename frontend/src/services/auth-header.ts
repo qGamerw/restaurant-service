@@ -1,5 +1,7 @@
+import {authDatesSessionStorage} from "../types/authType";
+
 export default function authHeader() {
-    const authDataStore = sessionStorage.getItem('auth-date');
+    const authDataStore = sessionStorage.getItem(authDatesSessionStorage);
     let authData = null;
     if (authDataStore) {
         authData = JSON.parse(authDataStore);

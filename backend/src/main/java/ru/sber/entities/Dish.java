@@ -11,15 +11,11 @@ import java.math.BigDecimal;
 /**
  * Блюдо
  */
-
 @Entity
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Table(name = "dishes",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "name")
-        })
+@Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,12 +40,4 @@ public class Dish {
 
     @Column(nullable = false)
     private double weight;
-
-    public Dish(String name, String urlImage, Category category, BigDecimal price, double weight) {
-        this.name = name;
-        this.urlImage = urlImage;
-        this.category = category;
-        this.price = price;
-        this.weight = weight;
-    }
 }

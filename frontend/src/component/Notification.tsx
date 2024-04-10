@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 const Notification: React.FC = () => {
     const dispatch = useDispatch();
 
+// не смотрел
 
     useEffect(() => {
         const timer = setInterval(() => {

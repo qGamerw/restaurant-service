@@ -1,38 +1,39 @@
 import React from 'react';
-import {Avatar, Tabs} from 'antd';
-import account from "../employee.png"
-import {AntDesignOutlined, AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
-import RecoveryPasswordPage from "./RecoveryPasswordPage";
-import FormLogin from "../component/FormLogin";
-import FormNewDataUser from "../component/FormNewDataUser";
+import {Modal, Tabs} from "antd";
+import {AppstoreOutlined, MailOutlined, SettingOutlined} from "@ant-design/icons";
 import FormUserAchievements from "../component/FormUserAchievements";
+import FormNewDataUser from "../component/FormNewDataUser";
+import FormResetPasswordAccount from "../component/FormResetPasswordAccount";
 
-
-const AccountPage = () => {
-
+const AccountPage: React.FC<{
+    modalOpen: boolean,
+    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({modalOpen, setModalOpen}) => {
     return (
-        <div>
-            <Avatar
-                size={150}
-                icon={<AntDesignOutlined/>}
-                style={{marginTop: 10, marginLeft: -40}}
-                src={account}
-            />
-                <Tabs style={{marginBottom: 24, marginTop: 20,}} tabPosition={'left'}>
-                    <Tabs.TabPane tab={<><AppstoreOutlined />Достижения</>} key={'1'}>
-                        <FormUserAchievements/>
-                    </Tabs.TabPane>
+        <Modal
+            title="Настройки аккаунта"
+            centered
+            open={modalOpen}
+            onOk={() => setModalOpen(false)}
+            onCancel={() => setModalOpen(false)}
+            style={{minWidth: 600, minHeight: 600}}
+            footer={null}
+        >
 
-                    <Tabs.TabPane tab={<><MailOutlined />Новости</>} key={'2'}>
-                        <>Новости</>
-                    </Tabs.TabPane>
+            <Tabs style={{marginTop: 20,}} tabPosition={'top'}>
+                <Tabs.TabPane tab={<><SettingOutlined/>Профиль</>} key={'1'}>
+                    <FormNewDataUser/>
+                </Tabs.TabPane>
 
-                    <Tabs.TabPane tab={<><SettingOutlined />Настройки</>} key={'3'} >
-                        <FormNewDataUser/>
-                    </Tabs.TabPane>
+                <Tabs.TabPane tab={<><AppstoreOutlined/>Достижения</>} key={'2'}>
+                    <FormUserAchievements/>
+                </Tabs.TabPane>
 
-                </Tabs>
-        </div>
+                <Tabs.TabPane tab={<><MailOutlined/>Сброс пароля</>} key={'3'}>
+                    <FormResetPasswordAccount/>
+                </Tabs.TabPane>
+            </Tabs>
+        </Modal>
     );
 };
 

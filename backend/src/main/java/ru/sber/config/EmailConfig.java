@@ -1,5 +1,6 @@
 package ru.sber.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,19 +9,31 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 /**
- * Настройка почты
+ * Настройка конфигурации почты
  */
 @Configuration
 public class EmailConfig {
+    @Value("${jwt.email-address.address}")
+    private String emailAddress;
+    @Value("${jwt.email-address.password}")
+    private String resourceId;
+
+    /**
+     * Настройка Yandex почты:
+     * https://yandex.ru/support/mail/mail-clients/others.html#smtpsetting
+     *
+     * @return Конфигурация
+     */
     @Bean
-    public JavaMailSender javaMailSender() {
+    public JavaMailSender yandexMailSenderSMTP() {
+
         String host = "smtp.yandex.ru";
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
         mailSender.setPort(465);
-        mailSender.setUsername("mish.uxin2012@yandex.ru");
-        mailSender.setPassword("mklvtcplyygdzuzt");
+        mailSender.setUsername(emailAddress);
+        mailSender.setPassword(resourceId);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.host", host);

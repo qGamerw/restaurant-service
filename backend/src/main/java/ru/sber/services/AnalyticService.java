@@ -3,22 +3,22 @@ package ru.sber.services;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Сервис для аналитических запросов
+ * Сервис для аналитических запросов к сервису Заказы
  */
 public interface AnalyticService {
     /**
-     * Определяет количество заказов принятых работником ресторана
+     * Определяет количество заказов принятых работником ресторана за все время
      *
-     * @return количество заказов
+     * @return Количество заказов
      */
-    ResponseEntity<?> findCountOrderFromEmployeeRestaurantId();
+    ResponseEntity<?> findCountOrdersByEmployee();
 
     /**
      * Определяет количество заказов поступивших за месяц
      *
      * @param year  год
      * @param mouth месяц
-     * @return количество заказов за месяц
+     * @return Количество заказов за месяц
      */
     ResponseEntity<?> findOrdersPerMonth(Integer year, Integer mouth);
 
@@ -26,7 +26,7 @@ public interface AnalyticService {
      * Определяет количество заказов поступивших за год
      *
      * @param year год
-     * @return количество заказов за год
+     * @return Количество заказов за год
      */
     ResponseEntity<?> findOrdersPerYear(Integer year);
 }

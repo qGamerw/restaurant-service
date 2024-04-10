@@ -14,7 +14,7 @@ public interface DishService {
     /**
      * Получает все блюда в филиале
      *
-     * @return List<Dish>
+     * @return Список блюд
      */
     List<Dish> getListDish();
 
@@ -22,7 +22,7 @@ public interface DishService {
      * Добавляет блюдо
      *
      * @param dish блюдо
-     * @return boolean
+     * @return Результат
      */
     long addDish(Dish dish);
 
@@ -30,15 +30,15 @@ public interface DishService {
      * Добавляет блюдо по имени
      *
      * @param name имя блюдо
-     * @return boolean
+     * @return Результат
      */
-    boolean addDishByName(String name);
+    Optional<String> addDishByName(String name);
 
     /**
      * Получает все блюда в городе
      *
      * @param name имя города
-     * @return List<Dish>
+     * @return Список блюд
      */
     List<Dish> getListByNameCity(String name);
 
@@ -46,7 +46,7 @@ public interface DishService {
      * Получает все блюда по id
      *
      * @param listDishes list id
-     * @return List<Dish>
+     * @return Список блюд
      */
     List<Dish> getListById(String listDishes);
 
@@ -54,23 +54,23 @@ public interface DishService {
      * Удаляет блюдо
      *
      * @param id id блюда
-     * @return boolean
+     * @return Результат
      */
-    boolean deleteDish(long id);
+    Optional<String> deleteDish(long id);
 
     /**
      * Обновляет блюдо
      *
      * @param dish блюдо
-     * @return boolean
+     * @return результат
      */
-    boolean updateDish(Dish dish);
+    Optional<String> updateDish(Dish dish);
 
     /**
      * Получает блюдо по id
      *
      * @param id id блюда
-     * @return Optional<Dish>
+     * @return Блюдо
      */
     Optional<Dish> getDishById(long id);
 
@@ -79,7 +79,7 @@ public interface DishService {
      *
      * @param page номер страницы
      * @param size размер страницы
-     * @return Optional<Dish>
+     * @return Страница
      */
     Page<Dish> getDishesByPage(int page, int size);
 }

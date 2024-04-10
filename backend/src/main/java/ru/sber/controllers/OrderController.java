@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sber.model.Order;
+import ru.sber.models.Order;
 import ru.sber.services.OrderService;
 
 import java.util.List;
@@ -24,13 +24,27 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    /**
+     * Обновляет статус заказа
+     *
+     * @param id    id заказа
+     * @param order новый статус заказа
+     * @return Результат
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrderStatusById(@PathVariable Long id,@RequestBody Order order) {
+    public ResponseEntity<?> updateOrderStatusById(@PathVariable Long id, @RequestBody Order order) {
         log.info("Обновляет статус у заказа {}", id);
 
         return orderService.updateOrderStatusById(id, order);
     }
 
+    /**
+     * Обновляет статус заказа
+     *
+     * @param id      id заказа
+     * @param massage причина отмены
+     * @return Результат
+     */
     @PutMapping("/{id}/cancel")
     public ResponseEntity<?> cancelOrderById(@PathVariable Long id, @RequestBody Object massage) {
         log.info("Отменяет заказа с {}", id);
@@ -38,6 +52,13 @@ public class OrderController {
         return orderService.cancelOrderById(id, massage);
     }
 
+    /**
+     * Обновляет статус заказа
+     *
+     * @param listId  список заказов
+     * @param message причина отмены
+     * @return Результат
+     */
     @PutMapping("/cancel")
     public ResponseEntity<?> cancelOrderByListId(@RequestParam String listId, @RequestBody Object message) {
         log.info("Отменяет заказы с {}", listId);
@@ -45,20 +66,31 @@ public class OrderController {
         return orderService.cancelOrderByListId(listId, message);
     }
 
+    /**
+     * Получает заказы
+     *
+     * @return Результат
+     */
     @GetMapping
     public ResponseEntity<List<?>> getListOrders() {
         log.info("Получает заказы");
 
-        return ResponseEntity.ok().body(orderService.getListOrders());
+        return ResponseEntity
+                .ok()
+                .body(orderService.getListOrders());
     }
 
+    /**
+     * Получает заказы по уведомлению
+     *
+     * @return Результат
+     */
     @GetMapping("/notify")
     public ResponseEntity<List<?>> getListOrdersByNotify() {
         log.info("Получает заказы для уведомления");
 
-        List<?> orders = orderService.getListOrdersByNotify();
-
-        log.info("{}", orders);
-        return ResponseEntity.ok().body(orders);
+        return ResponseEntity
+                .ok()
+                .body(orderService.getListOrdersByNotify());
     }
 }

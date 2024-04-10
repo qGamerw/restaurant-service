@@ -1,10 +1,12 @@
 import React from "react";
-import user1 from "../georgian_restaurant_employee3.png"
-import employee2 from "../georgian_restaurant_employee2.png"
-import employee3 from "../georgian_restaurant_employee1.png"
+import user1 from "../images/georgian_restaurant_employee3.png"
+import employee2 from "../images/georgian_restaurant_employee2.png"
+import employee3 from "../images/georgian_restaurant_employee1.png"
 import {Col, Image, Row, Typography} from "antd";
 
 const {Title, Paragraph} = Typography;
+
+// не смотрел
 export const AboutPage: React.FC = () => {
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh'}}>

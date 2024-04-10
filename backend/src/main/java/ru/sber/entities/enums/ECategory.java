@@ -1,9 +1,10 @@
 package ru.sber.entities.enums;
 
-/**
- * Перечисление для категорий {@link ru.sber.entities.Dish блюд}
- */
+import ru.sber.entities.Dish;
 
+/**
+ * Перечисление для категорий {@link Dish блюд}
+ */
 public enum ECategory {
     SALAD,
     ROLLS,

@@ -1,98 +1,46 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Input, message, Row, Select, Typography} from 'antd';
+import {Button, Input, Select, Table, TableColumnsType} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
+import {ChangeCategory, DishData, DishTableData} from "../types/dishType";
 import dishService from "../services/dishService";
-import logo from "../logo.jpg"
-import categoryService from "../services/categoryService";
-import {Dish, UpdateDish} from "../types/types";
+import ModalOpenDish from "../component/ModalOpenDish";
 import ModalNewDish from "../component/ModalNewDish";
-
-const {Paragraph} = Typography;
-
-export function changeCategory(str: string) {
-    let newStr = '';
-    switch (str) {
-        case 'SALAD': {
-            newStr = 'Салат';
-            break;
-        }
-        case 'ROLLS': {
-            newStr = 'Роллы';
-            break;
-        }
-        case 'SECOND_COURSES': {
-            newStr = 'Вторые блюда';
-            break;
-        }
-        case 'PIZZA': {
-            newStr = 'Пицца';
-            break;
-        }
-        case 'DRINKS': {
-            newStr = 'Напитки';
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    return newStr;
-}
 
 const DishesPage = () => {
     const dispatch = useDispatch();
 
     const allDishes = useSelector((store: RootState) => store.dishes.allDishes);
     const branchDishes = useSelector((store: RootState) => store.dishes.allBranchDishes);
+    const dishDefault = useSelector((store: RootState) => store.dishes.dish);
     const categoryList = useSelector((store: RootState) => store.category.category);
 
-    const [modal2Open, setModal2Open] = useState(false);
+    const [modalNewDish, setModalNewDish] = useState(false);
+    const [modalDishOpen, setModalDishOpen] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
-    const [isAllDish, setIsAllDish] = useState(false);
+    const [isAllDish, setIsAllDish] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
-    const [categoryFilter, setCategoryFilter] = useState<number>(-1);
+    const [categoryFilter, setCategoryFilter] = useState(-1);
+
+    const [selectedDish, setSelectedDish] = useState<DishData>(dishDefault);
 
     useEffect(() => {
-        categoryService.getListDishByBranch(dispatch);
-        dishService.getListDish(0, 50, dispatch);
-    }, []);
-
-
-    function updateDish(dish: Dish, newStr: UpdateDish) {
-        let updatedDish: Dish;
-
-        if (newStr.name === 'price' || newStr.name === 'weight') {
-            updatedDish = {...dish, [newStr.name]: parseInt(newStr.newName)};
-        } else {
-            updatedDish = {...dish, [newStr.name]: newStr.newName};
+        if (isAllDish && (allDishes === null || allDishes.length === 0)) {
+            dishService.dishGetListByPage(0, 50, dispatch);
+        } else if (!isAllDish && (branchDishes === null || branchDishes.length === 0 || isUpdate)) {
+            dishService.dishGetByBranch(dispatch);
         }
 
-        dishService.updateDish(updatedDish, dispatch)
-            .then(() => {message.warning("Добавление успешно выполнилось!");}
-            , (error) => {
-            const _content = (error.response && error.response.data)
-            console.log(_content);
-            message.error("Недостаточно прав!");
-        });
-    }
-
-    useEffect(() => {
-        if (isAllDish) {
-            dishService.getListDish(0, 50, dispatch);
-        } else {
-            dishService.getListDishByBranch(dispatch);
+        if (categoryList === null || categoryList.length === 0) {
+            dishService.dishGetCategoryList(dispatch);
         }
+
         setIsUpdate(false);
 
-    }, [isUpdate, dispatch]);
+    }, [isUpdate, isAllDish, allDishes, branchDishes, categoryList, dishDefault, dispatch]);
 
     function viewBranchDishes() {
-        setIsAllDish(false);
-    }
-
-    function viewAllDishes() {
-        setIsAllDish(true);
+        setIsAllDish(!isAllDish);
     }
 
     function handleCategoryFilter(value: string) {
@@ -107,17 +55,39 @@ const DishesPage = () => {
         dish.name?.toLowerCase().includes(searchQuery.toLowerCase()) && (categoryFilter === -1 || dish.category.id === categoryFilter)
     );
 
+    const handleOpenModal = (item: DishData) => {
+        setSelectedDish(item);
+        setModalDishOpen(true);
+    };
+
+    const columns: TableColumnsType<DishTableData> = [
+        {title: 'Название блюда', dataIndex: 'name', key: 'name'},
+        {title: 'Категория', dataIndex: ['category', 'category'], key: 'category'},
+        {title: 'Вес', dataIndex: 'weight', key: 'weight'},
+        {title: 'Цена', dataIndex: 'price', key: 'price'},
+        {
+            title: 'Открыть', dataIndex: '', key: 'x', render: (item) =>
+                <Button type='primary' key={item.id} onClick={() => handleOpenModal(item)}>Подробнее</Button>,
+        },
+    ];
+
+    const transformedData: DishTableData[] = filteredDishes.map(dish => {
+        return {
+            ...dish,
+            category: {
+                id: dish.category.id,
+                category: ChangeCategory(dish.category.category),
+            },
+            key: dish.id
+        };
+    });
+
     return (
         <>
-            <ModalNewDish modal2Open={modal2Open} category={categoryList} onClose={() => {
-                setModal2Open(false)
-            }}/>
+            <Button type="primary" style={{marginRight: 10, marginTop: 10, minWidth: 220}} onClick={viewBranchDishes}>
+                {isAllDish ? 'Показать блюда в ресторане' : 'Показать все блюда'}</Button>
 
-            <Button type="primary" style={{marginRight: 10, marginTop: 10}} onClick={viewBranchDishes}>
-                Показать блюда в ресторане</Button>
-            <Button type="primary" style={{marginRight: 10, marginTop: 10}} onClick={viewAllDishes}>
-                Показать все блюда</Button>
-            <Button type="primary" style={{marginRight: 10, marginTop: 10}} onClick={() => setModal2Open(true)}>
+            <Button type="primary" style={{marginRight: 10, marginTop: 10}} onClick={() => setModalNewDish(true)}>
                 Новое блюдо</Button>
             <Input type="text" value={searchQuery} onChange={handleSearch} placeholder="Поиск по названию..."
                    style={{marginTop: 10}}/>
@@ -126,66 +96,35 @@ const DishesPage = () => {
                     Все </Select.Option>
                 {categoryList.map((item) => (
                     <Select.Option key={item.id} value={item.id}>
-                        {changeCategory(item.category)}
+                        {ChangeCategory(item.category)}
                     </Select.Option>
                 ))}
             </Select>
-            <Row gutter={[16, 16]} style={{marginTop: 20, minWidth: 1320}}>
-                {filteredDishes.map(dish => (
-                    <Col span={8} key={dish.id}>
-                        <Card key={dish.id} style={{
-                            width: '400px',
-                            boxShadow: '3px 3px 15px gray',
-                            borderRadius: '2vh',
-                            height: 'auto'
-                        }}>
-                            <img src={dish.urlImage ? dish.urlImage : logo} alt={"Изображение блюда:" + dish.name}
-                                 style={{
-                                     borderRadius: '3vh',
-                                     maxWidth: '350px',
-                                     maxHeight: '300px'
-                                 }}
-                            />
 
-                            <p><b>Название блюда: </b><Paragraph
-                                editable={isAllDish ? false : {
-                                    onChange: (newStr) => updateDish(dish, {
-                                        name: 'name',
-                                        newName: newStr
-                                    })
-                                }}>{dish.name}</Paragraph>
-                            </p>
-                            <p><b>Цена: </b><Paragraph
-                                editable={isAllDish ? false : {
-                                    onChange: (newStr) => updateDish(dish, {
-                                        name: 'price',
-                                        newName: newStr
-                                    })
-                                }}>{dish.price}</Paragraph>
-                            </p><br/>
-                            <p><b>Спецификация блюда: </b></p>
-                            <p><b>Категория: </b>{changeCategory(dish.category.category)}</p>
-                            <p><b>Описание: </b><Paragraph
-                                editable={isAllDish ? false : {
-                                    onChange: (newStr) => updateDish(dish, {
-                                        name: 'description',
-                                        newName: newStr
-                                    })
-                                }}>{dish.description}</Paragraph>
-                            </p>
-                            <p><b>Вес: </b><Paragraph
-                                editable={isAllDish ? false : {
-                                    onChange: (newStr) => updateDish(dish, {
-                                        name: 'weight',
-                                        newName: newStr
-                                    })
-                                }}>{dish.weight}</Paragraph>
-                            </p>
+            <ModalOpenDish
+                modalNewDish={modalDishOpen}
+                isAllDish={isAllDish}
+                dish={selectedDish}
+                dispatch={dispatch}
+                setIsUpdate={setIsUpdate}
+                isUpdate={isUpdate}
+                onClose={() => setModalDishOpen(false)}/>
 
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+            <ModalNewDish
+                category={categoryList}
+                modalNewDish={modalNewDish}
+                onClose={() => setModalNewDish(false)}/>
+
+            <div style={{marginTop: 35}}>
+                <Table
+                    columns={columns}
+                    expandable={{
+                        expandedRowRender: (record: DishTableData) => <p style={{margin: 0}}>{record.description}</p>,
+                    }}
+                    dataSource={transformedData}
+                    pagination={{pageSize: 8}}
+                />
+            </div>
         </>
     );
 };

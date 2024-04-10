@@ -1,7 +1,7 @@
 package ru.sber.services;
 
 import org.springframework.http.ResponseEntity;
-import ru.sber.model.Order;
+import ru.sber.models.Order;
 
 import java.util.List;
 
@@ -12,8 +12,9 @@ public interface OrderService {
     /**
      * Обновляет статус заказа
      *
-     * @param id     id заказа
+     * @param id    id заказа
      * @param order заказ
+     * @return Результат
      */
     ResponseEntity<?> updateOrderStatusById(Long id, Order order);
 
@@ -22,6 +23,7 @@ public interface OrderService {
      *
      * @param id      id заказа
      * @param massage сообщение
+     * @return Результат
      */
     ResponseEntity<?> cancelOrderById(Long id, Object massage);
 
@@ -29,20 +31,21 @@ public interface OrderService {
      * Отменяет заказы
      *
      * @param listId listId заказов
+     * @return Результат
      */
     ResponseEntity<?> cancelOrderByListId(String listId, Object massage);
 
     /**
      * Получает информацию о заказах
      *
-     * @return List<?>
+     * @return Лист заказов
      */
     List<?> getListOrders();
 
     /**
      * Получает информацию о заказах после уведомления
      *
-     * @return List<?>
+     * @return Лист заказов
      */
     List<?> getListOrdersByNotify();
 }
