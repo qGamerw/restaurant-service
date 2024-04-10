@@ -1,26 +1,17 @@
 import React from 'react';
 import {Modal} from 'antd';
 import {useDispatch} from 'react-redux';
-import {Category} from "../types/types";
 import FormNewDish from "./FormNewDish";
+import {ModalDishProperty} from "../types/dishType";
 
-interface ModalDishProperty {
-    modal2Open: boolean;
-    category: Category[];
-    onClose: () => void;
-}
-
-// не смотрел
-
-const ModalNewDish: React.FC<ModalDishProperty> = ({modal2Open, category, onClose}) => {
+const ModalNewDish: React.FC<ModalDishProperty> = ({modalNewDish, category, onClose}) => {
     const dispatch = useDispatch();
-
 
     return (
         <Modal
             title="Добавить новое блюдо"
             centered
-            open={modal2Open}
+            open={modalNewDish}
             footer={null}
             onCancel={onClose}
         >

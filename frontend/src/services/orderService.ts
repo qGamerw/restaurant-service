@@ -2,7 +2,8 @@ import axios from "axios";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
 import {setAllOrders, updateOrders} from "../slices/orderSlice";
-import {User} from "../types/types";
+import {AccountUser} from "../types/accountType";
+
 
 const API_URL_ORDER = "orders"
 
@@ -21,7 +22,7 @@ async function updateOrderStatusById(id: number, status: string, dispatch: Dispa
     }
 }
 
-async function cancelOrderById(id: number, message: string, dispatch: Dispatch): Promise<User> {
+async function cancelOrderById(id: number, message: string, dispatch: Dispatch): Promise<AccountUser> {
     const headers = authHeader();
 
     try {
@@ -37,7 +38,7 @@ async function cancelOrderById(id: number, message: string, dispatch: Dispatch):
     }
 }
 
-async function cancelOrderByListId(id: string, message: string, dispatch: Dispatch): Promise<User> {
+async function cancelOrderByListId(id: string, message: string, dispatch: Dispatch): Promise<AccountUser> {
     const headers = authHeader();
 
     try {

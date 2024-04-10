@@ -1,5 +1,4 @@
 import axios from "axios";
-import {AuthData} from "../types/types";
 import authHeader from "./auth-header";
 import {AccountUser, userDatesSessionStorage} from "../types/accountType";
 import {
@@ -12,7 +11,7 @@ import {
 } from "../types/authType";
 import {message} from "antd";
 
-function saveLocalStore(authData: AuthData) {
+function saveLocalStore(authData: AuthDataUser) {
     if (authData.access_token) {
         sessionStorage.setItem(authDatesSessionStorage, JSON.stringify(authData));
     }
@@ -109,7 +108,7 @@ async function authRegisterUser(registration: AuthRegistration) {
 async function authRefreshToken(refresh_token: string) {
     try {
         const responseAuthData = await axios
-            .post<AuthData>(`${authAPIPath}/refresh`, {refresh_token: refresh_token});
+            .post<AuthDataUser>(`${authAPIPath}/refresh`, {refresh_token: refresh_token});
 
         saveLocalStore(responseAuthData.data);
         message.success("Сессия продлена!");

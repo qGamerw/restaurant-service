@@ -2,79 +2,74 @@ import axios from "axios";
 import {Dispatch} from "redux";
 import authHeader from "./auth-header";
 import {setAllBranchDishes, setAllDish} from "../slices/dishSlice";
-import {Dish} from "../types/types";
+import {categoryAPIPath, dishAPIPath, DishCategory, DishData, DishNewData} from "../types/dishType";
+import {message} from "antd";
+import {setCategoryList} from "../slices/categorySlice";
 
-const API_URL_DISHES = "dishes"
-
-async function getListDishByBranch(dispatch: Dispatch) {
-    const headers = authHeader();
-
+async function dishGetByBranch(dispatch: Dispatch) {
     try {
-        const response = await axios.get(`${API_URL_DISHES}/all`, {headers});
+        const headers = authHeader();
 
-        const dishes = response.data;
+        const dishes: DishData[] = (await axios.get(`${dishAPIPath}/all`, {headers})).data;
         dispatch(setAllBranchDishes(dishes));
-        return dishes;
-
     } catch (error) {
-        console.error("Ошибка получения всех блюд у филиала:", error);
-        throw error;
+        message.error("Ошибка получения всех блюд у филиала!");
     }
 }
 
-async function getListDish(page: number, size: number, dispatch: Dispatch) {
-    const headers = authHeader();
-
+async function dishGetListByPage(page: number, size: number, dispatch: Dispatch) {
     try {
-        const response = await axios.get(`${API_URL_DISHES}/customer/any?page=${page}&size=${size}`, {headers});
-        const dishes = response.data.content;
+        const headers = authHeader();
+
+        const dishes: DishData[] = (await axios.get(`${dishAPIPath}/customer/any?page=${page}&size=${size}`, {headers})).data.content;
         dispatch(setAllDish(dishes));
-        return dishes;
 
     } catch (error) {
-        console.error("Ошибка получения всех блюд:", error);
-        throw error;
+        message.error("Ошибка получения всех блюд:");
     }
 }
 
-async function updateDish(dish: Dish, dispatch: Dispatch) {
-    const headers = authHeader();
-
+async function dishGetCategoryList(dispatch: Dispatch) {
     try {
-        return (await axios.put(API_URL_DISHES, dish, {headers})).data;
+        const headers = authHeader();
+
+        const categoryList: DishCategory[] = (await axios.get(categoryAPIPath, {headers})).data;
+        dispatch(setCategoryList(categoryList));
 
     } catch (error) {
-        console.error("Ошибка обновления блюда:", error);
-        throw error;
+        message.error("Ошибка получения всех блюд:");
     }
 }
 
-async function addDish(values: Dish, dispatch: Dispatch) {
+async function dishDataUpdate(dish: DishData, dispatch: Dispatch) {
     const headers = authHeader();
-    const dish = {
-        "name": values.name,
-        "urlImage": values.urlImage,
-        "description": values.description,
-        "category": {
-            "id": values.category
-        },
-        "price": values.price,
-        "weight": values.weight
-    }
-    try {
-        return (await axios.post(`${API_URL_DISHES}/`, dish, {headers})).data;
 
+    try {
+        await axios.put(dishAPIPath, dish, {headers});
     } catch (error) {
-        console.error("Ошибка добавления блюда:", error);
-        throw error;
+        message.error('Ошибка обновления данных блюда.')
+        message.error("Недостаточно прав!");
+    }
+}
+
+async function dishAddNewDishOnBranch(values: DishNewData, dispatch: Dispatch) {
+    const headers = authHeader();
+
+    try {
+        await axios.post(`${dishAPIPath}/`, values, {headers});
+        dishGetByBranch(dispatch);
+    } catch (error) {
+        message.error('Ошибка добавления нового блюда.')
+        message.error("Недостаточно прав!");
     }
 }
 
 const dishService = {
-    getListDishByBranch,
-    getListDish,
-    updateDish,
-    addDish
+    dishGetByBranch,
+    dishGetListByPage,
+    dishGetCategoryList,
+    dishAddNewDishOnBranch,
+    dishDataUpdate,
 };
 
 export default dishService;

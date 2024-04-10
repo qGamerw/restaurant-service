@@ -1,18 +1,17 @@
 import React from 'react';
 import {Avatar, Button, Form, Input, Space, Upload} from 'antd';
 import {AntDesignOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons';
-import {NewDataUser, User} from "../types/types";
 import account from "../images/employee.png";
-import {userDatesSessionStorage} from "../types/accountType";
+import {AccountUser, AccountUserUpdate, userDatesSessionStorage} from "../types/accountType";
 import accountUserService from "../services/accountUserService";
 import authService from "../services/authService";
 
 const FormNewDataUser = () => {
     const userDataString = sessionStorage.getItem(userDatesSessionStorage);
-    const userData: User = userDataString ? JSON.parse(userDataString) : {};
+    const userData: AccountUser = userDataString ? JSON.parse(userDataString) : {};
 
-    function onFinish(values: NewDataUser) {
-        const updateData: NewDataUser = {
+    function onFinish(values: AccountUserUpdate) {
+        const updateData: AccountUserUpdate = {
             email: values.email || userData.email,
             phoneNumber: values.phoneNumber || userData.phoneNumber,
             idBranchOffice: String(userData.idBranchOffice.id),

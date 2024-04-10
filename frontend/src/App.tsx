@@ -53,7 +53,7 @@ const App: React.FC = () => {
 
     return (
         !checkAuthData ?
-            <Layout style={{minHeight: '100vh'}}>
+            <Layout style={{minHeight: '100vh', overflow: 'hidden' }}>
                 <div style={{ float: 'right' }}>
                     <Avatar src={userAvatar}
                         onClick={showDrawer}
