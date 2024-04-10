@@ -12,14 +12,12 @@
 
 ## Интеграция с другими сервисами:
 
-### Сервис Клиент
-https://github.com/qGamerw/customer-service
+### Сервис [Клиент](https://github.com/qGamerw/customer-service)
 
 * Передаем список блюд
 * Передаем категории у блюд
 
-### Сервис Заказов
-https://github.com/qGamerw/order-service/blob/main/README.md
+### Сервис [Заказов](https://github.com/qGamerw/order-service)
 
 * Получает информацию о заказе
 * Получает информацию об аналитических запросов
