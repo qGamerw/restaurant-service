@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.sber.controllers.OrderFeignController;
+import ru.sber.controllers.openFeign.OrderFeignController;
 import ru.sber.entities.OrderToken;
 import ru.sber.entities.enums.EStatusEmployee;
 import ru.sber.exceptions.UserNotApproved;

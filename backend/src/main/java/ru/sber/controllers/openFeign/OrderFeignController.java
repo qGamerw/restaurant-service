@@ -1,4 +1,4 @@
-package ru.sber.controllers;
+package ru.sber.controllers.openFeign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
