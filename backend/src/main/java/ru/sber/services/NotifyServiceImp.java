@@ -22,7 +22,7 @@ public class NotifyServiceImp implements NotifyService {
 
     @Override
     public void addNotify(Long id) {
-        if (!notifyRepository.existsByIdOrder(id)) {
+        if (id != null & !notifyRepository.existsByIdOrder(id)) {
             notifyRepository.save(new Notify(id));
         }
     }

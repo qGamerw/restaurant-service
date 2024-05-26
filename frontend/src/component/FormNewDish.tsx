@@ -57,7 +57,7 @@ const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
                 name="name"
                 rules={[{required: true, message: 'Пожалуйста, введите!'}]}
             >
-                <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder="Name"/>
+                <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder="Название"/>
             </Form.Item>
 
             <Form.Item<DishNewData>
@@ -85,7 +85,7 @@ const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
                 name="description"
                 rules={[{required: true, message: 'Пожалуйста, введите!'}]}
             >
-                <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder="Tell me about the dish"/>
+                <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder="Опишите блюдо"/>
             </Form.Item>
 
             <Form.Item<DishNewData>
