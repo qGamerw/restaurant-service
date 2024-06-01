@@ -10,7 +10,6 @@ const Notification: React.FC = () => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            console.log("Прошла 1 минута!");
             orderService.getListOrdersByNotify(dispatch).then((length) => {
                 if (length > 0) message.warning('Обновлено заказов: ' + length);
             });

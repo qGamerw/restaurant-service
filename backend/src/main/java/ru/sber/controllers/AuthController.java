@@ -143,6 +143,8 @@ public class AuthController {
     public ResponseEntity<String> updateUserInfo(@RequestBody SignupRequest signupRequest) {
         log.info("Обновляет данные о клиенте c email {}", signupRequest.getEmail());
 
+        log.error("{}", signupRequest);
+
         try {
             Jwt jwt = getJwtTokenSecurityContext();
             return authProxy.updateUserInfoREST(

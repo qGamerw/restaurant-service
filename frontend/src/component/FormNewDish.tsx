@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Form, Input, Select} from 'antd';
 import {EditOutlined} from '@ant-design/icons';
+import {AddNewDish, CategoryForm, ChangeCategory, DishNewData} from "../types/dishType";
 import dishService from "../services/dishService";
-import {AddNewDish, ChangeCategory, DishNewData} from "../types/dishType";
 
 const {Option} = Select;
 
@@ -15,15 +15,15 @@ const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
     const [loading, setLoading] = useState(false);
 
     function onFinish(values: DishNewData) {
+        var cat: any = values.category;
         const dish: DishNewData = {
             name: values.name,
             urlImage: values.urlImage,
             description: values.description,
-            category: { id: values.category.id},
+            category: { id: cat},
             price: values.price,
             weight: values.weight
         }
-
         dishService.dishAddNewDishOnBranch(dish, dispatch);
     }
 
@@ -67,7 +67,7 @@ const FormNewDish: React.FC<AddNewDish> = ({dispatch, category}) => {
                 <Input prefix={<EditOutlined className="site-form-item-icon"/>} placeholder="https://..."/>
             </Form.Item>
 
-            <Form.Item<number>
+            <Form.Item<DishNewData>
                 label="Категория"
                 name="category"
                 rules={[{required: true, message: 'Пожалуйста, выберете!'}]}>

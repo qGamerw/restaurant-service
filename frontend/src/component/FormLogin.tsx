@@ -12,12 +12,10 @@ const FormLogin: React.FC = () => {
         message.warning("Попытка входа.");
 
         authService.authLogin(values).then((user) => {
-            console.log('Success:', user);
             navigate(dishPath);
             window.location.reload();
         }, (error) => {
             const _content = (error.response && error.response.data)
-            console.log(_content);
             message.error("Неправильный логин или пароль!");
         })
     };

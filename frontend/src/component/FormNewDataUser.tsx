@@ -70,7 +70,7 @@ const FormNewDataUser = () => {
                     name="phoneNumber"
                 >
                     <Input prefix={<EditOutlined className="site-form-item-icon"/>}
-                           placeholder={String(userData.phoneNumber)} maxLength={12}/>
+                           placeholder={userData.phoneNumber != null? (userData.phoneNumber): ""} maxLength={12}/>
                 </Form.Item>
 
                 <Form.Item
@@ -78,7 +78,7 @@ const FormNewDataUser = () => {
                     name="firstName"
                 >
                     <Input prefix={<EditOutlined className="site-form-item-icon"/>}
-                           placeholder={String(userData.firstName)} maxLength={30}/>
+                           placeholder={userData.firstName != null?  String(userData.firstName): ""} maxLength={30}/>
                 </Form.Item>
 
                 <Form.Item
@@ -86,7 +86,7 @@ const FormNewDataUser = () => {
                     name="lastName"
                 >
                     <Input prefix={<EditOutlined className="site-form-item-icon"/>}
-                           placeholder={String(userData.lastName)} maxLength={30}/>
+                           placeholder={userData.lastName != null?  String(userData.lastName): ""} maxLength={30}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>

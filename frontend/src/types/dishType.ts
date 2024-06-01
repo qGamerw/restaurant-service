@@ -64,6 +64,10 @@ export interface DishNewData {
     weight: number;
 }
 
+export interface CategoryForm{
+    id: number
+}
+
 export interface DishTableData {
     key: React.Key;
     id: number;

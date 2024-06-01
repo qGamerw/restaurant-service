@@ -19,17 +19,16 @@ const ModalCancelOrder: React.FC<Props> = ({id}) => {
 
     function handleOk() {
         if (inputValue.trim() === '') {
-            setError('Please enter some text');
+            setError('Пожалуйста введите текст!');
             return;
         }
 
         orderService.cancelOrderById(id, inputValue, dispatch).then(() => {
-            console.log('Success: cancel');
             setIsUpdate(true);
+            message.info("Отмена заказа выполнена.")
 
         }, (error) => {
             const _content = (error.response && error.response.data)
-            console.log(_content);
             message.error("id не найден");
         });
 

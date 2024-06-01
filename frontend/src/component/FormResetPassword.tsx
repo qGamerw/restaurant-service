@@ -13,7 +13,6 @@ const FormResetPassword: React.FC = () => {
     };
 
     const onFinish = (values: AuthResetPassword) => {
-        console.log('Success:', values);
         authService.authResetPassword(values).then(() => {
             message.warning("Попытка сброса пароля пользователя.");
             navigate(authLoginPath);

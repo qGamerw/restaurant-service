@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
 import {DishesOrder, Order, OrderCooked, OrderCooking, OrderReview} from "../types/types";
 import ModalCancelOrder from "../component/ModalCancelOrder";
+import {authDatesSessionStorage} from "../types/authType";
 
 const {Panel} = Collapse;
 
@@ -12,19 +13,18 @@ const {Panel} = Collapse;
 const OrderPage: React.FC = () => {
     const dispatch = useDispatch();
     const allOrders = useSelector((store: RootState) => store.orders.allOrders);
-    const userStr = sessionStorage.getItem('auth-date');
+    const userStr = sessionStorage.getItem(authDatesSessionStorage);
     const [isUpdate, setIsUpdate] = useState(false);
     const currentDate = new Date();
 
     function onAccept(id: number) {
-        console.log(id);
+
         if (userStr) {
+            console.log(id);
             orderService.updateOrderStatusById(id, 'COOKING', dispatch).then(() => {
-                console.log('Success: Accept');
                 setIsUpdate(true);
             }, (error) => {
                 const _content = (error.response && error.response.data)
-                console.log(_content);
                 message.error("id не найден");
             })
         }
@@ -32,18 +32,15 @@ const OrderPage: React.FC = () => {
 
     function onCooked(id: number, branchId: number, branchAddress: string) {
         orderService.updateOrderStatusById(id, 'COOKED', dispatch).then(() => {
-            console.log('Success: Cooked');
             setIsUpdate(true);
         }, (error) => {
             const _content = (error.response && error.response.data)
-            console.log(_content);
             message.error("id не найден");
         })
     }
 
     useEffect(() => {
         const timer = setInterval(() => {
-            console.log("Прошла 1 минута!");
             orderService.getListOrdersByNotify(dispatch).then((length) => {
                 if (length > 0) message.warning('Обновлено заказов: ' + length);
             }, () => {
@@ -58,8 +55,6 @@ const OrderPage: React.FC = () => {
 
     useEffect(() => {
         orderService.getListOrders(dispatch).then((data) => {
-            console.log('Getting:', data);
-
         }, () => {
             message.error("Пользователь не допущен к работе!");
         });
@@ -78,8 +73,7 @@ const OrderPage: React.FC = () => {
                 label: (
                     <>
                         <p><b>Адрес: </b>{order.address} </p>
-                        <p><b>Время от
-                            заказывания: </b>{new Date(Date.parse(order.orderTime)).toLocaleString('RU')} минут(ы)</p>
+                        <p><b>Время заказа: </b>{new Date(Date.parse(order.orderTime)).toLocaleString('RU')}</p>
                         <p><b>Ожидание
                             заказа: </b>{Math.floor((currentDate.getTime() - new Date(order.orderTime).getTime()) / 60000)} минут(ы)
                         </p>
@@ -117,7 +111,7 @@ const OrderPage: React.FC = () => {
                     <div>
                         <p><b>Адрес: </b>{order.address}</p>
                         <p><b>Время от
-                            заказывания: </b>{new Date(Date.parse(order.orderCookingTime)).toLocaleString('RU')} минут(ы)
+                            заказывания: </b>{new Date(Date.parse(order.orderCookingTime)).toLocaleString('RU')}
                         </p>
                         <p>
                             <b>Время от
@@ -156,7 +150,7 @@ const OrderPage: React.FC = () => {
                     <div>
                         <p><b>Адрес: </b>{order.address}</p>
                         <p><b>Время от
-                            заказывания: </b>{new Date(Date.parse(order.orderCookedTime)).toLocaleString('RU')} минут(ы)
+                            заказывания: </b>{new Date(Date.parse(order.orderCookedTime)).toLocaleString('RU')}
                         </p>
                         <p>
                             <b>Время ожидания
@@ -188,7 +182,7 @@ const OrderPage: React.FC = () => {
     const countAll: number = itemsAll.length;
 
     return (
-        <div style={{overflow: 'auto'}}>
+        <div style={{overflow: 'auto', marginTop: 20}}>
             <Tabs style={{marginBottom: 24, marginTop: 20,}} tabPosition={'left'}>
                 <Tabs.TabPane tab={<Badge count={countReview} offset={[10, 0]}>Заявки</Badge>} key={'1'}>
                     <Collapse accordion>

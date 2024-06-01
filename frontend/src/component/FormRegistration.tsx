@@ -8,7 +8,6 @@ const FormRegistration: React.FC = () => {
     const navigate = useNavigate();
 
     const onFinish = (values: AuthRegistration) => {
-        console.log('Success:', values);
         authService.authRegisterUser(values).then(() => navigate(authLoginPath));
     }
 

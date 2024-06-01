@@ -57,7 +57,8 @@ async function dishAddNewDishOnBranch(values: DishNewData, dispatch: Dispatch) {
 
     try {
         await axios.post(`${dishAPIPath}/`, values, {headers});
-        dishGetByBranch(dispatch);
+        await dishGetByBranch(dispatch);
+        message.info("Блюдо было добавлено в филиал.")
     } catch (error) {
         message.error('Ошибка добавления нового блюда.')
         message.error("Недостаточно прав!");

@@ -14,6 +14,7 @@ import java.util.List;
         name = "${jwt.order-service.name}",
         url = "${jwt.order-service.url}")
 public interface OrderFeignController {
+
     /**
      * Обновляет статус заказа по id
      *
@@ -23,7 +24,7 @@ public interface OrderFeignController {
      * @return Результат
      */
     @PutMapping("orders/{id}")
-    ResponseEntity<?> updateOrderStatusById(@RequestHeader("Authorization") String bearerToken,
+    ResponseEntity<String> updateOrderStatusById(@RequestHeader("Authorization") String bearerToken,
                                             @PathVariable Long id,
                                             @RequestBody Order order);
 
@@ -36,7 +37,7 @@ public interface OrderFeignController {
      * @return Результат
      */
     @PutMapping("orders/{id}/cancel")
-    ResponseEntity<?> cancelOrderById(@RequestHeader("Authorization") String bearerToken,
+    ResponseEntity<String> cancelOrderById(@RequestHeader("Authorization") String bearerToken,
                                       @PathVariable Long id,
                                       @RequestBody Object massage);
 
@@ -49,7 +50,7 @@ public interface OrderFeignController {
      * @return Результат
      */
     @PutMapping("orders/cancel")
-    ResponseEntity<?> cancelOrderByListId(@RequestHeader("Authorization") String bearerToken,
+    ResponseEntity<String> cancelOrderByListId(@RequestHeader("Authorization") String bearerToken,
                                           @RequestParam String listId,
                                           @RequestBody Object message);
 

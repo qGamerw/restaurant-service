@@ -26,7 +26,7 @@ public class Dish {
     private String name;
 
     @Column(nullable = false)
-    @Size(max = 200)
+    @Size(max = 500)
     private String description;
 
     private String urlImage;

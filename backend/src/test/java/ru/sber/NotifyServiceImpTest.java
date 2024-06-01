@@ -6,7 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.sber.entities.Notify;
 import ru.sber.entities.User;
@@ -25,13 +27,13 @@ import static org.mockito.Mockito.lenient;
 @SpringBootTest
 public class NotifyServiceImpTest {
 
-    @InjectMocks
+    @Autowired
     private NotifyServiceImp notifyServiceImp;
 
-    @Mock
+    @MockBean
     private NotifyRepository notifyRepository;
 
-    @Mock
+    @MockBean
     private UserService userService;
 
     @Test

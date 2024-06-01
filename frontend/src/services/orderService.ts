@@ -10,6 +10,7 @@ const API_URL_ORDER = "orders"
 async function updateOrderStatusById(id: number, status: string, dispatch: Dispatch) {
     const headers = authHeader();
     try {
+        console.log(id)
         const response = await axios.put(API_URL_ORDER + `/${id}`,
             {status: status},
             {headers});

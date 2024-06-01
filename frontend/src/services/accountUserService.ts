@@ -8,6 +8,7 @@ import {message} from "antd";
 
 async function accountUserUpdate(value: AccountUserUpdate) {
     try {
+        console.log(value);
         const headers = authHeader();
         await axios.put(`${authAPIPath}`, {
             email: value.email,

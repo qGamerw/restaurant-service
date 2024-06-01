@@ -42,7 +42,6 @@ const App: React.FC = () => {
 
     const refreshToken = () => {
         const authDate = sessionStorage.getItem(authDatesSessionStorage);
-        console.log("Update Token.");
 
         let authObj = null;
         if (authDate) {

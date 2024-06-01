@@ -74,7 +74,6 @@ async function authGetPasswordToken(email: string) {
 }
 
 async function authResetPassword(value: AuthResetPassword) {
-    console.log(value);
     try {
         await axios.put(`${authAPIPath}/reset-password`, {
             email: value.email,

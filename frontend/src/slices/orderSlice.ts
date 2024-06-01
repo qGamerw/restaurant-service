@@ -21,9 +21,6 @@ const orderSlice = createSlice({
                 !action.payload.some((item: Order) => item.id === order.id));
 
             state.allOrders = [...addOrders, ...action.payload];
-
-            console.log(action.payload);
-            console.log(state.allOrders);
         },
     },
 });
