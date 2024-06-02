@@ -15,7 +15,9 @@ public class NotifyServiceImp implements NotifyService {
     private final UserService userService;
 
     @Autowired
-    public NotifyServiceImp(NotifyRepository notifyRepository, UserService userService) {
+    public NotifyServiceImp(
+            NotifyRepository notifyRepository,
+            UserService userService) {
         this.notifyRepository = notifyRepository;
         this.userService = userService;
     }

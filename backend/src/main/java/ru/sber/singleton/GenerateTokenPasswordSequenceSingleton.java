@@ -17,7 +17,7 @@ public class GenerateTokenPasswordSequenceSingleton {
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
-    private static GenerateTokenPasswordSequenceSingleton instance = null;
+    private static GenerateTokenPasswordSequenceSingleton instance;
 
     private GenerateTokenPasswordSequenceSingleton() {
     }
