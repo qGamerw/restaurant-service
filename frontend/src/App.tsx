@@ -36,7 +36,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const refreshInterval = setInterval(() => {
             refreshToken()
-        }, 4 * 60 * 1000);
+        }, 14 * 60 * 1000);
         return () => clearInterval(refreshInterval);
     }, [userDataString]);
 
